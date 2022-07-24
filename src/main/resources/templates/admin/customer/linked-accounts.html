@@ -1,0 +1,43 @@
+<table class="table table-hover table-condensed small table-striped">
+  <thead>
+  <tr>
+    <th class="text-right" colspan="6">
+      <a class="btn btn-success btn-sm" th:href="'javascript:createLinkedAccounts(\''+ ${customer.id} +'\');'">Link an account</a>
+    </th>
+  </tr>
+  <tr>
+    <th>Linked Customer</th>
+    <th>Address</th>
+    <th>Created By</th>
+    <th>Created Date</th>
+    <th>&nbsp;</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="linkedAccount: ${linkedAccounts}">
+    <td>
+      <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.customer.id})}" th:if="${customer.id != linkedAccount.customer.id}"
+         th:text="${linkedAccount.customer.customerReference}+' - '">
+        Customer Reference
+      </a>
+      <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.customer.id})}" th:if="${customer.id != linkedAccount.customer.id}"
+         th:text="${linkedAccount.customer.businessName}">Business Name
+      </a>
+      <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.linkedCustomer.id})}" th:if="${customer.id == linkedAccount.customer.id}"
+         th:text="${linkedAccount.linkedCustomer.customerReference} + ' -  '">
+        Customer Reference
+      </a>
+      <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.linkedCustomer.id})}" th:if="${customer.id == linkedAccount.customer.id}"
+         th:text="${linkedAccount.linkedCustomer.businessName}">Business Name
+      </a>
+    </td>
+    <td>
+      <span th:if="${customer.id != linkedAccount.customer.id}" th:text="${linkedAccount.customer.fullBusinessNameAndAddress}"/>
+      <span th:if="${customer.id == linkedAccount.customer.id}" th:text="${linkedAccount.linkedCustomer.fullBusinessNameAndAddress}"/>
+    </td>
+    <td th:text="${linkedAccount.createdBy.firstName}+' '+${linkedAccount.createdBy.lastName}"></td>
+    <td th:text="${#dates.format(linkedAccount.dateCreated, 'dd/MM/yyyy HH:mm:ss')}"></td>
+    <td><a class="btn btn-xs btn-danger" th:href="'javascript:deleteLinkedAccount(\''+ ${customer.id} +'\', \''+ ${linkedAccount.id} +'\');'">Delete</a></td>
+  </tr>
+  </tbody>
+</table>

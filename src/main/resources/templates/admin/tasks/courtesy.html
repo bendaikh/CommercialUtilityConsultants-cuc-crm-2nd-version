@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+    <title>CEC Consultants - Broker Management System</title>
+</head>
+<body>
+<div th:replace="../static/fragments/layout :: header">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">CEC Consultants - Broker Management System</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/logout" th:href="@{/logout}">Logout</a></li>
+                </ul>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="container-fluid">
+    <h3>Courtesy Calls</h3>
+
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="pager" th:if="${ totalPages > 1 }">
+                <li class="previous"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber - 1})}"
+                                        th:if="${ pageNumber &gt; 1 }">Previous</a></li>
+
+                <li class="next"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber + 1})}"
+                                    th:if="${ pageNumber &lt; totalPages }">Next</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-12 small">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <b>Courtesy Calls</b>
+            </div>
+            <div class="panel-body fixed-panel-large">
+                <h4 th:inline="text"> Page Number: [[${pageNumber}]] | Total Pages: [[${totalPages}]]</h4>
+                <table class="table table-striped table-hover table-condensed">
+                    <thead>
+                    <tr class="info">
+                        <th>Supply Type</th>
+                        <th>Business Name</th>
+                        <th>Site Address</th>
+                        <th>Site City</th>
+                        <th>Site Postcode</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Courtesy Call Made</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="t:${incompleteCourtesyCalls}">
+                        <td th:inline="text">[[${t.supplyType}]]</td>
+                        <td><a th:inline="text" th:href="@{/admin/customer/view/{id}/(id=${t.customer.id})}">[[${t.customer.businessName}]]</a></td>
+                        <td th:inline="text">[[${t.customerSite.siteAddr}]], [[${t.customerSite.siteAddr1}]]</td>
+                        <td th:inline="text">[[${t.customerSite.siteCity}]]</td>
+                        <td th:inline="text">[[${t.customerSite.sitePostcodeOut}]] [[${t.customerSite.sitePostcodeIn}]]</td>
+                        <td th:inline="text">[[${t.startDate} ? ${#dates.format(t.startDate, 'dd/MM/yyyy')}]]</td>
+                        <td th:inline="text">[[${t.endDate} ? ${#dates.format(t.endDate, 'dd/MM/yyyy')}]]</td>
+                        <td th:inline="text">[[${t.courtesyCall}]]</td>
+                        <td th:if="${t.supplyType == 'GAS'}">
+                            <a class="btn btn-default btn-xs"
+                               th:href="@{/admin/customer/editgascontract/{id}/(id=${t.contractId})}">
+                                Open Contract</a>
+                        </td>
+                        <td th:if="${t.supplyType == 'ELEC'}">
+                            <a class="btn btn-default btn-xs"
+                               th:href="@{/admin/customer/editeleccontract/{id}/(id=${t.contractId})}">
+                                Open Contract</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="pager" th:if="${ totalPages > 1 }">
+                <li class="previous"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber - 1})}"
+                                        th:if="${ pageNumber &gt; 1 }">Previous</a></li>
+
+                <li class="next"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber + 1})}"
+                                    th:if="${ pageNumber &lt; totalPages }">Next</a></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

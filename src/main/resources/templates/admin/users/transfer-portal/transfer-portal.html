@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>Users Transfer Portal</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+<div class="container-fluid">
+  <h2>User Transfer Portal for <span th:text="${selectedUser.firstName + ' ' + selectedUser.lastName}"></span>
+  </h2>
+
+  <div class="row">
+    <div class="col-md-12">
+      <a class="btn btn-default" th:href="@{/admin/users/users}">Users List</a>
+    </div>
+  </div>
+  <p>&nbsp;</p>
+
+  <div class="row">
+    <div class="col-md-4">
+      <a class="btn btn-success"
+         sec:authorize="hasAnyAuthority('SUPERADMIN')"
+         th:href="@{/admin/users/transfer-portal/user-notes/{id}/(id=${selectedUser.id})}">Transfer User Tagged Notes</a>
+    </div>
+  </div>
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

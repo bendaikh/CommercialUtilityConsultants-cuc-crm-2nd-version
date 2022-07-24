@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>View customer</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+<script th:inline="javascript">
+/*<![CDATA[*/
+  $(document).ready(function () {
+      loadLinkedAccounts("[[${customer.id}]]");
+  });
+/*]]>*/
+
+</script>
+<div class="container-fluid" sec:authorize="isAuthenticated()">
+  <h1 th:text="${customer.businessName}">Linked Accounts</h1>
+  <div class="row">
+    <div class="col-md-12">
+      <a class="btn btn-default" th:href="@{/admin/customer/view/{id}/(id=${customer.id})}">Customer Details</a>
+      <a class="btn btn-default" th:href="@{/admin/customer/customersites/{id}/(id=${customer.id})}">Sites</a>
+      <a class="btn btn-default" th:href="@{/admin/customer/customerdocuments/{id}/(id=${customer.id})}">Documents</a>
+      <a class="btn btn-default" th:href="@{/admin/customer/customernotes/{id}/(id=${customer.id})}">Notes</a>
+      <a class="btn btn-primary" th:href="@{/admin/customer/customer-linked-accounts/{id}/(id=${customer.id})}">Linked Accounts
+        <span class="badge" th:text="${linkedAccountsSize}"></span>
+      </a>
+      <a class="btn btn-success" th:href="@{/admin/customer/edit/{id}/(id=${customer.id})}">Edit Customer</a>
+    </div>
+  </div>
+  <p>&nbsp;</p>
+
+  <div class="col-md-6" id="linked-accounts">
+    <div class="panel panel-default">
+      <div class="panel-body panel-primary fixed-panel-large">
+        <div class="panel-heading">Linked Accounts</div>
+        <div class="panel-body" id="linked-accounts-div"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

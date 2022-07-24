@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+    <title>Customer Management</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+<div class="container">
+    <h2>Add/Edit Customer</h2>
+    <form class="form-horizontal" th:object="${customer}" th:action="@{/customer}" method="post">
+        <input type="hidden" th:field="*{id}"/> <input type="hidden" th:field="*{version}"/>
+        <div class="panel panel-default">
+            <div class="panel-heading">Business Details</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="customerReference">Customer Reference</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control input-sm" placeholder="Customer Reference" th:field="*{customerReference}" required="required"
+                               readonly="readonly"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="businessName">Business Name</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control input-sm" placeholder="Business Name" th:field="*{businessName}" required="required"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="businessAddr">Address</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control input-sm" placeholder="Address" th:field="*{businessAddr}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-4">
+                        <input type="text" class="form-control input-sm" th:field="*{businessAddr1}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="businessCity">City</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control input-sm" placeholder="City" th:field="*{businessCity}" required="required"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="businessPostcode">Postcode</label>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control input-sm" th:field="*{businessPostcodeOut}"/>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control input-sm" th:field="*{businessPostcodeIn}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="ltdRegNo">LTD Registration No.</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control input-sm" placeholder="LTD Registration No." th:field="*{ltdRegNo}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Customer Details</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="soleTrader">Sole Trader</label>
+                    <div class="col-md-9">
+                        <div class="checkbox">
+                            <input type="checkbox" th:field="*{soleTrader}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="firstName">Name</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control input-sm" placeholder="First name" th:field="*{firstName}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-4">
+                        <input type="text" class="form-control input-sm" placeholder="Last name" th:field="*{lastName}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="dob">Date Of Birth</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control input-sm" placeholder="Date Of Birth" name="altDob" id="altDob"
+                               th:value="*{dob != null} ? *{#dates.format(dob, 'dd/MM/yyyy')}"/>
+                        <input type="hidden" name="dob" id="dob" th:value="*{dob}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="stAddr">Address</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control input-sm" placeholder="Address" th:field="*{stAddr}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-4">
+                        <input type="text" class="form-control input-sm" th:field="*{stAddr1}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="stCity">City</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control input-sm" placeholder="City" th:field="*{stCity}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="stPostcodeIn">Postcode</label>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control input-sm" th:field="*{stPostcodeOut}"/>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control input-sm" th:field="*{stPostcodeIn}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Contact Details</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="contactNumber">Contact Number</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control input-sm" placeholder="Contact Number" th:field="*{contactNumber}" required="required"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="mobileNumber">Mobile Number</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control input-sm" placeholder="Mobile Number" th:field="*{mobileNumber}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="emailAddress">Primary Email Address</label>
+                    <div class="col-md-4">
+                        <input class="form-control input-sm" placeholder="Primary Email Address" th:field="*{emailAddress}" type="text"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="webAddress">Web Address</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control input-sm" placeholder="Web Address" th:field="*{webAddress}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Contact Preferences</div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <label class="checkbox-inline text-danger"><input type="checkbox" th:field="*{doNotContact}"/>Do Not Contact</label>
+                </div>
+                <div class="col-md-12">
+                    <label class="checkbox-inline"><input type="checkbox" th:field="*{contactByPost}"/>Can Contact By Post</label>
+                    <label class="checkbox-inline"><input type="checkbox" th:field="*{contactByEmail}"/>Can Contact By Email</label>
+                    <label class="checkbox-inline"><input type="checkbox" th:field="*{contactByText}"/>Can Contact By Text</label>
+                    <label class="checkbox-inline"><input type="checkbox" th:field="*{contactByFax}"/>Can Contact By Fax</label>
+                    <label class="checkbox-inline"><input type="checkbox" th:field="*{contactByPhone}"/>Can Contact By Phone</label>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" th:if="!${id}">
+            <div class="panel-heading">Customer Options</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="createGas">Create Empty Gas Contract</label>
+                    <div class="col-md-9">
+                        <div class="checkbox">
+                            <input type="checkbox" name="createGas" id="createGas" value="true"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="createElectricity">Create Empty Electricity Contract</label>
+                    <div class="col-md-9">
+                        <div class="checkbox">
+                            <input type="checkbox" name="createElectricity" id="createElectricity" value="true"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-5 col-md-7">
+                <a th:if="${id}" th:href="@{/admin/removal/index/{id}/(id=${id})}" sec:authorize="hasAnyAuthority('SUPERADMIN')" class="btn btn-danger btn-lg">Delete Customer</a>
+                <button type="submit" class="btn btn-success btn-lg">Save Customer</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

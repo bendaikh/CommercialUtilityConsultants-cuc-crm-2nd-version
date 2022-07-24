@@ -1,0 +1,65 @@
+<script>
+  $(function () {
+    $("#callbackSearchDateCalendar").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: "dd/mm/yy",
+        altFormat: "yy-mm-dd",
+        altField: "#callbackSearchDate",
+        yearRange: "-4:+4",
+        hideIfNoPrevNext: true
+    });
+  });
+
+function searchForCallbacks(callbackSearchDate) {
+    $.get('/admin/customer/diary/index', {
+       callbackSearchDate,
+    }, function (data) {
+        $('#callback_diary_div').html(data);
+    });
+}
+</script>
+
+<div class="fixed-panel-large">
+  <label class="control-label col-md-4 small" for="callbackSearchDate">Search date: </label>
+  <div class="col-md-6">
+    <!--    <input class="form-control input-sm"-->
+    <!--           id="altCallbackSearchDate"-->
+    <!--           name="altCallbackSearchDate"-->
+    <!--           placeholder="Search date"-->
+    <!--           readonly="readonly"-->
+    <!--           type="text"-->
+    <!--    />-->
+    <div id="callbackSearchDateCalendar"></div>
+    <input id="callbackSearchDate" name="callbackSearchDate" type="hidden"/>
+  </div>
+  <div class="col-md-2">
+    <a class="btn btn-success btn-sm"
+       href="javascript:searchForCallbacks(document.getElementById('callbackSearchDate').value)">Search</a>
+  </div>
+  <p>&nbsp;</p>
+  <div class="col-md-12" th:if="${not #lists.isEmpty(callbacksMap)}">
+    <h3 th:text="${#dates.format(callbackSearchDate, 'dd/MM/yyyy')}"></h3>
+    <table class="table table-condensed small">
+      <thead>
+      <tr>
+        <th>Time</th>
+        <th>Customer</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="myCallback : ${ callbacksMap }">
+        <td class="col-md-3" th:text="${#dates.format(myCallback.callbackTime, 'hh:mm a')}"></td>
+        <td th:if="${ myCallback.businessName != null }">
+          <a target="_blank" th:href="@{/admin/customer/viewsite/{id}/(id=${myCallback.customerSite.id})}" th:text="${myCallback.businessName}"></a>
+        </td>
+        <td th:if="${ myCallback.businessName == null }">
+          <a class="btn btn-warning btn-xs"
+             th:href="'javascript:selectCallbackTime(\''+ ${#dates.format(myCallback.callbackTime, 'yyyy-MM-dd HH:mm:ss')}+'\')'">Select time</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

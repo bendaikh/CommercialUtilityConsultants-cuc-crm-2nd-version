@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+    <title>Customer Management</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+<div class="container">
+    <h2>Maintain Billing Details</h2>
+
+    <form class="form-horizontal" th:object="${billingDetail}" th:action="@{/billingDetail}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{version}"/>
+        <input id="customer" name="customer" th:value="${customer.id}" type="hidden"/>
+        <div class="panel panel-default small">
+            <div class="panel-heading">Billing Details</div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Name</label>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control input-sm" placeholder="First name"
+                               th:field="*{firstName}" required="required"/>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" class="form-control input-sm" placeholder="Last name"
+                               th:field="*{lastName}" required="required"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3">Business Name</label>
+                    <div class="col-md-4">
+                        <input class="form-control input-sm" placeholder="Business Names" th:field="*{businessName}"
+                               type="text"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3">Address</label>
+                    <div class="col-md-4">
+                        <input class="form-control input-sm" placeholder="Address" th:field="*{addr}"
+                               type="text"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3">&nbsp;</label>
+                    <div class="col-md-4">
+                        <input class="form-control input-sm" th:field="*{addr1}" type="text"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3">City</label>
+                    <div class="col-md-4">
+                        <input class="form-control input-sm" th:field="*{city}" type="text"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3">Postcode</label>
+                    <div class="col-md-2">
+                        <input class="form-control input-sm" placeholder="BD1" th:field="*{postcodeOut}" type="text"/>
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control input-sm" placeholder="1AA" th:field="*{postcodeIn}" type="text"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <button class="btn btn-sm btn-success" type="submit">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

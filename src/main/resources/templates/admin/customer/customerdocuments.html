@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>View customer documents</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    showTpsContactsList(/*[[${customer.id}]]*/);
+    /*]]>*/
+
+
+
+
+
+</script>
+
+<div class="container-fluid" sec:authorize="isAuthenticated()">
+  <h1 th:text="${customer.fullBusinessNameAndAddress}">Customer Documents Title</h1>
+  <div class="row">
+    <div class="col-md-12">
+      <a class="btn btn-default" th:href="@{/admin/customer/view/{id}/(id=${customer.id})}">Customer Details</a>
+      <a class="btn btn-default" th:href="@{/admin/customer/customersites/{id}/(id=${customer.id})}">Sites</a>
+      <a class="btn btn-primary" th:href="@{/admin/customer/customerdocuments/{id}/(id=${customer.id})}">Documents</a>
+      <a class="btn btn-default" th:href="@{/admin/customer/customernotes/{id}/(id=${customer.id})}">Notes</a>
+      <a class="btn btn-default" th:href="@{/admin/customer/customer-linked-accounts/{id}/(id=${customer.id})}">Linked Accounts
+        <span class="badge" th:text="${linkedAccountsSize}"></span></a>
+    </div>
+  </div>
+  <p>&nbsp;</p>
+  <div class="row">
+    <div class="col-md-3">
+      <button class="btn btn-info" data-target="#contactDetails" data-toggle="collapse">Contact Details</button>
+    </div>
+    <div class="col-md-9">
+      <div class="collapse" id="contactDetails">
+        <!--				TPS Contact Details go here -->
+      </div>
+    </div>
+  </div>
+  <p>&nbsp;</p>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="list-group">
+        <a class="list-group-item"
+           th:classappend="${ heading == null OR heading == 0 } ? 'active' : ''"
+           th:href="@{/admin/customer/customerdocuments/{id}/(id=${customer.id})}">
+          <span class="glyphicon glyphicon-folder-open"></span>&nbsp; Home
+        </a>
+        <span th:each="f: ${folders}" th:remove="tag">
+          <a class="list-group-item"
+             th:classappend="${ heading } == ${f.folder.id} ? 'active' : ''"
+             th:href="@{/admin/customer/customerdocuments/{id}/{folderId}/(id=${customer.id}, folderId=${f.folder.id})}">
+            <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
+            <span th:text="${f.folder.folderName}"></span>
+          </a>
+          <a class="list-group-item"
+             th:if="${subfolder.parentFolderId == selectedDocumentFolder?.id} OR ${subfolder.parentFolderId == selectedDocumentFolder?.parentFolderId}"
+             th:classappend="${ heading } == ${subfolder.id} ? 'active' : ''"
+             th:each="subfolder : ${f.subfolders}"
+             th:href="@{/admin/customer/customerdocuments/{id}/{folderId}/(id=${customer.id}, folderId=${subfolder.id})}">
+              <span class="glyphicon glyphicon-arrow-right"></span>&nbsp;
+              <span class="pull-right" th:text="${subfolder.folderName}"></span>
+          </a>
+        </span>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <h2>
+        <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
+        <span th:text="(${selectedDocumentFolder?.folderName} ? ${selectedDocumentFolder?.folderName} : 'Home') "></span>
+      </h2>
+      <div class="panel panel-default">
+        <div class="panel-heading">Documents
+          <span class="pull-right">
+            <a class="btn btn-success btn-xs" th:href="@{/admin/customer/uploaddocument/{id}/(id=${customer.id})}" th:if="${heading == null}">
+              Upload New Document
+            </a>
+            <a class="btn btn-success btn-xs" th:href="@{/admin/customer/uploaddocument/{id}/{heading}/(id=${customer.id}, heading=${heading})}" th:if="${heading != null}">
+              Upload New Document
+            </a>
+            </span>
+        </div>
+        <div class="panel-body">
+          <table class="table table-condensed table-striped table-bordered">
+            <thead>
+            <tr class="info small">
+              <th>File Title</th>
+              <th>File</th>
+              <th>Valid From</th>
+              <th>Valid To</th>
+              <th>Document Status</th>
+              <th>Date Created</th>
+              <th>Uploaded By</th>
+              <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="small" th:each="d, countDoc :${documents}">
+              <td><b th:text="${d.fileTitle}"></b></td>
+              <td><a th:href="@{/admin/customer/opendocument/{id}/(id=${d.id})}" th:text="${d.fileName}"></a>
+                (<strong th:inline="text">[[${d.filePath}]]&#92;[[${d.fileName}]]</strong>)
+              </td>
+              <td th:text="${d.validFrom != null} ? ${#dates.format(d.validFrom, 'dd/MM/yyyy')}"></td>
+              <td th:text="${d.validTo != null} ? ${#dates.format(d.validTo, 'dd/MM/yyyy')}"></td>
+              <td th:text="${d.documentStatus}"></td>
+              <td th:text="${#dates.format(d.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
+              <td th:text="${d.createdBy.firstName}+' '+${d.createdBy.lastName}"></td>
+              <td>
+                <div class="modal fade" role="dialog" th:attr="id='myModal_'+${d.id}">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button class="close" data-dismiss="modal" type="button">&times;</button>
+                        <h4 class="modal-title">Delete</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p>This document will be permanently deleted and cannot be recovered.
+                          The document has not been deleted from your hard drive.
+                          Please delete this manually from: <strong th:inline="text">[[${d.filePath}]]&#92;[[${d.fileName}]]</strong>.
+                          Are you sure you want to continue?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <a class="btn btn-danger btn-sm" id="deleteButton" sec:authorize="hasAuthority('SUPERADMIN')"
+                           th:href="@{/admin/customer/deleteDocument/{id}/(id=${d.id})}">Delete Permanently</a>
+                        <button class="btn btn-success btn-sm" data-dismiss="modal" type="button">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <a class="btn btn-warning btn-xs" id="editButton"
+                   th:href="@{/admin/customer/edit-document/{id}/(id=${d.id})}">Edit Document</a>
+                <a class="btn btn-danger btn-xs"
+                   data-toggle="modal"
+                   id="delButton"
+                   sec:authorize="hasAuthority('SUPERADMIN')"
+                   th:attr="data-target='#myModal_'+${d.id}">Delete Document</a></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+    <title>CEC Consultants - Broker Management System</title>
+</head>
+<body>
+<div th:replace="../static/fragments/layout :: header">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">CEC Consultants - Broker
+                    Management System</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/logout" th:href="@{/logout}">Logout</a></li>
+                </ul>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="container-fluid">
+
+    <h1>Plugins</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Plugins</div>
+                <div class="panel-body">
+                    <table class="table table-condensed table-striped table-hover">
+                        <tr th:each="p : ${plugins}">
+                            <td th:text="${p.api}"></td>
+                            <td>
+                                <a class="btn btn-warning btn-xs" th:href="@{/admin/system-setting/plugin/edit-plugin/{id}/(id=${p.id})}">Edit</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

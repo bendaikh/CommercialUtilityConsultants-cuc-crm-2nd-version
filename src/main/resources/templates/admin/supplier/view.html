@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+<title>View Supplier</title>
+</head>
+<body>
+	<header th:replace="../static/fragments/layout :: header" />
+	<div class="container-fluid">
+		<h1>Supplier Details</h1>
+		<table class="table table-condensed table-striped table-hover">
+			<thead>
+				<tr>
+					<th class="info" colspan="2">Supplier Details</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Supplier Reference</td>
+					<td th:text="${supplier.supplierReference}">Supplier Reference</td>
+				</tr>
+				<tr>
+					<td>Supplier Name</td>
+					<td th:text="${supplier.businessName}">&nbsp;</td>
+				</tr>
+				<tr>
+					<td>Business Address</td>
+					<td th:text="${supplier.businessAddr}">&nbsp;</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td th:text="${supplier.businessAddr1}">&nbsp;</td>
+				</tr>
+				<tr>
+					<td>Business City</td>
+					<td th:text="${supplier.businessCity}">&nbsp;</td>
+				</tr>
+				<tr>
+					<td>Business Postcode</td>
+					<td th:text="${supplier.businessPostcodeOut} + ' ' +${supplier.businessPostcodeIn}">&nbsp;</td>
+				</tr>
+				<tr>
+					<td>Name</td>
+					<td th:text="${supplier.firstName} + ' ' +${supplier.lastName}">Broker Name</td>
+				</tr>
+				<tr>
+					<td>Contact Number</td>
+					<td><span th:text="${supplier.contactNumber}"></span></td>
+				</tr>
+				<tr>
+					<td>Mobile Number</td>
+					<td><span th:text="${supplier.mobileNumber}"></span></td>
+				</tr>
+				<tr>
+					<td>Email Address</td>
+					<td><span th:text="${supplier.emailAddress}"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div th:replace="../static/fragments/layout :: footer" />
+</body>
+</html>

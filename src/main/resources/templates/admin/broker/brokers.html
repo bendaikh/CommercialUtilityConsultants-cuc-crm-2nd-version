@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>Brokers</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+
+<div class="container">
+  <h2>Brokers</h2>
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+          <th>Business Name</th>
+          <th>Date Created</th>
+          <th>View Broker</th>
+          <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tr th:each="b:${findall}">
+          <td th:text="${b.businessName}">Business Name</td>
+          <td th:text="${#dates.format(b.dateCreated, 'dd/MM/yyyy')}">22-June-2017 :-)</td>
+          <td><a th:href="@{/admin/broker/view/{id}/(id=${b.id})}">View Broker</a></td>
+          <td><a sec:authorize="hasAnyAuthority('SUPERADMIN')"
+                 th:href="@{/admin/broker/broker-transfer/contracts/{id}/(id=${b.id})}">Broker Contract Transfer</a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

@@ -1,0 +1,514 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>View customer sites</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"></header>
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	showTpsContactsList(/*[[${customer.id}]]*/);
+	/*]]>*/
+</script>
+
+<div class="container-fluid" sec:authorize="isAuthenticated()">
+  <h1
+      th:text="${customer.fullBusinessNameAndAddress}">Customer Sites</h1>
+  <div class="row">
+    <div class="col-md-12">
+      <a class="btn btn-default" th:href="@{/admin/customer/view/{id}/(id=${customer.id})}">Customer Details</a>
+      <a class="btn btn-primary" th:href="@{/admin/customer/customersites/{id}/(id=${customer.id})}">Sites</a>
+      <a class="btn btn-default" th:href="@{/admin/customer/customerdocuments/{id}/(id=${customer.id})}">Documents</a>
+      <a class="btn btn-default" th:href="@{/admin/customer/customernotes/{id}/(id=${customer.id})}">Notes</a>
+      <a class="btn btn-default" th:href="@{/admin/customer/customer-linked-accounts/{id}/(id=${customer.id})}">Linked Accounts
+        <span class="badge" th:text="${linkedAccountsSize}"></span></a>
+    </div>
+  </div>
+  <p>&nbsp;</p>
+  <div class="row">
+    <div class="col-sm-12">
+      <a class="btn btn-success" th:href="@{/admin/customer/newsite/{customerId}/(customerId=${customer.id})}">Create New Site</a>
+      <button class="btn btn-info" data-target="#contactDetails" data-toggle="collapse">Contact Details</button>
+      <button class="btn btn-info" data-target="#siteGrid" data-toggle="collapse">Site Grid</button>
+    </div>
+    <div class="col-sm-9">
+      <div class="collapse" id="contactDetails">
+        <!--				TPS Contact Details go here -->
+      </div>
+    </div>
+  </div>
+  <p>&nbsp;</p>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-success">
+        <div class="panel-heading">Customer Sites</div>
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-condensed">
+              <thead class="small">
+              <tr>
+                <th>#</th>
+                <th>Domestic/Commercial</th>
+                <th>Company Registration Number</th>
+                <th>Site Name</th>
+                <th>Address</th>
+                <th>Utilities</th>
+                <th>Date Created</th>
+                <th>&nbsp;</th>
+              </tr>
+              </thead>
+              <tr class="small" th:each="cs, row :${customerSitesWithContracts}">
+                <td th:text="${row.count}"></td>
+                <td th:text="${cs.site.propertyType}"></td>
+                <td th:text="${cs.site.registrationNo}"></td>
+                <td th:text="${cs.site.siteName}"></td>
+                <td th:text="${cs.site.fullAddress}"></td>
+                <td>
+
+
+                  <!-- START UTILITIES-->
+
+
+                  <div class="col-md-12">
+                    <div class="btn-group-vertical">
+                      <div class="btn-group-horizontal">
+                        <button class="btn btn-info btn-xs"
+                                data-toggle="modal"
+                                th:attr="data-gas-contract=''+${cs.gasContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                                th:disabled="!${cs.gasContract}"
+                                title="GAS">
+                          <span class="glyphicon glyphicon-fire"></span>
+
+                          <!--                        <span th:if="${cs.gasContract}" -->
+                          <!--                              th:text="${cs.gasContract.supplyType}"></span>-->
+
+                          <!--                        <span class="glyphicon glyphicon-star"-->
+                          <!--                              th:if="${cs.gasContract?.current == true}"-->
+                          <!--                              title="Current Contract"></span>-->
+                        </button>
+                        <button class="btn btn-xs btn-default"
+                                data-toggle="modal"
+                                th:attr="data-gas-contract-comm=''+${cs.gasContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                                th:disabled="!${cs.gasContract}">
+                          <span class="glyphicon glyphicon-send" title="Gas Comms"></span>
+                        </button>
+                      </div>
+                      <div class="btn-group-horizontal">
+                        <button class="btn btn-info btn-xs"
+                                data-toggle="modal"
+                                th:attr="data-electric-contract=''+${cs.electricContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                                th:disabled="!${cs.electricContract}"
+                                title="ELECTRIC">
+                          <span class="glyphicon glyphicon-flash"></span>
+
+                          <!--                        <span th:if="${cs.electricContract}"-->
+                          <!--                              th:text="${cs.electricContract.supplyType}"></span>-->
+
+                          <!--                        <span class="glyphicon glyphicon-star"-->
+                          <!--                              th:if="${cs.electricContract?.current == true}"-->
+                          <!--                              title="Current Contract"></span>-->
+
+                        </button>
+                        <button class="btn btn-xs btn-default"
+                                data-toggle="modal"
+                                th:attr="data-electric-contract-comm=''+${cs.electricContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                                th:disabled="!${cs.electricContract}">
+                          <span class="glyphicon glyphicon-send" title="Electric Comms"></span>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="btn-group-vertical">
+                      <button class="btn btn-primary btn-xs"
+                              data-toggle="modal"
+                              th:attr="data-utility-contract=''+${cs.solarContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                              th:disabled="!${cs.solarContract}"
+                              title="SOLAR">
+                        <span class="glyphicon glyphicon-leaf"></span>
+
+                        <!--                        <span th:if="${cs.solarContract}"-->
+                        <!--                              th:text="${cs.solarContract.utilityType}"></span>-->
+
+                        <!--                        <span class="glyphicon glyphicon-star"-->
+                        <!--                              th:if="${cs.solarContract?.current == true}"-->
+                        <!--                              title="Current Contract"></span>-->
+                      </button>
+                      <button class="btn btn-primary btn-xs"
+                              data-toggle="modal"
+                              th:attr="data-utility-contract=''+${cs.waterContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                              th:disabled="!${cs.waterContract}"
+                              title="WATER">
+                        <span class="glyphicon glyphicon-cloud"></span>
+
+                        <!--                        <span th:if="${cs.waterContract}"-->
+                        <!--                              th:text="${cs.waterContract.utilityType}"></span>-->
+
+                        <!--                        <span class="glyphicon glyphicon-star"-->
+                        <!--                              th:if="${cs.waterContract?.current == true}"-->
+                        <!--                              title="Current Contract"></span>-->
+                      </button>
+                    </div>
+                    <div class="btn-group-vertical">
+                      <button class="btn btn-success btn-xs"
+                              data-toggle="modal"
+                              th:attr="data-utility-contract=''+${cs.voipContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                              th:disabled="!${cs.voipContract}"
+                              title="VOIP">
+                        <span class="glyphicon glyphicon-headphones"></span>
+
+                        <!--                        <span th:if="${cs.voipContract}"-->
+                        <!--                              th:text="${cs.voipContract.utilityType}"></span>-->
+
+                        <!--                        <span class="glyphicon glyphicon-star"-->
+                        <!--                              th:if="${cs.voipContract?.current == true}"-->
+                        <!--                              title="Current Contract"></span>-->
+                      </button>
+                      <button class="btn btn-success btn-xs"
+                              data-toggle="modal"
+                              th:attr="data-utility-contract=''+${cs.landlineContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                              th:disabled="!${cs.landlineContract}"
+                              title="LANDLINE">
+                        <span class="glyphicon glyphicon-earphone"></span>
+
+                        <!--                        <span th:if="${cs.landlineContract}"-->
+                        <!--                              th:text="${cs.landlineContract.utilityType}"></span>-->
+
+                        <!--                        <span class="glyphicon glyphicon-star"-->
+                        <!--                              th:if="${cs.landlineContract?.current == true}"-->
+                        <!--                              title="Current Contract"></span>-->
+                      </button>
+                    </div>
+                    <div class="btn-group-vertical">
+                      <button class="btn btn-warning btn-xs"
+                              data-toggle="modal"
+                              th:attr="data-utility-contract=''+${cs.mobileContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                              th:disabled="!${cs.mobileContract}"
+                              title="MOBILE">
+                        <span class="glyphicon glyphicon-phone"></span>
+
+                        <!--                        <span th:if="${cs.mobileContract}"-->
+                        <!--                              th:text="${cs.mobileContract.utilityType}"></span>-->
+
+                        <!--                        <span class="glyphicon glyphicon-star"-->
+                        <!--                              th:if="${cs.mobileContract?.current == true}"-->
+                        <!--                              title="Current Contract"></span>-->
+                      </button>
+                      <button class="btn btn-warning btn-xs"
+                              data-toggle="modal"
+                              th:attr="data-utility-contract=''+${cs.broadbandContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                              th:disabled="!${cs.broadbandContract}"
+                              title="BROADBAND">
+                        <span class="glyphicon glyphicon-globe"></span>
+
+                        <!--                        <span th:if="${cs.broadbandContract}"-->
+                        <!--                              th:text="${cs.broadbandContract.utilityType}"></span>-->
+
+                        <!--                        <span class="glyphicon glyphicon-star"-->
+                        <!--                              th:if="${cs.broadbandContract?.current == true}"-->
+                        <!--                              title="Current Contract"></span>-->
+                      </button>
+                    </div>
+                    <div class="btn-group-vertical">
+                      <button class="btn btn-warning btn-xs"
+                              data-toggle="modal"
+                              th:attr="data-merchant-services-contract=''+${cs.merchantServicesContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                              th:disabled="!${cs.merchantServicesContract}"
+                              title="MERCHANT SERVICES">
+                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                      </button>
+
+                    </div>
+                  </div>
+
+                  <!-- END UTILITIES -->
+
+
+                  <!--                  <span th:if="${cs.gasContract}"> <span-->
+                  <!--                      class="label label-danger" th:if="${cs.gasContract.contractStatus == 'ENDED'}">ENDED</span>-->
+                  <!--											<button class="btn btn-success btn-xs" data-toggle="modal"-->
+                  <!--                              th:attr="data-gas-contract=''+${cs.gasContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"-->
+                  <!--                              type="button">-->
+                  <!--												<span class="glyphicon glyphicon-fire"></span> <span th:text="${cs.gasContract.accountNumber}+' ('+${cs.gasContract.logType}+')'"></span>-->
+                  <!--											</button>-->
+
+                  <!--                        <button class="btn btn-xs btn-info"-->
+                  <!--                                data-toggle="modal"-->
+                  <!--                                th:attr="data-gas-contract-comm=''+${cs.gasContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'">-->
+                  <!--												  <span class="glyphicon glyphicon-send" title="Gas Comms"></span>-->
+                  <!--												</button>-->
+
+                  <!--									</span>-->
+                  <!--                  <span th:if="${cs.electricContract}"> <span-->
+                  <!--                      class="label label-danger" th:if="${cs.electricContract.contractStatus == 'ENDED'}">ENDED</span>-->
+                  <!--											<button class="btn btn-warning btn-xs" data-toggle="modal"-->
+                  <!--                              th:attr="data-electric-contract=''+${cs.electricContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"-->
+                  <!--                              type="button">-->
+                  <!--												<span class="glyphicon glyphicon-flash"></span> <span th:text="${cs.electricContract.accountNumber}+' ('+${cs.electricContract.logType}+')'"></span>-->
+                  <!--											</button>-->
+
+                  <!--											<button class="btn btn-xs btn-info"-->
+                  <!--                              data-toggle="modal"-->
+                  <!--                              th:attr="data-electric-contract-comm=''+${cs.electricContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'">-->
+                  <!--												<span class="glyphicon glyphicon-send" title="Electric Comms"></span>-->
+                  <!--												</button>-->
+
+                  <!--                    </span>-->
+                </td>
+                <td th:text="${#dates.format(cs.site.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
+                <td><a class="btn btn-default btn-xs" th:href="@{/admin/customer/viewsite/{id}/(id=${cs.site.id})}" title="Open Site">OPEN SITE</a></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row collapse" id="siteGrid">
+    <div class="col-md-4 small" th:each="cs, row :${customerSitesWithContracts}">
+      <div class="panel panel-success">
+        <div class="panel-heading" th:text="${cs.site.siteName}"></div>
+        <div class="panel-body fixed-panel">
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <div class="btn-group-vertical">
+                <button class="btn btn-info btn-xs"
+                        data-toggle="modal"
+                        th:attr="data-gas-contract=''+${cs.gasContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                        th:disabled="!${cs.gasContract}">
+                  <span class="glyphicon glyphicon-fire"></span>
+
+                  <span th:if="${cs.gasContract}" th:text="${cs.gasContract.supplyType}"></span>
+                  <span class="glyphicon glyphicon-star"
+                        th:if="${cs.gasContract?.current == true}"
+                        title="Current Contract"></span>
+                </button>
+                <button class="btn btn-info btn-xs"
+                        data-toggle="modal"
+                        th:attr="data-electric-contract=''+${cs.electricContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                        th:disabled="!${cs.electricContract}">
+                  <span class="glyphicon glyphicon-flash"></span>
+
+                  <span th:if="${cs.electricContract}"
+                        th:text="${cs.electricContract.supplyType}"></span>
+
+                  <span class="glyphicon glyphicon-star"
+                        th:if="${cs.electricContract?.current == true}"
+                        title="Current Contract"></span>
+
+                </button>
+              </div>
+              <div class="btn-group-vertical">
+                <button class="btn btn-primary btn-xs"
+                        data-toggle="modal"
+                        th:attr="data-utility-contract=''+${cs.solarContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                        th:disabled="!${cs.solarContract}">
+                  <span class="glyphicon glyphicon-leaf"></span>
+
+                  <span th:if="${cs.solarContract}"
+                        th:text="${cs.solarContract.utilityType}"></span>
+
+                  <span class="glyphicon glyphicon-star"
+                        th:if="${cs.solarContract?.current == true}"
+                        title="Current Contract"></span>
+                </button>
+                <button class="btn btn-primary btn-xs"
+                        data-toggle="modal"
+                        th:attr="data-utility-contract=''+${cs.waterContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                        th:disabled="!${cs.waterContract}">
+                  <span class="glyphicon glyphicon-cloud"></span>
+
+                  <span th:if="${cs.waterContract}"
+                        th:text="${cs.waterContract.utilityType}"></span>
+
+                  <span class="glyphicon glyphicon-star"
+                        th:if="${cs.waterContract?.current == true}"
+                        title="Current Contract"></span>
+                </button>
+              </div>
+              <div class="btn-group-vertical">
+                <button class="btn btn-success btn-xs"
+                        data-toggle="modal"
+                        th:attr="data-utility-contract=''+${cs.voipContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                        th:disabled="!${cs.voipContract}">
+                  <span class="glyphicon glyphicon-headphones"></span>
+
+                  <span th:if="${cs.voipContract}"
+                        th:text="${cs.voipContract.utilityType}"></span>
+
+                  <span class="glyphicon glyphicon-star"
+                        th:if="${cs.voipContract?.current == true}"
+                        title="Current Contract"></span>
+                </button>
+                <button class="btn btn-success btn-xs"
+                        data-toggle="modal"
+                        th:attr="data-utility-contract=''+${cs.landlineContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                        th:disabled="!${cs.landlineContract}">
+                  <span class="glyphicon glyphicon-earphone"></span>
+
+                  <span th:if="${cs.landlineContract}"
+                        th:text="${cs.landlineContract.utilityType}"></span>
+
+                  <span class="glyphicon glyphicon-star"
+                        th:if="${cs.landlineContract?.current == true}"
+                        title="Current Contract"></span>
+                </button>
+              </div>
+              <div class="btn-group-vertical">
+                <button class="btn btn-warning btn-xs"
+                        data-toggle="modal"
+                        th:attr="data-utility-contract=''+${cs.mobileContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                        th:disabled="!${cs.mobileContract}">
+                  <span class="glyphicon glyphicon-phone"></span>
+
+                  <span th:if="${cs.mobileContract}"
+                        th:text="${cs.mobileContract.utilityType}"></span>
+
+                  <span class="glyphicon glyphicon-star"
+                        th:if="${cs.mobileContract?.current == true}"
+                        title="Current Contract"></span>
+                </button>
+                <button class="btn btn-warning btn-xs"
+                        data-toggle="modal"
+                        th:attr="data-utility-contract=''+${cs.broadbandContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                        th:disabled="!${cs.broadbandContract}">
+                  <span class="glyphicon glyphicon-globe"></span>
+
+                  <span th:if="${cs.broadbandContract}"
+                        th:text="${cs.broadbandContract.utilityType}"></span>
+
+                  <span class="glyphicon glyphicon-star"
+                        th:if="${cs.broadbandContract?.current == true}"
+                        title="Current Contract"></span>
+                </button>
+              </div>
+              <div class="btn-group-vertical">
+                <button class="btn btn-warning btn-xs"
+                        data-toggle="modal"
+                        th:attr="data-merchant-services-contract=''+${cs.merchantServicesContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                        th:disabled="!${cs.merchantServicesContract}">
+                  <span class="glyphicon glyphicon-globe"></span>
+
+                  <span th:if="${cs.merchantServicesContract}"
+                        th:text="${cs.merchantServicesContract.supplyType}"></span>
+
+                  <span class="glyphicon glyphicon-shopping-cart"
+                        th:if="${cs.merchantServicesContract?.current == true}"
+                        title="Current Contract"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <p>&nbsp;</p>
+          <div class="row collapse" th:id="'comms_'+${cs.site.id}">
+            <div class="col-md-12 text-center">
+              <button class="btn btn-xs btn-default"
+                      data-toggle="modal"
+                      th:attr="data-gas-contract-comm=''+${cs.gasContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'">
+                <span class="glyphicon glyphicon-send" title="Gas Comms"></span> GAS COMMS
+              </button>
+
+              <button class="btn btn-xs btn-default"
+                      data-toggle="modal"
+                      th:attr="data-electric-contract-comm=''+${cs.electricContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'">
+                <span class="glyphicon glyphicon-send" title="Electric Comms"></span> ELECTRIC COMMS
+              </button>
+            </div>
+            <p>&nbsp;</p>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <table class="table table-striped table-condensed">
+                <tr>
+                  <th nowrap="nowrap">Company Reg. No.</th>
+                  <td th:text="${cs.site.registrationNo}"></td>
+                </tr>
+                <tr>
+                  <th>Domestic/Commercial</th>
+                  <td th:text="${cs.site.propertyType}"></td>
+                </tr>
+                <tr>
+                  <th>Site Name</th>
+                  <td th:text="${cs.site.siteName}"></td>
+                </tr>
+                <tr>
+                  <th>Address</th>
+                  <td th:text="${cs.site.fullAddress}"></td>
+                </tr>
+                <tr>
+                  <th>Date Created</th>
+                  <td th:text="${#dates.format(cs.site.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <a class="btn btn-default btn-xs" th:href="@{/admin/customer/viewsite/{id}/(id=${cs.site.id})}" title="Open Site">OPEN SITE</a>
+          <a class="btn btn-default btn-xs"
+             data-toggle="collapse"
+             th:attr="data-target='#comms_'+${cs.site.id}"
+             title="Open Communications Panel">
+            OPEN COMMUNICATIONS
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="utility-modal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" data-dismiss="modal" type="button">&times;</button>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$('#utility-modal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var siteName = button.data('site-name')
+  var gasContractId = button.data('gas-contract')
+  var electricContractId = button.data('electric-contract')
+  var utilityContractId = button.data('utility-contract')
+  var gasContractCommId = button.data('gas-contract-comm')
+  var electricContractCommId = button.data('electric-contract-comm')
+  var utilityContractCommId = button.data('utility-contract-comm')
+  var merchantServicesContractId = button.data('merchant-services-contract')
+
+  var modal = $(this)
+  modal.find('.modal-header').text(siteName)
+  if(gasContractId) {
+    modal.find('.modal-body').load('/admin/customer/gas-contract-popup/'+gasContractId)
+  }
+  if(electricContractId) {
+    modal.find('.modal-body').load('/admin/customer/electric-contract-popup/'+electricContractId)
+  }
+  if(utilityContractId) {
+    modal.find('.modal-body').load('/admin/customer/utility-contract-popup/'+utilityContractId)
+  }
+  if(gasContractCommId) {
+    modal.find('.modal-body').load('/admin/customer/gas-communication-popup/'+gasContractCommId)
+  }
+  if(electricContractCommId) {
+    modal.find('.modal-body').load('/admin/customer/electric-communication-popup/'+electricContractCommId)
+  }
+  if(utilityContractCommId) {
+    modal.find('.modal-body').load('/admin/customer/utility-communication-popup/'+utilityContractCommId)
+  }
+  if(merchantServicesContractId) {
+    modal.find('.modal-body').load('/admin/customer/merchant-services-contract-popup/'+merchantServicesContractId)
+  }
+})
+</script>
+<div th:replace="../static/fragments/layout :: footer"></div>
+</body>
+</html>

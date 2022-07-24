@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+<title>View customer</title>
+</head>
+<body>
+	<header th:replace="../static/fragments/layout :: header" />
+	<div class="container-fluid" sec:authorize="isAuthenticated()">
+		<h3 th:inline="text">Gas Consumption for [[${gasCustomerContract.accountNumber}]] from 
+		[[${gasCustomerContract.startDate}]] to [[${gasCustomerContract.endDate}]]</h3>
+		<p class="small" th:inline="text">[[${gasCustomerContract.customerSite.siteName}]], [[${gasCustomerContract.customerSite.siteCity}]],
+			[[${gasCustomerContract.customerSite.sitePostcodeOut}]] [[${gasCustomerContract.customerSite.sitePostcodeIn}]]</p>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-warning">
+					<div class="panel-heading">Gas Consumption History</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-condensed small">
+								<tr th:each="gasConsumption : ${gasConsumptionList}">
+									<td th:text="${gasConsumption.annualConsumption}"></td>
+									<td th:text="${gasConsumption.consumptionType}"></td>
+									<td th:text="${gasConsumption.createdBy.firstName}+ ' '+ ${gasConsumption.createdBy.lastName}"></td>
+									<td th:text="${gasConsumption.dateCreated}"></td>
+								</tr>
+								<tr>
+									<td class="info" th:text="${totalGasConsumption}"></td>
+									<td class="info">&nbsp;</td>
+									<td class="info">&nbsp;</td>
+									<td class="info">&nbsp;</td>
+								</tr>
+							</table>
+						</div>
+						<form class="form-horizontal" th:object="${annualGasConsumption}" th:action="@{/updateAnnualGasConsumption}" method="post">
+							<input type="hidden" th:field="*{id}" /> <input type="hidden" th:field="*{version}" /> <input type="hidden" id="createdBy" name="createdBy"
+								th:value="${#authentication.principal.id}" /> <input type="hidden" id="gasCustomerContract" name="gasCustomerContract"
+								th:value="${gasCustomerContractId}" />
+							<div class="form-group">
+								<label class="control-label col-sm-3" for="annualConsumption">Annual Gas Consumption (kwh)</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control input-sm" placeholder="Annual Consumption" th:field="*{annualConsumption}" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-3" for="consumptionType">Consumption Type</label>
+								<div class="col-sm-4">
+									<select class="form-control input-sm" th:field="*{consumptionType}">
+										<option value="ACTUAL">ACTUAL</option>
+										<option value="ESTIMATE">ESTIMATE</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-3 col-sm-10">
+									<button type="submit" class="btn btn-success btn-sm">Submit Gas Consumption</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="../static/fragments/layout :: footer" />
+</body>
+</html>

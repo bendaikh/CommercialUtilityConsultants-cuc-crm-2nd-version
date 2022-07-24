@@ -1,0 +1,69 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+</head>
+<body>
+<span th:inline="text">Customer Reference: <b class="text-success">[[${customerNote.customer.customerReference}]]</b></span> |
+<span th:inline="text">Business Name: <b class="text-success">[[${customerNote.customer.businessName}]]</b></span>
+<div class="media">
+    <a class="pull-left" href="#">
+        <img class="media-object" src="/images/av.png" style="width:40px"/>
+    </a>
+    <div class="media-body">
+        <h4 class="media-heading">
+            <span th:text="${customerNote.subject}">Subject</span>
+            <small>
+                <i th:text="'Posted on '+ ${#dates.format(customerNote.dateCreated, 'dd/MM/yyyy HH:mm:ss')} +' by'">Date Created</i>
+                <strong><i th:text="${customerNote.createdBy.firstName}+ ' ' +${customerNote.createdBy.lastName}">Created By</i></strong>
+                <i th:text="'|| Modified on '+ ${#dates.format(customerNote.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')} +' by'">Last Modified Date</i>
+                <strong><i th:text="${customerNote.lastModifiedBy.firstName}+ ' ' +${customerNote.lastModifiedBy.lastName}">Modified By</i></strong>
+            </small>
+        </h4>
+        <p th:inline="text">Tagged User: <b class="text-danger">[[${customerNote.taggedUser != null} ? ${customerNote.taggedUser.firstName}+'
+            '+${customerNote.taggedUser.lastName}]]</b>
+            | Completed: <b class="text-danger">[[${customerNote.completed}]]</b>
+            | Quick Win: <b class="text-success">[[${customerNote.quickWin}]]</b>
+            | Due by Date: <b class="text-danger">[[${customerNote.dueByDate != null} ? ${#dates.format(customerNote.dueByDate, 'dd/MM/yyyy')}]]</b>
+            | Priority: <b class="text-danger">[[${customerNote.priority}]]</b>
+            | Related To: <b class="text-danger">[[${customerNote.relatedTo}]]</b>
+        </p>
+        <p class="text-success" th:inline="text">
+            <strong>[[${customerNote.note}]]</strong>
+        </p>
+
+        <div class="media" th:each="childNoteItem:${customerNote.customerChildNoteList}">
+            <div class="media-left">
+                <img class="media-object" src="/images/av2.png" style="width:45px"/>
+            </div>
+            <div class="media-body">
+                <small>
+                    <i th:text="'Posted on '+ ${#dates.format(childNoteItem.dateCreated, 'dd/MM/yyyy HH:mm:ss')} +' by'">Date Created</i>
+                    <strong><i th:text="${childNoteItem.createdBy.firstName}+ ' ' +${childNoteItem.createdBy.lastName}">Created By</i></strong>
+                    <i th:text="'|| Modified on '+ ${#dates.format(childNoteItem.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')} +' by'">Last Modified Date</i>
+                    <strong><i th:text="${childNoteItem.lastModifiedBy.firstName}+ ' ' +${childNoteItem.lastModifiedBy.lastName}">Modified By</i></strong>
+                </small>
+                <p th:inline="text">Tagged User: <b class="text-danger">[[${childNoteItem.replyTaggedUser != null} ?
+                    ${childNoteItem.replyTaggedUser.firstName}+'
+                    '+${childNoteItem.replyTaggedUser.lastName}]]</b>
+                    | Completed: <b class="text-danger">[[${childNoteItem.replyCompleted}]]</b>
+                    | Quick Win: <b class="text-success">[[${childNoteItem.quickWin}]]</b>
+                    | Due by Date: <b class="text-danger">[[${childNoteItem.replyDueByDate != null} ? ${#dates.format(childNoteItem.replyDueByDate, 'dd/MM/yyyy')}]]</b>
+                    | Priority: <b class="text-danger">[[${childNoteItem.replyPriority}]]</b>
+                    | Related To: <b class="text-danger">[[${childNoteItem.replyRelatedTo}]]</b>
+                </p>
+                <p class="text-success" th:inline="text">[[${childNoteItem.message}]]</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form class="form-horizontal" method="post" th:action="@{/updateCompletedCustomerChildNote}" th:object="${customerChildNote}">
+    <input th:field="*{id}" type="hidden"/>
+    <div class="form-group">
+        <div class="col-sm-12">
+            <button class="btn btn-success btn-xs">Mark as Completed</button>
+            <a class="btn btn-warning btn-xs" href="/admin/tasks/index">Back</a>
+        </div>
+    </div>
+</form>
+</body>
+</html>

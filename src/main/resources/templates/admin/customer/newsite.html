@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>Site Management</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+<div class="container">
+  <h1
+      th:text="${customerDetails.fullBusinessNameAndAddress}">Customer New Site</h1>
+  <h2>Site Management</h2>
+  <div class="row">
+    <div class="col-md-offset-10 col-md-2">
+      <a class="btn btn-danger btn-sm" data-target="#myModal" data-toggle="modal" id="delButton" sec:authorize="hasAuthority('SUPERADMIN')" th:if="${customerSite.id}">Delete</a>
+      <a class="btn btn-warning btn-sm"
+         th:href="@{/admin/customer/transfer-site/{id}/(id=${customerSite.id})}"
+         th:if="${customerSite.id}">
+        Transfer Site
+      </a>
+    </div>
+  </div>
+  <form class="form-horizontal" method="post" th:action="@{/customerSite}" th:object="${customerSite}">
+    <input th:field="*{id}" type="hidden"/>
+    <input th:field="*{version}" type="hidden"/>
+    <input id="customer"
+           name="customer"
+           th:value="${customerId}"
+           type="hidden"
+    />
+    <input th:field="*{mpr}" type="hidden"/>
+    <input th:field="*{mpanLineOne}" type="hidden"/>
+    <input th:field="*{mpanLineTwo}" type="hidden"/>
+    <input th:field="*{mpanLineThree}" type="hidden"/>
+    <input th:field="*{mpanBottomLine}" type="hidden"/>
+
+    <div class="form-group">
+      <label class="control-label col-sm-3" for="propertyType">Domestic/Commercial</label>
+      <div class="col-sm-5">
+        <select class="form-control input-sm" th:field="*{propertyType}">
+          <option value="UNKNOWN">Unknown</option>
+          <option value="DOMESTIC">Domestic</option>
+          <option value="COMMERCIAL">Commercial</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3" for="siteName">Site Name</label>
+      <div class="col-sm-5">
+        <input class="form-control input-sm" placeholder="Site Name" required="required" th:field="*{siteName}" type="text"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3" for="registrationNo">Company Registration Number</label>
+      <div class="col-sm-5">
+        <input class="form-control input-sm" placeholder="Company Registration Number" th:field="*{registrationNo}" type="text"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3" for="siteAddr">Site Address</label>
+      <div class="col-sm-5">
+        <input class="form-control input-sm" placeholder="Site Address" th:field="*{siteAddr}" type="text"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3" for="siteAddr">&nbsp; </label>
+      <div class="col-sm-5">
+        <input class="form-control input-sm" th:field="*{siteAddr1}" type="text"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3" for="siteCity">City</label>
+      <div class="col-sm-5">
+        <input class="form-control input-sm" placeholder="City" required="required" th:field="*{siteCity}" type="text"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3" for="sitePostcode">Postcode</label>
+      <div class="col-sm-1">
+        <input class="form-control input-sm" th:field="*{sitePostcodeOut}" th:maxlength="4" type="text"/>
+      </div>
+      <div class="col-sm-1">
+        <input class="form-control input-sm" th:field="*{sitePostcodeIn}" th:maxlength="4" type="text"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-3" for="siteTelephone">Telephone</label>
+      <div class="col-sm-3">
+        <input class="form-control input-sm" placeholder="Telephone" th:field="*{siteTelephone}" type="text"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-10">
+        <button class="btn btn-success btn-sm" type="submit">Submit</button>
+      </div>
+    </div>
+    <div class="modal fade" id="myModal" role="dialog" th:if="${customerSite.id}">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" data-dismiss="modal" type="button">&times;</button>
+            <h4 class="modal-title">Delete</h4>
+          </div>
+          <div class="modal-body">
+            <p>This site will be permanently deleted and cannot be recovered. Are you sure?</p>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-danger btn-sm" id="delButton" sec:authorize="hasAuthority('SUPERADMIN')"
+               th:href="@{/admin/customer/deleteSite/{id}/(id=${customerSite.id})}">Delete Permanently</a>
+            <button class="btn btn-success btn-sm" data-dismiss="modal" type="button">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

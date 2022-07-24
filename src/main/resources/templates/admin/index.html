@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>CEC Consultants - Broker Management System</title>
+</head>
+<body>
+<div th:replace="../static/fragments/layout :: header">
+  <!-- ============================================================================ -->
+  <!-- This content is only used for static prototyping purposes (natural templates)-->
+  <!-- and is therefore entirely optional, as this markup fragment will be included -->
+  <!-- from "fragments/header.html" at runtime.                                     -->
+  <!-- ============================================================================ -->
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">CEC Consultants - Broker
+          Management System</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/logout" th:href="@{/logout}">Logout</a></li>
+        </ul>
+      </ul>
+    </div>
+  </nav>
+</div>
+<div class="container-fluid">
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" href="#collapse1"><span class="glyphicon glyphicon-star-empty"></span> What's new - June 2022<span
+              class="glyphicon glyphicon-star-empty"></span></a>
+        </h4>
+      </div>
+      <div class="panel-collapse collapse" id="collapse1">
+        <div class="panel-body">
+          <li><strong>Notes amended and Merchant Services Contract pages added</strong></li>
+          <li><strong>Add Merchant Contract for a customer site</strong></li>
+          <li><strong>Add a start and end date to a document</strong></li>
+          <li><strong>Search by MPR and MPAN Bottom Line added</strong></li>
+          <li><strong>Verbal log type and view added</strong></li>
+          <li><strong>Lost Renewal pages added</strong></li>
+          <li><strong>MPAN and MPR added to contracts pages</strong></li>
+          <li><strong>Lost Renewal option added</strong></li>
+          <li><strong>Is your tagged note a simple task? Check the 'Quick Win' box to let others know</strong></li>
+          <li><strong>New Do Not Renew options added</strong></li>
+          <li><strong>Document folder facility added</strong></li>
+          <li><strong>Added new log types and related to types</strong></li>
+          <li><strong>Transfer site from one customer to another in the Edit Site page</strong></li>
+          <li><strong>Callback Diary added to homepage and when selecting a callback time</strong></li>
+          <li><strong>Link Customer accounts from the Customer page</strong></li>
+          <li><strong>Customer Sites can be tagged as Domestic or Commercial.</strong></li>
+          <li><strong>Utility Contracts fed to New Sales for Welcome Packs, Processing workflow, terminations and objections</strong></li>
+          <li><strong>Add notes to Utility Contracts</strong></li>
+          <li><strong>View Utility contracts, renewals, callbacks and leads</strong></li>
+          <li><strong>When tagging yourself to a note, you won't receive an email :-) </strong></li>
+          <li><strong>You can now add more utility contracts - solar, broadband, water, mobile, telecoms and VOIP.</strong></li>
+          <li><strong>You can now add Direct Debit, Supplier Customer Reference Number, Meter Serial Number and SMART Meter data into a customer contract</strong></li>
+          <li><strong>Customers are sent a renewal email once despite having multiple contracts for renewal on the same day.</strong></li>
+          <li><strong>Can email different email addresses within the account.</strong></li>
+          <li><strong>The Welcome Letter has now moved to a pop up. You'll also find a new option here to send a renewal email to a customer's primary email
+            address</strong></li>
+          <li><strong>Customers are sent renewal emails 6 months before their contract ends. You can see which email's were sent to a customer under Email
+            History in the customer profile.</strong></li>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+
+      <div class="col-md-4">
+        <div class="panel panel-info">
+          <div class="panel-heading">Customers</div>
+          <div class="panel-body">
+            <ul>
+              <li sec:authorize="!hasAnyAuthority('EXTERNAL_BROKER')"><a href="/admin/customer/customers/1">Customers List</a></li>
+              <li><a href="/admin/customer/mycustomers">My Customers</a></li>
+              <li><a href="/admin/customer/newcustomer">Create New
+                Customers</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="panel panel-info">
+          <div class="panel-heading">Gas/Electric</div>
+          <div class="panel-body">
+            <ul>
+              <li><a href="/admin/customer/customercontracts/1">Customer Contracts</a></li>
+              <li><a href="/admin/leads/index/1">Leads</a></li>
+              <li><a href="/admin/callbacks/index/1">Callbacks</a></li>
+              <li><a href="/admin/renewals/index/1">Renewals</a></li>
+              <li><a href="/admin/lost-renewals/index/1">Lost Renewals</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="panel panel-info">
+          <div class="panel-heading">Utilities</div>
+          <div class="panel-body">
+            <ul>
+              <li><a href="/admin/utility/index/1">Utility Contracts</a></li>
+              <li><a href="/admin/utility/leads/1">Leads</a></li>
+              <li><a href="/admin/utility/callbacks/1">Callbacks</a></li>
+              <li><a href="/admin/utility/renewals/1">Renewals</a></li>
+              <li><a href="/admin/utility/lost-renewals/1">Lost Renewals</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="panel panel-info">
+          <div class="panel-heading">Options</div>
+          <div class="panel-body">
+            <ul>
+              <li><a href="/admin/tasks/index">Tagged Notes (Workflow)</a></li>
+              <li><a href="/admin/tasks/courtesy/1">Courtesy Calls</a></li>
+              <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/system/index">System Information</a></li>
+              <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/data/upload">Data Upload</a></li>
+              <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/data/export">Dialler Export</a></li>
+              <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/system-setting/index">System Settings</a></li>
+              <li sec:authorize="hasAnyAuthority('SUPERADMIN','ADMIN')"><a href="/admin/system-setting/document-settings/index">Document Folders</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="panel panel-info">
+          <div class="panel-heading">Merchant Services</div>
+          <div class="panel-body">
+            <ul>
+              <li><a href="/admin/merchant-services/index/1">Contracts</a></li>
+              <li><a href="/admin/merchant-services/renewals/1">Renewals</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" sec:authorize="hasAnyAuthority('SUPERADMIN')">
+        <div class="panel panel-info">
+          <div class="panel-heading">Users</div>
+          <div class="panel-body">
+            <ul>
+              <li><a href="/admin/users/users">Users List</a></li>
+              <li><a href="/admin/users/newuser">Create New User</a></li>
+              <li><a href="/admin/broker/brokers">Broker List</a></li>
+              <li><a href="/admin/broker/newbroker">Create New Broker</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" sec:authorize="hasAnyAuthority('SUPERADMIN')">
+        <div class="panel panel-info">
+          <div class="panel-heading">Suppliers</div>
+          <div class="panel-body">
+            <ul>
+              <li><a href="/admin/supplier/suppliers">Suppliers List</a></li>
+              <li><a href="/admin/supplier/newsupplier">Create New
+                Supplier</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading">Today's Callback</div>
+        <div class="panel-body">
+          <table class="table table-condensed small" th:if="${not #lists.isEmpty(myCallbacks)}">
+            <thead>
+            <tr>
+              <th>Time</th>
+              <th>Customer</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="myCallback : ${ myCallbacks }">
+              <td th:text="${#dates.format(myCallback.callbackTime, 'hh:mm a')}">9:30 am</td>
+              <td>
+                <a th:href="@{/admin/customer/viewsite/{id}/(id=${myCallback.customerSite.id})}" th:text="${myCallback.businessName}"></a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <span th:if="${#lists.isEmpty(myCallbacks)}">No Callbacks for today.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div th:replace="../static/fragments/layout :: footer">&copy;
+  Broker Management System
+</div>
+</body>
+</html>

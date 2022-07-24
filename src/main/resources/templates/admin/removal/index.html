@@ -1,0 +1,204 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+    <title>CEC Consultants - Broker Management System</title>
+</head>
+<body>
+<div th:replace="../static/fragments/layout :: header">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">CEC Consultants - Broker Management System</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/logout" th:href="@{/logout}">Logout</a></li>
+                </ul>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="container-fluid">
+    <h1>Customer Removal</h1>
+
+    <div th:inline="text">
+        <div class="row">
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Delete</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>This customer will be permanently deleted and cannot be recovered. Are you sure?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a sec:authorize="hasAuthority('SUPERADMIN')" id="delButton" class="btn btn-danger btn-sm"
+                               th:href="@{/forceDeleteCustomer/{id}/(id=${customer.id})}">Delete Permanently</a>
+                            <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">[[${customer.businessName}]]</div>
+                    <div class="panel-body">
+                        <p>
+                            You are attempting to delete: <strong>[[${customer.businessName}]]</strong>
+                            <a
+                                    class="btn btn-danger btn-xs"
+                                    data-toggle="modal"
+                                    data-target="#myModal">Permanently Force Delete Customer</a>
+                        </p>
+                        <p>This is a 2 step process. The first delete process will delete everything belonging to the customer. You'll be redirected to this page once this is
+                            complete. Then click this button again.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default" th:if="${not #lists.isEmpty(customerHistoryList)}">
+                    <div class="panel-heading">Customer History</div>
+                    <div class="panel-body">
+                        <p>You will need to delete the history of this customer</p>
+                        <table class="table table-condensed table-striped">
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th>Action</th>
+                                <th>Modified Date</th>
+                                <th>Modified By</th>
+                            </tr>
+                            <tr th:each="history : ${customerHistoryList}">
+                                <td>History:</td>
+                                <td>[[${history.action}]]</td>
+                                <td>[[${history.modifiedDate}]]</td>
+                                <td>[[${history.modifiedBy.username}]]</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default" th:if="${not #lists.isEmpty(customerContacts)}">
+                    <div class="panel-heading">Customer Contacts</div>
+                    <div class="panel-body">
+                        <p>
+                            <a target="_blank" th:href="@{/admin/customer/view/{id}/(id=${customer.id})}" class="btn btn-xs btn-info">Open Customer</a>
+                            &nbsp;You will need to delete the customer contacts
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default" th:if="${not #lists.isEmpty(customerSites)}">
+                    <div class="panel-heading">Customer Sites</div>
+                    <div class="panel-body">
+                        <p>
+                            <a target="_blank" th:href="@{/admin/customer/customersites/{id}/(id=${customer.id})}" class="btn btn-xs btn-info">Open Site</a>
+                            &nbsp;You will need to delete the customer sites
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default" th:if="${not #lists.isEmpty(customerDocuments)}">
+                    <div class="panel-heading">Customer Documents</div>
+                    <div class="panel-body">
+                        <p><a target="_blank" th:href="@{/admin/customer/customerdocuments/{id}/(id=${customer.id})}" class="btn btn-xs btn-info">Open
+                            Documents</a>
+                            &nbsp;You will need to delete the customer documents
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default" th:if="${not #lists.isEmpty(customerNotes)}">
+                    <div class="panel-heading">Customer Notes</div>
+                    <div class="panel-body">
+                        <p>
+                            <a target="_blank" th:href="@{/admin/customer/customernotes/{id}/(id=${customer.id})}" class="btn btn-xs btn-info">Open Notes</a>
+                            &nbsp;You will need to delete the customer notes and child notes
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default" th:if="${not #lists.isEmpty(gasContracts)}">
+                    <div class="panel-heading">Gas Contracts</div>
+                    <div class="panel-body">
+                        <p>
+                            <a target="_blank" th:href="@{/admin/customer/customersites/{id}/(id=${customer.id})}" class="btn btn-xs btn-info">Open Site</a>
+                            &nbsp;You will need to delete the gas contracts
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default" th:if="${not #lists.isEmpty(electricContracts)}">
+                    <div class="panel-heading">Electric Contracts</div>
+                    <div class="panel-body">
+                        <p>
+                            <a target="_blank" th:href="@{/admin/customer/customersites/{id}/(id=${customer.id})}" class="btn btn-xs btn-info">Open Site</a>
+                            &nbsp;You will need to delete the electric contracts
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default" th:if="${not #lists.isEmpty(utilityContracts)}">
+                    <div class="panel-heading">Utility Contracts</div>
+                    <div class="panel-body">
+                        <p>
+                            <a class="btn btn-xs btn-info" target="_blank" th:href="@{/admin/customer/customersites/{id}/(id=${customer.id})}">Open Site</a>
+                            &nbsp;You will need to delete the utility contracts
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default" th:if="${not #lists.isEmpty(linkedAccounts)}">
+                    <div class="panel-heading">Linked Accounts</div>
+                    <div class="panel-body">
+                        <p>
+                            <a class="btn btn-xs btn-info" target="_blank" th:href="@{/admin/customer/customer-linked-accounts/{id}/(id=${customer.id})}">Open Linked Accounts</a>
+                            &nbsp;You will need to delete the linked accounts
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default" th:if="${not #lists.isEmpty(merchantServicesContracts)}">
+                    <div class="panel-heading">Merchant Services Contracts</div>
+                    <div class="panel-body">
+                        <p>
+                            <a class="btn btn-xs btn-info" target="_blank" th:href="@{/admin/customer/customersites/{id}/(id=${customer.id})}">Open Site</a>
+                            &nbsp;You will need to delete the merchant services contracts
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

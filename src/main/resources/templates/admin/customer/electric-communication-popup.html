@@ -1,0 +1,38 @@
+<p>You can view the email history in the Customer Details page under Email History</p>
+<p th:if="${electricContract.logType}=='LIVE' OR ${electricContract.logType}=='SOLD'">
+  <a class="btn btn-xs btn-primary" th:href="@{/electricWelcomeLetter/{id}/(id=${electricContract.id})}">
+    Print Electric Welcome Letter</a></p>
+<div th:if="${not #lists.isEmpty(allCustomerEmails)}">
+  <div>
+    <select class="form-control input-sm" th:id="'elec_comms_email_'+${electricContract.id}" th:name="'elec_comms_email_'+${electricContract.id}">
+      <option value="">Select email...</option>
+      <option th:each="ce : ${ allCustomerEmails }" th:text="${ce}" th:value="${ce}"></option>
+    </select>
+  </div>
+  <br/>
+  <div>
+    <p th:if="${electricContract.logType}=='LIVE' OR ${electricContract.logType}=='SOLD'">
+      <a class="btn btn-xs btn-info"
+         th:href="'javascript:sendNotificationEmail(\'/admin/customer/send-electric-renewal-email/'+ ${electricContract.id} +'\', elec_comms_email_'+${electricContract.id}+'.value);'">
+        Send Electric Renewal Email</a>
+    </p>
+    <p th:if="${electricContract.logType}=='LIVE'">
+      <a class="btn btn-xs btn-info"
+         th:href="'javascript:sendNotificationEmail(\'/admin/customer/send-electric-live-email/'+ ${electricContract.id} +'\', elec_comms_email_'+${electricContract.id}+'.value);'">
+        Send Electric Live Email</a>
+    </p>
+    <p th:if="${electricContract.logType}=='OBJECTED'">
+      <a class="btn btn-xs btn-info"
+         th:href="'javascript:sendNotificationEmail(\'/admin/customer/send-electric-objected-email/'+ ${electricContract.id} +'\', elec_comms_email_'+${electricContract.id}+'.value);'">
+        Send Electric Objected Email</a>
+    </p>
+    <p th:if="${electricContract.logType}=='SOLD'">
+      <a class="btn btn-xs btn-info"
+         th:href="'javascript:sendNotificationEmail(\'/admin/customer/send-electric-sold-email/'+ ${electricContract.id} +'\', elec_comms_email_'+${electricContract.id}+'.value);'">
+        Send Electric Sold Email</a>
+    </p>
+  </div>
+</div>
+<div class="text-danger" th:if="${#lists.isEmpty(allCustomerEmails)}">
+  (There are no email addresses for this customer therefore can't send any emails)
+</div>

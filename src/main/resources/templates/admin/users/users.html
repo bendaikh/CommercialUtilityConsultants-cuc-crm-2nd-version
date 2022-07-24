@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>Users</title>
+</head>
+<body>
+
+<header th:replace="../static/fragments/layout :: header"/>
+
+<div class="container-fluid">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+          <th>Username</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Dialler Agent Reference</th>
+          <th>Broker Connection</th>
+          <th>Edit</th>
+          <th>Transfers</th>
+          <th>Change Password</th>
+          <th>Date Created</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="u:${findAll}">
+          <td th:text="${u.username}">Username</td>
+          <td th:text="${u.firstName}">First name</td>
+          <td th:text="${u.lastName}">Last name</td>
+          <td th:text="${u.diallerAgentReference}">Dialler Agent Reference</td>
+          <td th:if="${u.broker !=null }" th:text="${u.broker.firstName}+' '+${u.broker.lastName}">Broker</td>
+          <td th:if="${u.broker ==null }">&nbsp;</td>
+          <td><a th:href="@{/admin/users/edit/{id}/(id=${u.id})}">Edit</a></td>
+          <td><a th:href="@{/admin/users/transfer-portal/{id}/(id=${u.id})}">Transfer Portal</a></td>
+          <td><a th:href="@{/admin/users/changepassword/{id}/(id=${u.id})}">Change Password</a></td>
+          <td th:text="${#dates.format(u.dateCreated, 'dd/MM/yyyy')}">22-June-2017
+            :-)
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

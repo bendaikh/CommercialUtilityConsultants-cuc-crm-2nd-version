@@ -1,0 +1,237 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>CEC Consultants - Broker Management System</title>
+</head>
+<body>
+<div th:replace="../static/fragments/layout :: header">
+  <!-- ============================================================================ -->
+  <!-- This content is only used for static prototyping purposes (natural templates)-->
+  <!-- and is therefore entirely optional, as this markup fragment will be included -->
+  <!-- from "fragments/header.html" at runtime.                                     -->
+  <!-- ============================================================================ -->
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">CEC Consultants - Broker Management System</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/logout" th:href="@{/logout}">Logout</a></li>
+        </ul>
+      </ul>
+    </div>
+  </nav>
+</div>
+<div class="container-fluid">
+  <h2>Utility Callbacks</h2>
+
+  <div class="well">
+    <form class="form-inline" method="get" th:action="@{1}" th:object="${contractSearch}">
+      <div class="form-group">
+        <label for="q">Search
+          <a data-placement="right"
+             data-toggle="tooltip"
+             href="#"
+             title="Search by Customer Reference, Business Name, Site Name, Site Address,
+                       Site City, Customer First Name &amp; Last Name, Site Registration No,
+                       Site Postcode, MPAN Bottom Line, MPR">
+            <span class="glyphicon glyphicon-info-sign"></span>
+          </a>
+        </label>
+        <input class="form-control input-sm"
+               th:field="*{q}"
+               type="text"/>
+      </div>
+      <div class="form-group">
+        <label for="supplyType">Supply</label> <select class="form-control input-sm" th:field="*{supplyType}">
+        <option value="">All</option>
+        <option th:each="utilityType : ${T(mycrm.configuration.UtilityType).values()}"
+                th:text="${utilityType}" th:value="${utilityType}"></option>
+      </select>
+      </div>
+      <div class="form-group">
+        <label>Start Date</label> <input class="form-control" th:field="*{fromDate}" type="text"/>
+      </div>
+      <div class="form-group">
+        <label>End Date</label> <input class="form-control" th:field="*{toDate}" type="text"/>
+      </div>
+      <div class="form-group">
+        <label for="broker">Broker</label> <select class="form-control input-sm" th:field="*{broker}">
+        <option value="">All</option>
+        <option th:each="brokers : ${brokers}" th:selected="(${brokers.id} == ${broker})" th:text="${brokers.firstName}+ ' '+${brokers.lastName}"
+                th:value="${brokers.id}"></option>
+      </select>
+      </div>
+      <div class="form-group">
+        <label for="supplier">Supplier</label> <select class="form-control input-sm" th:field="*{supplier}">
+        <option value="">All</option>
+        <option th:each="suppliers : ${suppliers}" th:selected="(${suppliers.id} == ${supplier})" th:text="${suppliers.businessName}"
+                th:value="${suppliers.id}"></option>
+      </select>
+      </div>
+      <div class="form-group">
+        <label for="campaign">Campaign</label>
+        <select class="form-control input-sm" th:field="*{campaign}">
+          <option value="">All</option>
+          <option th:each="c : ${campaigns}"
+                  th:selected="(${c} == ${campaign})"
+                  th:text="${c}"
+                  th:value="${c}"></option>
+        </select>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-sm btn-info" type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="pager" th:if="${ totalPages > 1 }">
+        <li class="previous"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber - 1},
+                                        q = ${contractSearch.q},
+                                        supplyType = ${contractSearch.supplyType},
+                                        fromDate = ${contractSearch.fromDate},
+                                        toDate = ${contractSearch.toDate},
+                                        broker = ${contractSearch.broker?.id},
+                                        campaign = ${contractSearch.campaign},
+                                        supplier = ${contractSearch.supplier?.id})}"
+                                th:if="${ pageNumber &gt; 1 }">Previous</a></li>
+
+        <li class="next"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber + 1},
+                                        q = ${contractSearch.q},
+                                        supplyType = ${contractSearch.supplyType},
+                                        fromDate = ${contractSearch.fromDate},
+                                        toDate = ${contractSearch.toDate},
+                                        broker = ${contractSearch.broker?.id},
+                                        campaign = ${contractSearch.campaign},
+                                        supplier = ${contractSearch.supplier?.id})}"
+                            th:if="${ pageNumber &lt; totalPages }">Next</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+
+      <div th:inline="text">
+        Showing [[${totalResults}]] callbacks.
+        Page [[${pageNumber}]] of [[${totalPages}]] pages - time taken [[${timeTaken}]] ms.
+        [[${totalContracts}]] contracts in the database.
+      </div>
+
+    </div>
+  </div>
+
+  <table class="table table-striped table-hover table-condensed">
+    <thead>
+    <tr>
+      <th>Supply</th>
+      <th>Customer Reference</th>
+      <th>Business Name</th>
+      <th>Site Name</th>
+      <th>Site Post Code</th>
+      <th>Log Type</th>
+      <th>Callback Date/Time</th>
+      <th>Note</th>
+      <th>Broker</th>
+      <th>Campaign</th>
+      <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:class="${callback.contract.contractPriorityClass}" th:classappend="${callback.contract.contractStatus == 'ENDED'} ? text-danger : text-success"
+        th:each="callback : ${callbacks}">
+      <td th:text="${callback.contract.utilityType}">Utility Type</td>
+      <td th:text="${callback.contract.customerSite.customer.customerReference}">Customer Reference</td>
+      <td><a th:href="@{/admin/customer/view/{id}/(id=${callback.contract.customerSite.customer.id})}" th:inline="text">[[${callback.contract.customerSite.customer
+        .businessName}]]</a></td>
+      <td th:text="${callback.contract.customerSite.siteName}">Customer Site Name</td>
+      <td th:text="${callback.contract.customerSite.sitePostcodeOut} + ' ' +${callback.contract.customerSite.sitePostcodeIn}">Customer Site Post Code Out and In</td>
+      <td th:text="${callback.contract.logType}">Log Type</td>
+      <td th:text="${callback.contract.callbackDateTime != null} ? ${#dates.format(callback.contract.callbackDateTime, 'dd/MM/yyyy HH:mm')}">Callback datetime</td>
+      <td>
+        <a data-toggle="modal"
+           th:attr="data-target='#callbackNotes_'+${callback.contract.id}"
+           th:if="${not #lists.isEmpty(callback.customerNotes)}"
+           th:text="${#strings.abbreviate(callback.customerNotes[0].subject, 20)}"></a>
+      </td>
+      <td th:text="${callback.contract.broker.firstName}+' '+${callback.contract.broker.lastName}">Broker</td>
+      <td th:text="${callback.contract.campaign}">Campaign</td>
+      <td><a class="btn btn-primary btn-xs" th:href="@{/admin/customer/edit-utility-contract/{id}/(id=${callback.contract.id})}">View</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="pager" th:if="${ totalPages > 1 }">
+        <li class="previous"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber - 1},
+                                        q = ${contractSearch.q},
+                                        supplyType = ${contractSearch.supplyType},
+                                        fromDate = ${contractSearch.fromDate},
+                                        toDate = ${contractSearch.toDate},
+                                        broker = ${contractSearch.broker?.id},
+                                        campaign = ${contractSearch.campaign},
+                                        supplier = ${contractSearch.supplier?.id})}"
+                                th:if="${ pageNumber &gt; 1 }">Previous</a></li>
+
+        <li class="next"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber + 1},
+                                        q = ${contractSearch.q},
+                                        supplyType = ${contractSearch.supplyType},
+                                        fromDate = ${contractSearch.fromDate},
+                                        toDate = ${contractSearch.toDate},
+                                        broker = ${contractSearch.broker?.id},
+                                        campaign = ${contractSearch.campaign},
+                                        supplier = ${contractSearch.supplier?.id})}"
+                            th:if="${ pageNumber &lt; totalPages }">Next</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row" th:if="${totalPages > 0 and !callbacks.isEmpty()}">
+    <div class="col-md-12">
+      <button class="btn btn-danger" data-target="#jumpToPage" data-toggle="collapse" type="button">Jump to page</button>
+      <div class="collapse" id="jumpToPage">
+        <ul class="pagination pagination-sm">
+          <li><a id="totalResultsPagination" th:each="i : ${#numbers.sequence( 1, totalPages)}"
+                 th:href="@{{pageNumber}(pageNumber = ${i},
+                                        q = ${contractSearch.q},
+                                        supplyType = ${contractSearch.supplyType},
+                                        fromDate = ${contractSearch.fromDate},
+                                        toDate = ${contractSearch.toDate},
+                                        broker = ${contractSearch.broker?.id},
+                                        campaign = ${contractSearch.campaign},
+                                        supplier = ${contractSearch.supplier?.id})}"
+                 th:text="${i}">#</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" role="dialog" th:each="callback: ${callbacks}" th:id="'callbackNotes_'+${callback.contract.id}"
+       th:if="${not #lists.isEmpty(callback.customerNotes)}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" data-dismiss="modal" type="button">&times;</button>
+          <h5>Notes</h5>
+        </div>
+        <div class="modal-body">
+          <div th:each="note: ${callback.customerNotes}">
+            <b><kbd th:text="${note.subject}+ ' @'+${#dates.format(callback.contract.dateCreated, 'dd/MM/yyyy HH:mm')}"></kbd></b>
+            <p class="fixed-panel-small" th:text="${note.note}"></p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-success btn-sm" target="_blank" th:href="@{/admin/customer/customernotes/{id}/(id=${callback.contract.customerSite.customer.id})}">View all notes</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div th:replace="../static/fragments/layout :: footer">&copy; Broker Management System</div>
+</body>
+</html>

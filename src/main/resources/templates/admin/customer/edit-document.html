@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>View customer</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+
+<div class="container-fluid" sec:authorize="isAuthenticated()">
+  <h3>Edit Document</h3>
+  <div class="row">
+    <div class="col-md-12">
+      <a class="btn btn-default" th:href="@{/admin/customer/view/{id}/(id=${customer.id})}">Customer Details</a>
+      <a class="btn btn-default" th:href="@{/admin/customer/customersites/{id}/(id=${customer.id})}">Sites</a>
+      <a class="btn btn-primary" th:href="@{/admin/customer/customerdocuments/{id}/(id=${customer.id})}">Documents</a>
+      <a class="btn btn-default" th:href="@{/admin/customer/customernotes/{id}/(id=${customer.id})}">Notes</a>
+      <a class="btn btn-default" th:href="@{/admin/customer/customer-linked-accounts/{id}/(id=${customer.id})}">Linked Accounts
+        <span class="badge" th:text="${linkedAccountsSize}"></span></a>
+    </div>
+  </div>
+  <p>&nbsp;</p>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-info small">
+        <div class="panel-heading">
+          <h3 class="panel-title">Edit Document</h3>
+        </div>
+        <div class="panel-body">
+          <form class="form-horizontal" id="edit-document-form" method="post" th:action="@{/admin/customer/save-document}">
+            <input id="name" name="id" th:value="${document.id}" type="hidden"/>
+            <div class="form-group">
+              <label class="control-label col-sm-4" for="fileTitle">File Title</label>
+              <div class="col-sm-8">
+                <input class="form-control input-sm"
+                       id="fileTitle"
+                       name="fileTitle"
+                       placeholder="File Title"
+                       required="required"
+                       th:value="${document.fileTitle}"
+                       type="text"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-4">File (Location)</label>
+              <div class="col-sm-8">
+                <a th:href="@{/admin/customer/opendocument/{id}/(id=${document.id})}" th:text="${document.fileName}"></a>
+                <br/>
+                (<strong th:inline="text">[[ ${document.filePath} ]]&#92;[[ ${document.fileName} ]]</strong>)
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-4" for="validFrom">Valid From</label>
+              <div class="col-sm-8">
+                <input class="form-control input-sm" id="altValidFrom" name="altValidFrom" placeholder="Valid From" readonly="readonly"
+                       th:value="*{document.validFrom != null} ? *{#dates.format(document.validFrom, 'dd/MM/yyyy')}" type="text"/>
+                <input id="validFrom" name="validFrom" th:value="*{document.validFrom}" type="hidden"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-4" for="validTo">Valid To</label>
+              <div class="col-sm-8">
+                <input class="form-control input-sm" id="altValidTo" name="altValidTo" placeholder="Valid To" readonly="readonly"
+                       th:value="*{document.validTo != null} ? *{#dates.format(document.validTo, 'dd/MM/yyyy')}" type="text"/>
+                <input id="validTo" name="validTo" th:value="*{document.validTo}" type="hidden"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-4" for="documentStatus">Document Status</label>
+              <div class="col-sm-8">
+                <select class="form-control input-sm" id="documentStatus" name="documentStatus">
+                  <option th:selected="(${document.documentStatus} == '')" value="">Please select</option>
+                  <option th:each="s : ${T(mycrm.configuration.DocumentStatus).values()}"
+                          th:selected="(${document.documentStatus} == ${s.toString()})"
+                          th:text="${s}"
+                          th:value="${s}"></option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-4" for="documentFolder">Document Folder</label>
+              <div class="col-sm-8">
+                <select class="form-control input-sm" id="documentFolder" name="documentFolder">
+                  <option th:selected="(${document.documentFolder} == 0)" value="0">Home</option>
+                  <div th:each="f: ${folders}" th:remove="tag">
+                    <option th:selected="(${document.documentFolder} == ${f.folder.id})"
+                            th:text="${f.folder.folderName}"
+                            th:value="${f.folder.id}"></option>
+                    <option th:each="s : ${f.subfolders}"
+                            th:selected="(${document.documentFolder} == ${s.id})"
+                            th:text="' -- '+${s.folderName}"
+                            th:value="${s.id}">Folder Name
+                    </option>
+                  </div>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-8">
+                <button class="btn btn-success btn-sm" type="submit">Save</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="panel-footer">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>Supplier Management</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+<div class="container">
+  <h2>Supplier Management</h2>
+  <div class="well">
+    <form class="form-horizontal" method="post" th:action="@{/supplier}" th:object="${supplier}">
+      <input th:field="*{id}" type="hidden"/> <input th:field="*{version}" type="hidden"/>
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="supplierReference">Supplier Reference</label>
+        <div class="col-sm-4">
+          <input class="form-control input-sm" placeholder="Supplier Reference" th:field="*{supplierReference}" type="text"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="businessName">Supplier Name</label>
+        <div class="col-sm-4">
+          <input class="form-control input-sm" placeholder="Business Name" required="required" th:field="*{businessName}" type="text"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="businessAddr">Supplier Address</label>
+        <div class="col-sm-4">
+          <input class="form-control input-sm" placeholder="Business Address" th:field="*{businessAddr}" type="text"/>
+        </div>
+        <div class="col-sm-4"></div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-offset-3 col-sm-4">
+          <input class="form-control input-sm" th:field="*{businessAddr1}" type="text"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="businessCity">City</label>
+        <div class="col-sm-4">
+          <input class="form-control input-sm" placeholder="City" th:field="*{businessCity}" type="text"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="businessPostcode">Postcode</label>
+        <div class="col-sm-2">
+          <input class="form-control input-sm" th:field="*{businessPostcodeOut}" type="text"/>
+        </div>
+        <div class="col-sm-2">
+          <input class="form-control input-sm" th:field="*{businessPostcodeIn}" type="text"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="firstName">Contact Name</label>
+        <div class="col-sm-2">
+          <input class="form-control input-sm" placeholder="First name" th:field="*{firstName}" type="text"/>
+        </div>
+        <div class="col-sm-2">
+          <input class="form-control input-sm" placeholder="Last name" th:field="*{lastName}" type="text"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="contactNumber">Contact Number</label>
+        <div class="col-sm-4">
+          <input class="form-control input-sm" placeholder="Contact Number" required="required" th:field="*{contactNumber}" type="text"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="mobileNumber">Mobile Number</label>
+        <div class="col-sm-4">
+          <input class="form-control input-sm" placeholder="Mobile Number" th:field="*{mobileNumber}" type="text"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-3" for="emailAddress">Email Address</label>
+        <div class="col-sm-4">
+          <input class="form-control input-sm" placeholder="Email Address" th:field="*{emailAddress}" type="text"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-10">
+          <button class="btn btn-success btn-sm" type="submit">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

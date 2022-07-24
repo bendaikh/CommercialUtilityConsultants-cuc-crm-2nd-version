@@ -1,0 +1,344 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>View customer</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+<div class="container-fluid" sec:authorize="isAuthenticated()">
+  <h1 th:text="${customer.businessName}">Customer Details</h1>
+  <div class="row">
+    <div class="col-md-12">
+      <a class="btn btn-primary" th:href="@{/admin/customer/view/{id}/(id=${customer.id})}">Customer Details</a>
+      <a class="btn btn-default" th:href="@{/admin/customer/customersites/{id}/(id=${customer.id})}">Sites</a>
+      <a class="btn btn-default" th:href="@{/admin/customer/customerdocuments/{id}/(id=${customer.id})}">Documents</a>
+      <a class="btn btn-default" th:href="@{/admin/customer/customernotes/{id}/(id=${customer.id})}">Notes</a>
+      <a class="btn btn-default" th:href="@{/admin/customer/customer-linked-accounts/{id}/(id=${customer.id})}">Linked Accounts
+        <span class="badge" th:text="${linkedAccountsSize}"></span></a>
+      <a class="btn btn-success" th:href="@{/admin/customer/edit/{id}/(id=${customer.id})}">Edit Customer</a>
+    </div>
+  </div>
+  <p>&nbsp;</p>
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="panel-group small">
+        <div class="panel panel-info">
+          <div class="panel-heading">Business Details</div>
+          <div class="panel-body">
+            <table class="table table-condensed table-striped table-hover">
+              <tbody>
+              <tr>
+                <td colspan="2"><span class="label label-success" th:if="${customer.soleTrader}">SOLE TRADER</span></td>
+              </tr>
+              <tr>
+                <td>Customer Reference</td>
+                <td class="bold-text" th:text="${customer.customerReference}">Customer Reference</td>
+              </tr>
+              <tr>
+                <td>Business Name</td>
+                <td class="bold-text" th:text="${customer.businessName}">&nbsp;</td>
+              </tr>
+              <tr>
+                <td>Address</td>
+                <td class="bold-text" th:text="${customer.businessAddr}">&nbsp;</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td class="bold-text" th:text="${customer.businessAddr1}">&nbsp;</td>
+              </tr>
+              <tr>
+                <td>City</td>
+                <td class="bold-text" th:text="${customer.businessCity}">&nbsp;</td>
+              </tr>
+              <tr>
+                <td>Postcode</td>
+                <td class="bold-text" th:text="${customer.businessPostcodeOut} + ' ' +${customer.businessPostcodeIn}">&nbsp;</td>
+              </tr>
+              <tr>
+                <td>LTD Reg No</td>
+                <td class="bold-text" th:text="${customer.ltdRegNo}">&nbsp;</td>
+              </tr>
+              <tr>
+                <td>Web Address</td>
+                <td class="bold-text"><span th:text="${customer.webAddress}"></span></td>
+              </tr>
+              <tr>
+                <td>Name</td>
+                <td class="bold-text" th:text="${customer.firstName} + ' ' +${customer.lastName}">customer Name</td>
+              </tr>
+              <tr>
+                <td>Address</td>
+                <td class="bold-text"><span th:text="${customer.stAddr}"></span> <br/> <span th:text="${customer.stAddr1}"></span> <br/> <span
+                    th:text="${customer.stCity}"></span> <br/> <span th:text="${customer.stPostcodeOut}"></span> <span
+                    th:text="${customer.stPostcodeIn}"></span></td>
+              </tr>
+              <tr>
+                <td>Date Of Birth</td>
+                <td class="bold-text"><span th:text="${customer.dob != null} ? ${#dates.format(customer.dob, 'dd/MM/yyyy')}"></span></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="panel-footer">
+            Created By <span th:text="${customer.createdBy.firstName}"></span> on <span
+              th:text="${#dates.format(customer.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></span>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-success small">
+        <div class="panel-heading">Contact Preferences</div>
+        <div class="panel-body">
+          <table class="table table-condensed table-striped table-hover">
+            <tbody>
+            <tr>
+              <td class="text-danger">Do Not Contact</td>
+              <td th:text="${customer.doNotContact}"></td>
+            </tr>
+            <tr>
+              <td>Can Contact By Post</td>
+              <td>
+                <div th:switch="${customer.contactByPost}">
+                  <span class="label label-success" th:case="true"> <span class="glyphicon glyphicon-ok"></span></span> <span class="label label-danger"
+                                                                                                                              th:case="false"> <span
+                    class="glyphicon glyphicon-remove"></span></span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Can Contact By Email</td>
+              <td>
+                <div th:switch="${customer.contactByEmail}">
+                  <span class="label label-success" th:case="true"> <span class="glyphicon glyphicon-ok"></span></span> <span class="label label-danger"
+                                                                                                                              th:case="false"> <span
+                    class="glyphicon glyphicon-remove"></span></span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Can Contact By Text</td>
+              <td>
+                <div th:switch="${customer.contactByText}">
+                  <span class="label label-success" th:case="true"> <span class="glyphicon glyphicon-ok"></span></span> <span class="label label-danger"
+                                                                                                                              th:case="false"> <span
+                    class="glyphicon glyphicon-remove"></span></span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Can Contact By Fax</td>
+              <td>
+                <div th:switch="${customer.contactByFax}">
+                  <span class="label label-success" th:case="true"> <span class="glyphicon glyphicon-ok"></span></span> <span class="label label-danger"
+                                                                                                                              th:case="false"> <span
+                    class="glyphicon glyphicon-remove"></span></span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Can Contact By Phone</td>
+              <td>
+                <div th:switch="${customer.contactByPhone}">
+                  <span class="label label-success" th:case="true"> <span class="glyphicon glyphicon-ok"></span></span> <span class="label label-danger"
+                                                                                                                              th:case="false"> <span
+                    class="glyphicon glyphicon-remove"></span></span>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#contact-details">Contact Details</a></li>
+        <li><a data-toggle="tab" href="#tps-history">TPS History</a></li>
+        <li><a data-toggle="tab" href="#email-history">Email History</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="contact-details">
+          <div class="panel panel-primary small">
+            <div class="panel-heading">Contact Details</div>
+            <div class="panel-body">
+              <form class="form-horizontal" method="post" th:action="@{/contact}" th:object="${contact}">
+                <input th:field="*{id}" type="hidden"/>
+                <input th:field="*{version}" type="hidden"/>
+                <input id="customer" name="customer" th:value="${customer.id}" type="hidden"/>
+                <div th:if="${not #lists.isEmpty(doNotContactNumbers)}">
+                  <b class="text-danger text-uppercase lead">This customer prefers not to be contacted under customer references:</b>
+                  <b class="text-danger text-uppercase lead" th:each="dn : ${doNotContactNumbers}" th:text="${dn.customerReference} + ';'"></b>
+                </div>
+                <table class="table table-condensed">
+                  <thead>
+                  <tr>
+                    <th>&nbsp;</th>
+                    <th>Contact Name</th>
+                    <th>Contact Number</th>
+                    <th>Mobile Number</th>
+                    <th>Email Address</th>
+                    <th>Note</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td><a class="btn btn-info btn-xs"
+                           th:href="@{/admin/customer/tps-check/{customerId}/(customerId=${customer.id})}" th:if="${customerWithinCheckPeriod == false}">TPS
+                      Check</a></td>
+                    <td th:text="${customer.firstName} + ' ' +${customer.lastName}">&nbsp;</td>
+                    <td th:class="${contactNumberStyle}" th:text="${customer.contactNumber}"></td>
+                    <td th:class="${mobileNumberStyle}" th:text="${customer.mobileNumber}"></td>
+                    <td th:text="${customer.emailAddress}"></td>
+                    <td class="info" colspan="2"><b>Primary Contact Details</b></td>
+                  </tr>
+                  <tr th:each="tc : ${tpsContacts}">
+                    <td><a class="btn btn-info btn-xs"
+                           th:href="@{/admin/customer/tps-check/{customerId}/{contactId}/(customerId=${customer.id}, contactId=${tc.contact.id})}"
+                           th:if="${tc.withinCheckPeriod == false}">TPS
+                      Check</a></td>
+                    <td th:text="${tc.contact.contactName}"></td>
+                    <td th:class="${tc.contactNumberStyle}" th:text="${tc.contact.contactNumber}"></td>
+                    <td th:class="${tc.mobileNumberStyle }" th:text="${tc.contact.mobileNumber}"></td>
+                    <td th:text="${tc.contact.emailAddress}"></td>
+                    <td th:text="${tc.contact.note}"></td>
+                    <td><a class="btn btn-warning btn-xs" th:href="@{/admin/customer/contact/edit/{id}/(id=${tc.contact.id})}">Edit</a></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <button class="btn btn-success btn-sm" type="submit">Add Contact</button>
+                    </td>
+                    <td><input class="form-control input-sm" placeholder="Contact Name" required="required" th:field="*{contactName}" type="text"/></td>
+                    <td><input class="form-control input-sm" placeholder="Contact Number" th:field="*{contactNumber}" type="text"/></td>
+                    <td><input class="form-control input-sm" placeholder="Mobile Number" th:field="*{mobileNumber}" type="text"/></td>
+                    <td><input class="form-control input-sm" placeholder="Email Address" th:field="*{emailAddress}" type="text"/></td>
+                    <td colspan="2"><input class="form-control input-sm" placeholder="e.g. Billing contact, Primary contact" th:field="*{note}"
+                                           type="text"/></td>
+                  </tr>
+                  <tr>
+                    <td colspan="7">
+                      <ul class="list-inline small">
+                        <li class="bg-success">Safe to call</li>
+                        <li class="bg-danger">Restricted</li>
+                        <li class="text-muted">TPS check not conducted</li>
+                      </ul>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="tps-history">
+          <div class="panel-body panel-primary fixed-panel-large">
+            <div class="panel-heading">TPS History</div>
+            <div class="panel-body">
+              <table class="table table-hover table-condensed small">
+                <thead>
+                <tr>
+                  <th>Number</th>
+                  <th>Message</th>
+                  <th>Status Code</th>
+                  <th>Date Checked</th>
+                  <th>Created By</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="t:${tpsHistory}">
+                  <td th:text="${t.number}"></td>
+                  <td th:text="${t.message}"></td>
+                  <td th:text="${t.statusCode}"></td>
+                  <td th:text="${#dates.format(t.dateCreated, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                  <td th:text="${t.createdBy.firstName}+' '+${t.createdBy.lastName}"></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="email-history">
+          <div class="panel-body panel-primary fixed-panel-large">
+            <div class="panel-heading">Email History</div>
+            <div class="panel-body">
+              <table class="table table-hover table-condensed small">
+                <thead>
+                <tr>
+                  <th>Date Sent</th>
+                  <th>Email Address</th>
+                  <th>Email Type</th>
+                  <th>Gas Contract</th>
+                  <th>Electric Contract</th>
+                  <th>Process</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="eh:${emailHistory}">
+                  <td th:text="${#temporals.format(eh.dateCreated, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                  <td th:text="${eh.emailAddress}"></td>
+                  <td th:text="${eh.emailType}"></td>
+                  <td>
+                    <a class="btn btn-primary btn-xs" target="_blank" th:href="@{/admin/customer/editgascontract/{id}(id=${eh.gasCustomerContract?.id})}"
+                       th:if="${eh.gasCustomerContract}">
+                      OPEN
+                    </a>
+                  </td>
+                  <td>
+                    <a class="btn btn-primary btn-xs" target="_blank" th:href="@{/admin/customer/editeleccontract/{id}(id=${eh.elecCustomerContract?.id})}"
+                       th:if="${eh.elecCustomerContract}">
+                      OPEN
+                    </a>
+                  </td>
+                  <td th:text="${eh.process}"></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-4">
+      <a class="btn btn-xs btn-info" th:href="@{/admin/customer/editbillingdetails/{id}/(id=${customer.id})}">Maintain Billing
+        Details</a>
+      <p>&nbsp;</p>
+      <div class="panel panel-default small" th:if="${customer?.billingDetail != null}">
+        <div class="panel-heading">Billing Details</div>
+        <div class="panel-body">
+          <table class="table table-condensed table-striped">
+            <tr>
+              <td>Name</td>
+              <td class="bold-text" th:text="${customer.billingDetail.firstName} + ' '+ ${customer.billingDetail.lastName}"></td>
+            </tr>
+            <tr>
+              <td>Business Name</td>
+              <td class="bold-text" th:text="${customer.billingDetail.businessName}"></td>
+            </tr>
+            <tr>
+              <td>Address</td>
+              <td class="bold-text" th:text="${customer.billingDetail.addr}"></td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td class="bold-text" th:text="${customer.billingDetail.addr1}"></td>
+            </tr>
+            <tr>
+              <td>City</td>
+              <td class="bold-text" th:text="${customer.billingDetail.city}"></td>
+            </tr>
+            <tr>
+              <td>Postcode</td>
+              <td class="bold-text" th:text="${customer.billingDetail.postcodeOut} + ' '+ ${customer.billingDetail.postcodeIn}"></td>
+            </tr>
+          </table>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

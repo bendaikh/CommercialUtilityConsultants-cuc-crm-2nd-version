@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>Customer Management</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    showElecContractNotes(/*[[${elecCustomerContract.id}]]*/);
+    showTpsContactsList(/*[[${elecCustomerContract.customer.id}]]*/);
+    /*]]>*/
+
+</script>
+<div class="container-fluid">
+  <h1
+      th:text="${elecCustomerContract.customerSite.siteName}+' '+${elecCustomerContract.customerSite.siteAddr}+' '+${elecCustomerContract.customerSite.siteCity}+' '+${elecCustomerContract.customerSite.sitePostcodeOut}+' '+${elecCustomerContract.customerSite.sitePostcodeIn}">
+    Customers</h1>
+  <h2>Edit Electricity Contract</h2>
+
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" data-dismiss="modal" type="button">&times;</button>
+          <h4 class="modal-title">Delete</h4>
+        </div>
+        <div class="modal-body">
+          <p>This contract will be permanently deleted and cannot be recovered. Are you sure?</p>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-danger btn-sm" id="delButton" sec:authorize="hasAuthority('SUPERADMIN')"
+             th:href="@{/admin/customer/deleteElecContract/{id}/(id=${elecCustomerContract.id})}">Delete Permanently</a>
+          <button class="btn btn-success btn-sm" data-dismiss="modal" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="panel panel-primary">
+        <div class="panel-heading">Customer details</div>
+        <div class="panel-body">
+          <table class="table table-condensed">
+            <thead>
+            <tr>
+              <th>Customer Reference</th>
+              <th>Company Registration No</th>
+              <th>Business Name</th>
+              <th>Site Name</th>
+              <th>Site Post Code</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td><a th:href="@{/admin/customer/view/{id}/(id=${elecCustomerContract.customer.id})}" th:inline="text">[[${elecCustomerContract.customer.customerReference}]]</a>
+              </td>
+              <td th:text="${elecCustomerContract.customerSite.registrationNo}">Registration Number</td>
+              <td><a th:href="@{/admin/customer/view/{id}/(id=${elecCustomerContract.customer.id})}" th:inline="text">[[${elecCustomerContract.customer.businessName}]]</a>
+              </td>
+              <td th:text="${elecCustomerContract.customerSite.siteName}">Customer Site Name</td>
+              <td th:text="${elecCustomerContract.customerSite.sitePostcodeOut} + ' ' +${elecCustomerContract.customerSite.sitePostcodeIn}">Customer
+                Site Post Code Out and In
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6" id="contactDetails">
+      <!--				TPS Contact Details go here -->
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="panel-group" th:if="${not #lists.isEmpty(transferMessageList)}">
+      <div class="panel panel-danger">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" href="#transferMessages">Transferred Contract</a>
+          </h4>
+        </div>
+        <div class="panel-collapse collapse" id="transferMessages">
+          <div class="panel-body">
+            <div class="small" th:each="transferMessage, row : ${transferMessageList}">
+              <strong><span th:text="${row.count}"/>. Transferred Contract!</strong>
+              <span th:text="${transferMessage}"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="well well-sm">
+      <form class="form-horizontal" id="form" method="post" th:action="@{/elecCustomerContract}" th:object="${elecCustomerContract}">
+        <input th:field="*{id}" type="hidden"/>
+        <input th:field="*{version}" type="hidden"/>
+        <input id="customer" name="customer" th:value="${elecCustomerContract.customer.id}" type="hidden"/>
+        <input id="customerSite" name="customerSite" th:value="${elecCustomerContract.customerSite.id}" type="hidden"/>
+        <div class="form-group" sec:authorize="!hasAnyAuthority('BROKER','EXTERNAL_BROKER')">
+          <div class="col-md-12">
+            <div class="panel panel-warning">
+              <div class="panel-heading">Checklist</div>
+              <div class="panel-body">
+                <label class="checkbox-inline"><input th:field="*{contractSentToCustomer}" type="checkbox"/>Contract Sent To Customer</label>
+                <label class="checkbox-inline"><input th:field="*{contractReceived}" type="checkbox"/>Contract Received</label>
+                <label class="checkbox-inline"><input th:field="*{welcomePackSentToCustomer}" type="checkbox"/>Welcome Pack Sent To Customer</label>
+                <label class="checkbox-inline"><input th:field="*{previousSupplyTerminated}" type="checkbox"/>Previous Supply Terminated</label>
+                <label class="checkbox-inline"><input th:field="*{currentSupplyTerminated}" type="checkbox"/>Current Supply Terminated</label>
+                <label class="checkbox-inline"><input th:field="*{courtesyCall}" type="checkbox"/>Courtesy Call Made</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">MPAN Line One</label>
+          <div class="col-sm-3">
+            <input class="form-control input-sm" maxlength="2" placeholder="01" required="required" size="2" th:field="*{mpanLineOne}" type="text"/>
+          </div>
+          <div class="col-sm-3">
+            <input class="form-control input-sm" maxlength="3" placeholder="234" required="required" size="3" th:field="*{mpanLineTwo}" type="text"/>
+          </div>
+          <div class="col-sm-3">
+            <input class="form-control input-sm" maxlength="3" placeholder="567" required="required" size="3" th:field="*{mpanLineThree}" type="text"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="accountNumber">MPAN Bottom Line
+            <a data-placement="right" data-toggle="tooltip"
+               href="#"
+               title="This is used in welcome letters and emails - please ensure you complete this accurately.">
+              <span class="glyphicon glyphicon-info-sign"></span>
+            </a>
+          </label>
+          <div class="col-md-8">
+            <input class="form-control input-sm"
+                   maxlength="15"
+                   placeholder="0123456789"
+                   required="required"
+                   size="15"
+                   th:field="*{accountNumber}"
+                   type="text"/>
+          </div>
+        </div>
+        <div class="form-group" sec:authorize="!hasAnyAuthority('BROKER','EXTERNAL_BROKER')">
+          <label class="control-label col-md-3" for="brokerId">Broker</label>
+          <div class="col-md-8">
+            <select class="form-control input-sm" id="broker" name="broker" required="required">
+              <option th:each="b:${brokers}" th:selected="(${elecCustomerContract.broker.id} == ${b.id})" th:text="${b.businessName}" th:value="${b.id}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" sec:authorize="hasAnyAuthority('BROKER','EXTERNAL_BROKER')">
+          <label class="control-label col-md-3" for="brokerId">Broker</label>
+          <div class="col-md-8">
+            <select class="form-control input-sm" id="broker" name="broker" required="required">
+              <option th:each="b:${brokers}" th:if="${b.id == #authentication.principal.broker?.id}" th:text="${b.businessName}" th:value="${b.id}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="supplier">Electricity Supplier</label>
+          <div class="col-md-8">
+            <select class="form-control input-sm" id="supplier" name="supplier">
+              <option th:each="s:${suppliers}" th:selected="(${elecCustomerContract.supplier.id} == ${s.id})" th:text="${s.businessName}" th:value="${s.id}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="dayRate">Day Rate</label>
+          <div class="col-md-8">
+            <input class="form-control input-sm" placeholder="Day Rate" th:field="*{dayRate}" type="text"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="nightRate">Night Rate</label>
+          <div class="col-md-8">
+            <input class="form-control input-sm" placeholder="Night Rate" th:field="*{nightRate}" type="text"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="eveningWeekendRate">Evening/Weekend Rate</label>
+          <div class="col-md-8">
+            <input class="form-control input-sm" placeholder="Evening/Weekend Rate" th:field="*{eveningWeekendRate}" type="text"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="unitRate">Feed In Tariff</label>
+          <div class="col-md-8">
+            <input class="form-control input-sm" placeholder="Unit Rate" th:field="*{unitRate}" type="text"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="standingCharge">Standing Charge</label>
+          <div class="col-md-2">
+            <input class="form-control input-sm" placeholder="Standing Charge" th:field="*{standingCharge}" type="text"/>
+          </div>
+          <div class="col-md-2">
+            <select class="form-control input-sm" id="standingChargeFrequency" name="standingChargeFrequency" th:field="*{standingChargeFrequency}">
+              <option value="">Please select</option>
+              <option value="DAILY">Daily</option>
+              <option value="WEEKLY">Weekly</option>
+              <option value="FORTNIGHTLY">Fortnightly</option>
+              <option value="MONTHLY">Monthly</option>
+              <option value="QUARTERLY">Quarterly</option>
+              <option value="MID-YEAR">Mid-Year</option>
+              <option value="ANNUALLY">Annually</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="startDate">Start Date</label>
+          <div class="col-md-8">
+            <input class="form-control input-sm" id="altStartDate" name="altStartDate" placeholder="Start Date" readonly="readonly"
+                   th:value="*{startDate != null} ? *{#dates.format(startDate, 'dd/MM/yyyy')}" type="text"/>
+            <input id="startDate" name="startDate" th:value="*{startDate}" type="hidden"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="contractMonthlyDuration">Contract Duration</label>
+          <div class="col-md-2">
+            <select class="form-control input-sm" th:field="*{contractMonthlyDuration}">
+              <option th:each="i : ${#numbers.sequence( 0, 60)}" th:text="${i}+' Months'" th:value="${i}">1</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="endDate">End Date</label>
+          <div class="col-md-8">
+            <input class="form-control input-sm" id="altEndDate" name="altEndDate" placeholder="End Date" readonly="readonly"
+                   th:value="*{endDate != null} ? *{#dates.format(endDate, 'dd/MM/yyyy')}" type="text"/>
+            <input id="endDate" name="endDate" th:value="*{endDate}" type="hidden"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="estimatedAnnualQuantity">Estimated Annual Quantity (EAQ)</label>
+          <div class="col-md-8">
+            <input class="form-control input-sm" placeholder="Estimated Annual Quantity (EAQ)" th:field="*{estimatedAnnualQuantity}" type="text"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="brokerUplift">Broker Uplift</label>
+          <div class="col-md-8">
+            <input class="form-control input-sm" placeholder="Broker Uplift" th:field="*{brokerUplift}" type="text"/>
+          </div>
+        </div>
+
+        <div class="form-group" sec:authorize="hasAuthority('SUPERADMIN')">
+          <label class="control-label col-md-3" for="commissionDuration">Commission Duration</label>
+          <div class="col-md-2">
+            <select class="form-control input-sm" id="commissionDuration" name="commisionDuration" th:field="*{commissionDuration}">
+              <option value="">Please select</option>
+              <option value="12">Monthly</option>
+              <option value="3">Quarterly</option>
+              <option value="1">Annually</option>
+            </select>
+          </div>
+        </div>
+        <input sec:authorize="!hasAuthority('SUPERADMIN')" th:field="*{commissionDuration}" type="hidden"/>
+        <div class="form-group" sec:authorize="hasAuthority('SUPERADMIN')">
+          <label class="control-label col-md-3" for="upfrontPercentage">Upfront Percentage</label>
+          <div class="col-md-2">
+            <input class="form-control input-sm" th:field="*{upfrontPercentage}" type="text"/>
+          </div>
+        </div>
+        <input sec:authorize="!hasAuthority('SUPERADMIN')" th:field="*{upfrontPercentage}" type="hidden"/>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="logType">Log Type</label>
+          <div class="col-md-3">
+            <select class="form-control input-sm" required="required" th:field="*{logType}">
+              <option th:each="logType : ${T(mycrm.configuration.LogType).values()}"
+                      th:text="${logType}" th:value="${logType}"></option>
+            </select>
+          </div>
+          <label class="control-label col-md-2" for="contractPriority">Priority</label>
+          <div class="col-md-3">
+            <select class="form-control input-sm" required="required" th:field="*{contractPriority}">
+              <option value="">Please select</option>
+              <option th:each="contractPriority : ${T(mycrm.configuration.ContractPriority).values()}"
+                      th:text="${contractPriority}" th:value="${contractPriority}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="contractRenewed">Contract Renewed</label>
+          <div class="col-md-8">
+            <input th:field="*{contractRenewed}" type="checkbox"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="doNotRenew">Do Not Renew</label>
+          <div class="col-md-8">
+            <input th:field="*{doNotRenew}" type="checkbox"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="lostRenewal">Lost Renewal</label>
+          <div class="col-md-8">
+            <input th:field="*{lostRenewal}" type="checkbox"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="contractReason">Reason</label>
+          <div class="col-md-8">
+            <select class="form-control input-sm" id="contractReason" name="contractReason" th:if="${elecCustomerContract.contractReason != null}">
+              <option value="">Not Applicable</option>
+              <option th:each="c:${contractReasons}" th:selected="(${elecCustomerContract.contractReason.id} == ${c.id})" th:text="${c.description}"
+                      th:value="${c.id}"></option>
+            </select>
+            <select class="form-control input-sm" id="contractReason" name="contractReason" th:if="${elecCustomerContract.contractReason == null}">
+              <option value="">Not Applicable</option>
+              <option th:each="c:${contractReasons}" th:text="${c.description}" th:value="${c.id}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="callbackDateTime">Call Back Date and Time</label>
+          <div class="col-md-7">
+            <input autocomplete="off" class="form-control input-sm" placeholder="Call Back Date" th:field="*{callbackDateTime}" type="text"/>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-primary btn-sm"
+                    data-target="#callback-diary"
+                    data-toggle="modal"
+                    type="button">Diary
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3" for="campaign">Campaign</label>
+          <div class="col-sm-8">
+            <select class="form-control input-sm" th:field="*{campaign}">
+              <option value="">None</option>
+              <option th:each="c : ${campaigns}"
+                      th:selected="(${c} == ${campaign})"
+                      th:text="${c}"
+                      th:value="${c}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3" for="meterSerialNumber">Meter Serial Number</label>
+          <div class="col-sm-4">
+            <input class="form-control input-sm" placeholder="Meter Serial Number" th:field="*{meterSerialNumber}" type="text"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3" for="supplierCustomerReferenceNumber">Supplier Customer Reference Number</label>
+          <div class="col-sm-4">
+            <input class="form-control input-sm" placeholder="Supplier Customer Reference Number" th:field="*{supplierCustomerReferenceNumber}" type="text"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3" for="directDebit">Direct Debit</label>
+          <div class="col-sm-4">
+            <input th:field="*{directDebit}" type="checkbox"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3" for="smartMeter">Smart Meter</label>
+          <div class="col-sm-4">
+            <input th:field="*{smartMeter}" type="checkbox"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-3" for="notes">Notes</label>
+          <div class="col-md-8">
+            <textarea class="form-control input-sm" rows="7" th:field="*{notes}"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-offset-3 col-md-10">
+            <a class="btn btn-danger btn-sm" data-target="#myModal" data-toggle="modal" id="delButton" sec:authorize="hasAuthority('SUPERADMIN')">Delete</a>
+            <button class="btn btn-success btn-sm" type="submit">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-6">
+
+    <div class="panel panel-info">
+      <div class="panel-heading">Contract Notes</div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <a class="btn btn-default pull-right" data-target="#newNoteModal" data-toggle="modal">Create new note</a>
+          </div>
+        </div>
+        <div id="elecContractNotesDiv"></div>
+      </div>
+    </div>
+    <div class="modal fade" id="newNoteModal" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" data-dismiss="modal" type="button">&times;</button>
+            <h4 class="modal-title">New Note</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal" id="elecNote" name="elecNote">
+              <input id="customer" name="customer" th:value="${elecCustomerContract.customer.id}" type="hidden"/>
+              <input id="elecCustomerContract" name="elecCustomerContract" th:value="${elecCustomerContract.id}" type="hidden"/>
+              <input id="gasCustomerContract" name="gasCustomerContract" type="hidden" value=""/>
+              <input id="utilityContract" name="utilityContract" type="hidden" value=""/>
+              <div class="form-group">
+                <div class="col-md-6">
+                  <input class="form-control" id="subject" name="subject" placeholder="Subject" required="required" type="text"/>
+                </div>
+                <div class="col-md-6">
+                  <select class="form-control input-sm" id="taggedUser" name="taggedUser">
+                    <option value="">Tagged User</option>
+                    <option th:each="u:${users}" th:text="${u.firstName}+' '+${u.lastName}" th:value="${u.id}"></option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12">
+                  <textarea class="form-control" cols="100" id="note" name="note" placeholder="Enter note here" required="required" rows="5"></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-3">
+                  <label>Completed: <input id="completed" name="completed" type="checkbox"/></label>
+                </div>
+                <div class="col-md-3">
+                  <input class="form-control input-sm" id="altDueByDate" name="altDueByDate" placeholder="Due by Date" readonly="readonly"
+                         th:value="*{dueByDate != null} ? *{#dates.format(dueByDate, 'dd/MM/yyyy')}" type="text"/>
+                  <input id="dueByDate" name="dueByDate" th:value="*{dueByDate}" type="hidden"/>
+                </div>
+                <div class="col-md-3">
+                  <select class="form-control input-sm" id="priority" name="priority">
+                    <option value="LOW">LOW</option>
+                    <option value="MEDIUM">MEDIUM</option>
+                    <option value="HIGH">HIGH</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <label>Quick Win: <input id="quickWin" name="quickWin" type="checkbox"/></label>
+                </div>
+                <div class="col-md-3">
+                  <select class="form-control input-sm" id="relatedTo" name="relatedTo">
+                    <option value="">Related to</option>
+                    <option th:each="relatedTo : ${T(mycrm.configuration.RelatedTo).values()}"
+                            th:text="${relatedTo}" th:value="${relatedTo}"></option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-4">
+                  <a class="btn btn-success" th:href="'javascript:saveElecContractNote(\''+ ${elecCustomerContract.id} +'\');'">
+                    <span class="glyphicon glyphicon-save"></span> Add Note
+                  </a>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+<div th:replace="../static/fragments/layout :: callbackDateTime"/>
+</html>

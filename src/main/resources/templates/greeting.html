@@ -1,0 +1,11 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+    <title>Home Page</title>
+</head>
+<body>
+    <header th:replace="../static/fragments/layout :: header"/>
+    <p th:text="'Hello, ' + ${name} + '!'" />
+    <div th:replace="../static/fragments/layout :: footer" />
+</body>
+</html>

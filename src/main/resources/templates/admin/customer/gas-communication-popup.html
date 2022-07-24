@@ -1,0 +1,38 @@
+<p>You can view the email history in the Customer Details page under Email History</p>
+<p th:if="${gasContract.logType}=='LIVE' OR ${gasContract.logType}=='SOLD'">
+  <a class="btn btn-xs btn-primary" th:href="@{/gasWelcomeLetter/{id}/(id=${gasContract.id})}">
+    Print Gas Welcome Letter</a></p>
+<div th:if="${not #lists.isEmpty(allCustomerEmails)}">
+  <div>
+    <select class="form-control input-sm" th:id="'gas_comms_email_'+${gasContract.id}" th:name="'gas_comms_email_'+${gasContract.id}">
+      <option value="">Select email...</option>
+      <option th:each="ce : ${ allCustomerEmails }" th:text="${ce}" th:value="${ce}"></option>
+    </select>
+  </div>
+  <br/>
+  <div>
+    <p th:if="${gasContract.logType}=='LIVE' OR ${gasContract.logType}=='SOLD'">
+      <a class="btn btn-xs btn-info"
+         th:href="'javascript:sendNotificationEmail(\'/admin/customer/send-gas-renewal-email/'+ ${gasContract.id} +'\', gas_comms_email_'+${gasContract.id}+'.value);'">
+        Send Gas Renewal Email</a>
+    </p>
+    <p th:if="${gasContract.logType}=='LIVE'">
+      <a class="btn btn-xs btn-info"
+         th:href="'javascript:sendNotificationEmail(\'/admin/customer/send-gas-live-email/'+ ${gasContract.id} +'\', gas_comms_email_'+${gasContract.id}+'.value);'">
+        Send Gas Live Email</a>
+    </p>
+    <p th:if="${gasContract.logType}=='OBJECTED'">
+      <a class="btn btn-xs btn-info"
+         th:href="'javascript:sendNotificationEmail(\'/admin/customer/send-gas-objected-email/'+ ${gasContract.id} +'\', gas_comms_email_'+${gasContract.id}+'.value);'">
+        Send Gas Objected Email</a>
+    </p>
+    <p th:if="${gasContract.logType}=='SOLD'">
+      <a class="btn btn-xs btn-info"
+         th:href="'javascript:sendNotificationEmail(\'/admin/customer/send-gas-sold-email/'+ ${gasContract.id} +'\', gas_comms_email_'+${gasContract.id}+'.value);'">
+        Send Gas Sold Email</a>
+    </p>
+  </div>
+</div>
+<div class="text-danger" th:if="${#lists.isEmpty(allCustomerEmails)}">
+  (There are no email addresses for this customer therefore can't send any emails)
+</div>

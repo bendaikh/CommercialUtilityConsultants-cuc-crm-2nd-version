@@ -1,0 +1,35 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+</head>
+<body>
+<form class="form-horizontal" th:object="${welcomePack}" th:action="@{/updateWelcomePack}" method="post">
+  <input th:field="*{id}" type="hidden"/>
+  <input id="supplyType" name="supplyType" th:value="${param.supplyType[0]}" type="hidden"/>
+  <h4>
+    Account Number: <span class="label label-default" th:text="${welcomePack.accountNumber}">Account Number</span>
+  </h4>
+  <h4 th:if="${param.supplyType[0] == 'ELEC' AND param.supplyType[0] == 'GAS'}">
+    Business Name: <span class="label label-primary" th:text="${welcomePack.customer.businessName}">Business Name</span>
+  </h4>
+  <h4 th:if="${param.supplyType[0] != 'ELEC' AND param.supplyType[0] != 'GAS'}">
+    Business Name: <span class="label label-primary" th:text="${welcomePack.customerSite.customer.businessName}">Business Name</span>
+  </h4>
+  <h5>
+    Supply Type: <span class="label label-info" th:text="${param.supplyType[0]}">Supply Type</span>
+  </h5>
+  <div class="form-group">
+    <div class="col-sm-12">
+      <div class="checkbox"><label class="form-check-label"><input th:field="*{welcomePackSentToCustomer}" type="checkbox"/>Welcome Pack Sent To Customer</label></div>
+      <div class="checkbox"><label class="form-check-label"><input th:field="*{previousSupplyTerminated}" type="checkbox"/>Previous Supply Terminated</label></div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-12">
+      <button class="btn btn-success btn-xs">Save Record</button>
+      <a class="btn btn-warning btn-xs" href="/admin/tasks/index">Back</a>
+    </div>
+  </div>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<table class="table table-condensed table-striped table-bordered small">
+  <tr>
+    <td colspan="6"><h4 th:text="${merchantServicesContract.supplyType}"></h4></td>
+  </tr>
+  <tr>
+    <td class="warning">Merchant ID</td>
+    <td th:text="${merchantServicesContract.merchantId}"></td>
+    <td class="warning">Broker</td>
+    <td th:text="${merchantServicesContract.broker.businessName}"></td>
+    <td class="warning">Current Supplier</td>
+    <td th:text="${merchantServicesContract.currentSupplier}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Analytic Charge</td>
+    <td th:text="${merchantServicesContract.analyticCharge}"></td>
+    <td class="warning">Compliance Charge</td>
+    <td th:text="${merchantServicesContract.complianceCharge}"></td>
+    <td class="warning">Faster Payment</td>
+    <td th:text="${merchantServicesContract.fasterPayment}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Transaction Authorisation charge</td>
+    <td th:text="${merchantServicesContract.transactionAuthorisationCharge}"></td>
+    <td class="warning">Credit Card Charge (%)</td>
+    <td th:text="${merchantServicesContract.creditCardCharge}"></td>
+    <td class="warning">Debit Card Charge (%)</td>
+    <td th:text="${merchantServicesContract.debitCardCharge}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Pre-Authorisation / customer not present</td>
+    <td th:text="${merchantServicesContract.preAuthorisationCustomerNotPresent}"></td>
+    <td class="warning">Contract Start Date</td>
+    <td th:text="${merchantServicesContract.startDate != null} ? ${#dates.format(merchantServicesContract.startDate, 'dd/MM/yyyy')}"></td>
+    <td class="warning">Contract End Date</td>
+    <td th:text="${merchantServicesContract.endDate != null} ? ${#dates.format(merchantServicesContract.endDate, 'dd/MM/yyyy')}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Make/Model of Terminal</td>
+    <td th:text="${merchantServicesContract.terminalMakeModel}"></td>
+    <td class="warning">Type of Connection of Terminal</td>
+    <td th:text="${merchantServicesContract.terminalConnectionType}"></td>
+    <td class="warning">Charging station</td>
+    <td th:text="${merchantServicesContract.chargingStation}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Number of Terminals</td>
+    <td th:text="${merchantServicesContract.numberOfTerminals}"></td>
+    <td class="warning">Average Transaction</td>
+    <td th:text="${merchantServicesContract.averageTransaction}"></td>
+    <td class="warning">Annual Turnover</td>
+    <td th:text="${merchantServicesContract.annualTurnover}"></td>
+  </tr>
+  <tr>
+    <td class="warning">F2F (%)</td>
+    <td th:text="${merchantServicesContract.f2fPercentage}"></td>
+    <td class="warning">Over Phone (%)</td>
+    <td th:text="${merchantServicesContract.overPhonePercentage}"></td>
+    <td class="warning">Customer Name</td>
+    <td th:text="${merchantServicesContract.customerName}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Legal Trading Name</td>
+    <td th:text="${merchantServicesContract.legalTradingName}"></td>
+    <td class="warning">Legal Address</td>
+    <td th:text="${merchantServicesContract.legalAddress}"></td>
+    <td class="warning">Incorporation Date</td>
+    <td th:text="${merchantServicesContract.incorporationDate != null} ? ${#dates.format(merchantServicesContract.incorporationDate, 'dd/MM/yyyy')}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Company Registration</td>
+    <td th:text="${merchantServicesContract.companyRegistration}"></td>
+    <td class="warning">VAT number</td>
+    <td th:text="${merchantServicesContract.vatNumber}"></td>
+    <td class="warning">NI number</td>
+    <td th:text="${merchantServicesContract.nationalInsuranceNumber}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Corporation Tax Number</td>
+    <td th:text="${merchantServicesContract.corporationTaxNumber}"></td>
+    <td class="warning">Business Description</td>
+    <td th:text="${merchantServicesContract.businessDescription}"></td>
+    <td class="warning">Proof of Identity</td>
+    <td th:text="${merchantServicesContract.proofOfIdentity}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Proof of Business</td>
+    <td th:text="${merchantServicesContract.proofOfBusiness}"></td>
+    <td class="warning">Proof of Bank Statement Provided</td>
+    <td th:text="${merchantServicesContract.proofOfBankStatementProvided}"></td>
+    <td class="warning">Log Type</td>
+    <td th:text="${merchantServicesContract.logType}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Priority</td>
+    <td th:text="${merchantServicesContract.contractPriority}"></td>
+    <td class="warning">Contract Renewal</td>
+    <td th:text="${merchantServicesContract.contractRenewal}"></td>
+    <td class="warning">Do not renew</td>
+    <td th:text="${merchantServicesContract.doNotRenew}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Contract Reason</td>
+    <td th:text="${merchantServicesContract.contractReason}"></td>
+    <td class="warning">Call Back Date and Time</td>
+    <td colspan="3" th:text="${merchantServicesContract.callbackDateTime != null} ? ${#dates.format(merchantServicesContract.callbackDateTime, 'dd/MM/yyyy HH:mm')}"></td>
+  </tr>
+  <tr>
+    <td class="warning" colspan="3">Does your existing machine apply payments automatically</td>
+    <td colspan="3" th:text="${merchantServicesContract.machineAppliesPaymentsAutomatically}"></td>
+  </tr>
+  <tr>
+    <td class="warning" colspan="6">Notes</td>
+  </tr>
+  <tr>
+    <td colspan="6" th:text="${merchantServicesContract.notes}">No notes here</td>
+  </tr>
+  <tr>
+    <td colspan="6">
+      <table>
+        <tr>
+          <td th:inline="text">Welcome Pack Sent To Customer <b>[[${merchantServicesContract.welcomePackSentToCustomer} ? 'Yes':'No']]</b></td>
+          <td th:inline="text">Previous Supply Terminated <b>[[${merchantServicesContract.previousSupplyTerminated} ? 'Yes':'No']]</b></td>
+          <td th:inline="text">Contract Sent To Customer <b>[[${merchantServicesContract.contractSentToCustomer} ? 'Yes':'No']]</b></td>
+          <td th:inline="text">Current Supply Terminated <b>[[${merchantServicesContract.currentSupplyTerminated} ? 'Yes':'No']]</b></td>
+          <td th:inline="text">Courtesy Call Made <b>[[${merchantServicesContract.courtesyCall} ? 'Yes':'No']]</b></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="6">
+      <a class="btn btn-warning"
+         th:href="@{/admin/customer/edit-merchant-services/{id}(id=${merchantServicesContract.id})}">Edit Contract</a>
+    </td>
+  </tr>
+</table>

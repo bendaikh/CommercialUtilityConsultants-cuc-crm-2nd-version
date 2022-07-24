@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+    <title>Upload Customers</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+<div class="container-fluid" sec:authorize="isAuthenticated()">
+    <h3>Data Upload Status</h3>
+
+    <div th:inline="text">Unsuccessful import can be found here: [[${unsuccessfulImportsLink}]]</div>
+
+    <!--<table class="table table-striped table-hover table-condensed">-->
+    <!--<thead>-->
+    <!--<tr>-->
+    <!--<th>Business Name</th>-->
+    <!--<th>Address Line 1</th>-->
+    <!--<th>Address Line 2</th>-->
+    <!--<th>City</th>-->
+    <!--<th>Postcode</th>-->
+    <!--<th>LTD Registration Number</th>-->
+    <!--<th>Company Registration Number</th>-->
+    <!--<th>Sole Trader</th>-->
+    <!--<th>ST Contact Name</th>-->
+    <!--<th>ST Address Line 1</th>-->
+    <!--<th>ST Address Line 2</th>-->
+    <!--<th>ST City</th>-->
+    <!--<th>ST Postcode</th>-->
+    <!--<th>Contact Number</th>-->
+    <!--<th>Mobile Number</th>-->
+    <!--<th>Email Address</th>-->
+    <!--<th>MPR</th>-->
+    <!--<th>MPAN Line One</th>-->
+    <!--<th>MPAN Line Two</th>-->
+    <!--<th>Gas Supplier</th>-->
+    <!--<th>Gas Unit Rate</th>-->
+    <!--<th>Gas Standing Charge</th>-->
+    <!--<th>Gas Standing Charge Frequency</th>-->
+    <!--<th>Gas Start Date</th>-->
+    <!--<th>Gas End Date</th>-->
+    <!--<th>Gas Estimated Annual Quantity</th>-->
+    <!--<th>Electricity Supplier</th>-->
+    <!--<th>Electricity Day Rate</th>-->
+    <!--<th>Electricity Night Rate</th>-->
+    <!--<th>Electricity Evening/Weekend Rate</th>-->
+    <!--<th>Electricity Feed In Tariff</th>-->
+    <!--<th>Electricity Standing Charge</th>-->
+    <!--<th>Electricity Standing Charge Frequency</th>-->
+    <!--<th>Electricity Start Date</th>-->
+    <!--<th>Electricity End Date</th>-->
+    <!--<th>Error Message</th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <!--<tr th:each="customerImportEntity : ${unsuccessfulImports}">-->
+    <!--<td th:text="${customerImportEntity.businessName}">Business Name</td>-->
+    <!--<td th:text="${customerImportEntity.businessAddressOne}">Address Line 1</td>-->
+    <!--<td th:text="${customerImportEntity.businessAddressTwo}">Address Line 2</td>-->
+    <!--<td th:text="${customerImportEntity.businessCity}">City</td>-->
+    <!--<td th:text="${customerImportEntity.businessPostcode}">Postcode</td>-->
+    <!--<td th:text="${customerImportEntity.ltdRegistrationNumber}">LTD Registration Number</td>-->
+    <!--<td th:text="${customerImportEntity.companyRegistrationNumber}">Company Registration Number</td>-->
+    <!--<td th:text="${customerImportEntity.soleTrader}">Sole Trader</td>-->
+    <!--<td th:text="${customerImportEntity.stContactName}">ST Contact Name</td>-->
+    <!--<td th:text="${customerImportEntity.stAddressOne}">ST Address Line 1</td>-->
+    <!--<td th:text="${customerImportEntity.stAddressTwo}">ST Address Line 2</td>-->
+    <!--<td th:text="${customerImportEntity.stCity}">ST City</td>-->
+    <!--<td th:text="${customerImportEntity.stPostcode}">ST Postcode</td>-->
+    <!--<td th:text="${customerImportEntity.contactNumber}">Contact Number</td>-->
+    <!--<td th:text="${customerImportEntity.mobileNumber}">Mobile Number</td>-->
+    <!--<td th:text="${customerImportEntity.emailAddress}">Email Address</td>-->
+    <!--<td th:text="${customerImportEntity.mpr}">MPR</td>-->
+    <!--<td th:text="${customerImportEntity.mpanLineOne}">MPAN Line One</td>-->
+    <!--<td th:text="${customerImportEntity.mpanLineTwo}">MPAN Line Two</td>-->
+    <!--<td th:text="${customerImportEntity.gasSupplier}">Gas Supplier</td>-->
+    <!--<td th:text="${customerImportEntity.gasUnitRate}">Gas Unit Rate</td>-->
+    <!--<td th:text="${customerImportEntity.gasStandingCharge}">Gas Standing Charge</td>-->
+    <!--<td th:text="${customerImportEntity.gasStandingChargeFrequency}">Gas Standing Charge Frequency</td>-->
+    <!--<td th:text="${customerImportEntity.gasStartDate}">Gas Start Date</td>-->
+    <!--<td th:text="${customerImportEntity.gasEndDate}">Gas End Date</td>-->
+    <!--<td th:text="${customerImportEntity.gasEstimatedAnnualQuantity}">Gas Estimated Annual Quantity</td>-->
+    <!--<td th:text="${customerImportEntity.electricitySupplier}">Electricity Supplier</td>-->
+    <!--<td th:text="${customerImportEntity.electricityDayRate}">Electricity Day Rate</td>-->
+    <!--<td th:text="${customerImportEntity.electricityNightRate}">Electricity Night Rate</td>-->
+    <!--<td th:text="${customerImportEntity.electricityEveningWeekendRate}">Electricity Evening/Weekend Rate</td>-->
+    <!--<td th:text="${customerImportEntity.electricityFeedInTariff}">Electricity Feed In Tariff</td>-->
+    <!--<td th:text="${customerImportEntity.electricityStandingCharge}">Electricity Standing Charge</td>-->
+    <!--<td th:text="${customerImportEntity.electricityStandingChargeFrequency}">Electricity Standing Charge Frequency</td>-->
+    <!--<td th:text="${customerImportEntity.electricityStartDate}">Electricity Start Date</td>-->
+    <!--<td th:text="${customerImportEntity.electricityEndDate}">Electricity End Date</td>-->
+    <!--<td th:text="${customerImportEntity.errorMessage}">Error Message</td>-->
+    <!--</tr>-->
+    <!--</tbody>-->
+    <!--</table>-->
+
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

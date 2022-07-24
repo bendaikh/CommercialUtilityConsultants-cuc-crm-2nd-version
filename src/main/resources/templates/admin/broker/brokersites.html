@@ -1,0 +1,244 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+<title>View Broker</title>
+</head>
+<body>
+	<header th:replace="../static/fragments/layout :: header" />
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<a class="btn btn-default" th:href="@{/admin/broker/view/{id}/(id=${broker.id})}">Broker Details</a> 
+				<a class="btn btn-default" th:href="@{/admin/broker/brokercustomers/{id}/(id=${broker.id})}">Customers</a> <a class="btn btn-default"
+					th:href="@{/admin/broker/brokerdocuments/{id}/(id=${broker.id})}">Documents</a> <a class="btn btn-default"
+					th:href="@{/admin/broker/brokernotes/{id}/(id=${broker.id})}">Notes</a>
+			</div>
+		</div>
+		<p>&nbsp;</p>
+				<h3>Customers</h3>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="panel panel-warning">
+							<div class="panel-heading">Gas Supply History</div>
+							<div class="panel-body">
+								<div class="table-responsive">
+									<table class="table table-condensed">
+										<thead>
+											<tr class="small">
+												<th>Site Reference</th>
+												<th>Name</th>
+												<th>Site Name</th>
+												<th>Start Date</th>
+												<th>End Date</th>
+												<th>&nbsp;</th>
+											</tr>
+										</thead>
+										<tr class="small" th:each="gcc:${gasCustomerContracts}">
+											<td th:text="${gcc.accountNumber}"></td>
+											<td th:text="${gcc.customer.firstName} +' '+${gcc.customer.lastName}"></td>
+											<td th:text="${gcc.customerSite.siteName}"></td>
+											<td th:text="${gcc.startDate} ? ${#dates.format(gcc.startDate, 'dd/MM/yyyy')}"></td>
+											<td th:text="${gcc.endDate} ? ${#dates.format(gcc.endDate, 'dd/MM/yyyy')}"></td>
+											<td>
+												<button type="button" class="btn btn-success btn-xs" data-toggle="modal" th:attr="data-target='#gasContract_'+${gcc.id}">
+													<span class="glyphicon glyphicon-fire"></span> <span th:text="${gcc.accountNumber}+' ('+${gcc.logType}+')'"></span>
+												</button>
+												<div class="modal fade" th:id="'gasContract_'+${gcc.id}" role="dialog">
+													<div class="modal-dialog">
+														<!-- Modal content-->
+														<div class="modal-content">
+															<div class="modal-header">
+																<button type="button" class="close" data-dismiss="modal">&times;</button>
+																<h4 class="modal-title"
+																	th:text="${gcc.customerSite.siteName} +', '+ ${gcc.customerSite.siteAddr}+ ', ' +${gcc.customerSite.siteAddr1} +' '+${gcc.customerSite.siteCity}+' '+${gcc.customerSite.sitePostcodeIn}+ ' ' +${gcc.customerSite.sitePostcodeOut}">Header</h4>
+															</div>
+															<div class="modal-body">
+																<table class="table">
+																	<tr>
+																		<td class="info">MPR</td>
+																		<td th:text="${gcc.accountNumber}">account_number</td>
+																		<td class="info">Broker</td>
+																		<td th:text="${gcc.broker.businessName}">broker_name</td>
+																	</tr>
+																	<tr>
+																		<td class="info">Gas Supplier</td>
+																		<td th:text="${gcc.supplier.businessName}"></td>
+																		<td class="info">Call Back Date and Time</td>
+																		<td th:text="${gcc.callbackDateTime}"></td>
+																	</tr>
+																	<tr>
+																		<td class="info">Unit Rate</td>
+																		<td th:text="${gcc.unitRate}"></td>
+																		<td class="info">Standing Charge</td>
+																		<td th:text="${gcc.standingCharge}"></td>
+																	</tr>
+																	<tr>
+																		<td class="info">Start Date</td>
+																		<td th:text="${gcc.startDate}"></td>
+																		<td class="info">End Date</td>
+																		<td th:text="${gcc.endDate}"></td>
+																	</tr>
+																	<tr>
+																		<td class="info">Broker Uplift</td>
+																		<td th:text="${gcc.brokerUplift}"></td>
+																		<td class="info">Log Type</td>
+																		<td th:text="${gcc.logType}"></td>
+																	</tr>
+																	<tr sec:authorize="hasAuthority('SUPERADMIN')">
+																		<td class="info">Upfront Percentage</td>
+																		<td th:text="${gcc.upfrontPercentage}"></td>
+																		<td class="info">Commission Duration</td>
+																		<td th:text="${gcc.commissionDuration}"></td>																		
+																	</tr>
+																	<tr>
+																		<td class="info" colspan="4">Notes</td>
+																	</tr>
+																	<tr>
+																		<td colspan="4" th:text="${gcc.notes}">Notes</td>
+																	</tr>
+																	<tr>
+																		<td th:inline="text">Welcome Pack Sent To Customer <b>[[${gcc.welcomePackSentToCustomer} ? 'Yes':'No']]</b></td>
+																		<td th:inline="text">Previous Supply Terminated <b>[[${gcc.previousSupplyTerminated} ? 'Yes':'No']]</b></td>
+																		<td th:inline="text">Contract Sent To Customer <b>[[${gcc.contractSentToCustomer} ? 'Yes':'No']]</b></td>
+																		<td th:inline="text">Current Supply Terminated <b>[[${gcc.currentSupplyTerminated} ? 'Yes':'No']]</b></td>
+																	</tr>
+																	<tr>
+																	<td colspan="4"><a th:href="@{/admin/customer/editgascontract/{id}(id=${gcc.id})}" class="btn btn-warning">Edit
+																			Contract</a></td>
+																	</tr>
+																</table>
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="panel panel-success">
+							<div class="panel-heading">Electricity Supply History</div>
+							<div class="panel-body">
+								<div class="table-responsive">
+									<table class="table table-condensed">
+										<thead>
+											<tr class="small">
+												<th>Site Reference</th>
+												<th>Name</th>
+												<th>Site Name</th>
+												<th>Start Date</th>
+												<th>End Date</th>
+												<th>&nbsp;</th>
+											</tr>
+										</thead>
+										<tr class="small" th:each="ecc:${elecCustomerContracts}">
+											<td th:text="${ecc.accountNumber}"></td>
+											<td th:text="${ecc.customer.firstName} +' '+${ecc.customer.lastName}"></td>
+											<td th:text="${ecc.customerSite.siteName}"></td>
+											<td th:text="${ecc.startDate} ? ${#dates.format(ecc.startDate, 'dd/MM/yyyy')}"></td>
+											<td th:text="${ecc.endDate} ? ${#dates.format(ecc.endDate, 'dd/MM/yyyy')}"></td>
+											<td>
+												<button type="button" class="btn btn-warning btn-xs" data-toggle="modal" th:attr="data-target='#elecContract_'+${ecc.id}">
+													<span class="glyphicon glyphicon-flash"></span> <span th:text="${ecc.accountNumber}+' ('+${ecc.logType}+')'"></span>
+												</button>
+												<div class="modal fade" th:id="'elecContract_'+${ecc.id}" role="dialog">
+													<div class="modal-dialog">
+														<!-- Modal content-->
+														<div class="modal-content">
+															<div class="modal-header">
+																<button type="button" class="close" data-dismiss="modal">&times;</button>
+																<h4 class="modal-title"
+																	th:text="${ecc.customerSite.siteName} +', '+ ${ecc.customerSite.siteAddr}+ ', ' +${ecc.customerSite.siteAddr1} +' '+${ecc.customerSite.siteCity}+' '+${ecc.customerSite.sitePostcodeIn}+ ' ' +${ecc.customerSite.sitePostcodeOut}">Header</h4>
+															</div>
+															<div class="modal-body">
+																<table class="table">
+																	<tr>
+																		<td class="warning">MPAN Bottom Line</td>
+																		<td th:text="${ecc.accountNumber}"></td>
+																		<td class="warning">Broker</td>
+																		<td th:text="${ecc.broker.businessName}"></td>
+																	</tr>
+																	<tr>
+																		<td class="warning">Electricity Supplier</td>
+																		<td th:text="${ecc.supplier.businessName}"></td>
+																		<td class="warning">Standing Charge</td>
+																		<td th:text="${ecc.standingCharge}"></td>
+																	</tr>
+																	<tr>
+																		<td class="warning">Unit Rate</td>
+																		<td th:text="${ecc.unitRate}"></td>
+																		<td class="warning">Evening/Weekend Rate</td>
+																		<td th:text="${ecc.eveningWeekendRate}"></td>
+																	</tr>
+																	<tr>
+																		<td class="warning">Day Rate</td>
+																		<td th:text="${ecc.dayRate}"></td>
+																		<td class="warning">Night Rate</td>
+																		<td th:text="${ecc.nightRate}"></td>
+																	</tr>
+																	<tr>
+																		<td class="warning">Start Date</td>
+																		<td th:text="${ecc.startDate}"></td>
+																		<td class="warning">End Date</td>
+																		<td th:text="${ecc.endDate}"></td>
+																	</tr>
+																	<tr>
+																		<td class="warning">Broker Uplift</td>
+																		<td th:text="${ecc.brokerUplift}"></td>
+																		<td class="warning">Log Type</td>
+																		<td th:text="${ecc.logType}"></td>
+																	</tr>
+																	<tr sec:authorize="hasAuthority('SUPERADMIN')">
+																		<td class="warning">Upfront Percentage</td>
+																		<td th:text="${ecc.upfrontPercentage}"></td>
+																		<td class="warning">Commission Duration</td>
+																		<td th:text="${ecc.commissionDuration}"></td>
+																	</tr>
+																	<tr>
+																		<td class="warning">Call Back Date and Time</td>
+																		<td th:text="${ecc.callbackDateTime}"></td>
+																		<td class="warning">&nbsp;</td>
+																		<td>&nbsp;</td>
+																	</tr>
+																	<tr>
+																		<td class="warning" colspan="4">Notes</td>
+																	</tr>
+																	<tr>
+																		<td colspan="4" th:text="${ecc.notes}">Notes</td>
+																	</tr>
+																	<tr>
+																		<td th:inline="text">Welcome Pack Sent To Customer <b>[[${ecc.welcomePackSentToCustomer} ? 'Yes':'No']]</b></td>
+																		<td th:inline="text">Previous Supply Terminated <b>[[${ecc.previousSupplyTerminated} ? 'Yes':'No']]</b></td>
+																		<td th:inline="text">Contract Sent To Customer <b>[[${ecc.contractSentToCustomer} ? 'Yes':'No']]</b></td>
+																		<td th:inline="text">Current Supply Terminated <b>[[${ecc.currentSupplyTerminated} ? 'Yes':'No']]</b></td>
+																	</tr>
+																	<tr>
+																	<td colspan="4"><a th:href="@{/admin/customer/editgascontract/{id}(id=${ecc.id})}" class="btn btn-warning">Edit
+																			Contract</a></td>
+																	</tr>
+																</table>
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+	<div th:replace="../static/fragments/layout :: footer" />
+</body>
+</html>

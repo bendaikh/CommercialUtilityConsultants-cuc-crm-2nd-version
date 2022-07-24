@@ -1,0 +1,125 @@
+<table class="table table-condensed table-striped table-bordered small">
+  <tr>
+    <td colspan="4"><h4 th:text="${electricContract.supplyType}"></h4></td>
+  </tr>
+  <tr>
+    <td class="warning">MPAN Top Line</td>
+    <td colspan="3" th:text="${electricContract.mpanLineOne} +'-'+${electricContract.mpanLineTwo} +'-'+${electricContract.mpanLineThree}"></td>
+  </tr>
+  <tr>
+    <td class="warning">MPAN Bottom Line</td>
+    <td colspan="3" th:text="${electricContract.accountNumber}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Broker</td>
+    <td colspan="3" th:text="${electricContract.broker.businessName}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Electricity Supplier</td>
+    <td th:text="${electricContract.supplier.businessName}"></td>
+    <td class="warning">Standing Charge</td>
+    <td th:text="${electricContract.standingCharge} + ' ' + ${electricContract.standingChargeFrequency}"></td>
+  </tr>
+  <tr>
+    <td class="warning">FITS</td>
+    <td th:text="${electricContract.unitRate}"></td>
+    <td class="warning">Evening/Weekend Rate</td>
+    <td th:text="${electricContract.eveningWeekendRate}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Day Rate</td>
+    <td th:text="${electricContract.dayRate}"></td>
+    <td class="warning">Night Rate</td>
+    <td th:text="${electricContract.nightRate}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Start Date</td>
+    <td th:text="${electricContract.startDate != null} ? ${#dates.format(electricContract.startDate, 'dd/MM/yyyy')}"></td>
+    <td class="warning">End Date</td>
+    <td th:text="${electricContract.endDate != null} ? ${#dates.format(electricContract.endDate, 'dd/MM/yyyy')}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Log Type</td>
+    <td th:text="${electricContract.logType}"></td>
+    <td class="warning">Priority</td>
+    <td th:text="${electricContract.contractPriority}"></td>
+  </tr>
+  <tr>
+    <td class="warning">EAQ</td>
+    <td colspan="3" th:text="${electricContract.estimatedAnnualQuantity}">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="warning">Broker Uplift</td>
+    <td th:text="${electricContract.brokerUplift}"></td>
+    <td class="warning">Direct Debit</td>
+    <td th:text="${electricContract.directDebit}">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="warning">Contract Renewed</td>
+    <td th:text="${electricContract.contractRenewed}"></td>
+    <td class="warning">Do Not Renew</td>
+    <td th:text="${electricContract.doNotRenew}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Lost Renewal</td>
+    <td th:text="${electricContract.lostRenewal}"></td>
+    <td class="warning">&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="warning">Reason</td>
+    <td th:text="${electricContract.contractReason?.description}"></td>
+    <td class="warning">Meter Serial Number</td>
+    <td th:text="${electricContract.meterSerialNumber}">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="warning">Call Back Date and Time</td>
+    <td th:text="${electricContract.callbackDateTime != null} ? ${#dates.format(electricContract.callbackDateTime, 'dd/MM/yyyy HH:mm')}"></td>
+    <td class="warning">Supplier Customer Reference Number</td>
+    <td th:text="${electricContract.supplierCustomerReferenceNumber}"></td>
+  </tr>
+  <tr>
+    <td class="warning">Campaign</td>
+    <td th:text="${electricContract.campaign}"></td>
+    <td class="warning">SMART Meter</td>
+    <td th:text="${electricContract.smartMeter}">&nbsp;</td>
+  </tr>
+  <tr sec:authorize="hasAuthority('SUPERADMIN')">
+    <td class="warning">Upfront Percentage</td>
+    <td th:text="${electricContract.upfrontPercentage}"></td>
+    <td class="warning">Commission Duration</td>
+    <td th:text="${electricContract.commissionDuration}"></td>
+  </tr>
+  <tr>
+    <td class="warning" colspan="4">Notes</td>
+  </tr>
+  <tr>
+    <td colspan="4" th:text="${electricContract.notes}">No notes here</td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <table>
+        <tr>
+          <td th:inline="text">Welcome Pack Sent To Customer <b>[[${electricContract.welcomePackSentToCustomer} ? 'Yes':'No']]</b></td>
+          <td th:inline="text">Previous Supply Terminated <b>[[${electricContract.previousSupplyTerminated} ? 'Yes':'No']]</b></td>
+          <td th:inline="text">Contract Sent To Customer <b>[[${electricContract.contractSentToCustomer} ? 'Yes':'No']]</b></td>
+          <td th:inline="text">Current Supply Terminated <b>[[${electricContract.currentSupplyTerminated} ? 'Yes':'No']]</b></td>
+          <td th:inline="text">Courtesy Call Made <b>[[${electricContract.courtesyCall} ? 'Yes':'No']]</b></td>
+        </tr>
+      </table>
+
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <!--<button class="btn btn-info" id="elecButton" name="elecButton" onclick="retrieveElectricity()" type="button">Electricity</button>
+      <a class="btn btn-warning" th:href="@{/admin/customer/editeleccontract/{id}(id=${electricContract.id})}"
+      th:if="${(electricContract.broker.id == #authentication.principal.broker?.id
+                          or #strings.contains(#authentication.principal.authorities,'SUPERADMIN')
+                          or #strings.contains(#authentication.principal.authorities,'ADMIN'))}">Edit
+          Contract</a> -->
+      <a class="btn btn-warning"
+         th:href="@{/admin/customer/editeleccontract/{id}(id=${electricContract.id})}">Edit Contract</a>
+    </td>
+  </tr>
+</table>

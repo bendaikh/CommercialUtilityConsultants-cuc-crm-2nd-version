@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+    <title>CEC Consultants - Broker Management System</title>
+</head>
+<body>
+<div th:replace="../static/fragments/layout :: header">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">CEC Consultants - Broker
+                    Management System</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/logout" th:href="@{/logout}">Logout</a></li>
+                </ul>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="container-fluid">
+
+    <h1>Email Settings</h1>
+
+    <div class="row">
+        <div class="col-md-3">
+            <table class="table table-bordered table-condensed table-striped">
+                <thead>
+                <tr>
+                    <th>Email Type</th>
+                    <th>Email Format</th>
+                    <th>Enabled</th>
+                    <th>&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="emailSetting: ${ emailSettingsList }">
+                    <td th:text="${ emailSetting.emailType }">Email Type</td>
+                    <td th:text="${ emailSetting.emailFormat }">Email Format</td>
+                    <td th:text="${ emailSetting.enabled }">Enabled</td>
+                    <td><a class="btn btn-xs btn-primary" th:href="@{/admin/system-setting/email-settings/edit/{id}/(id=${emailSetting.id})}">Edit</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

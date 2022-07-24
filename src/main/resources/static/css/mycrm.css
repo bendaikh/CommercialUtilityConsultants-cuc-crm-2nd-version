@@ -1,0 +1,135 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #CCCCCC;
+}
+
+body > .container {
+    padding: 60px 15px 0;
+}
+
+.container .text-muted {
+    margin: 20px 0;
+}
+
+.footer > .container {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.panel-info > .panel-heading {
+    background-color: #01a89e;
+    color: #FFFFFF;
+    border-color: #01a89e !important;
+}
+
+ul#messages li {
+    display: block;
+    width: 80%;
+    margin: 5px auto;
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+ul#messages li.info {
+    background: #7f7;
+}
+
+ul#messages li.error {
+    background: #d00;
+    color: white;
+}
+
+.formError {
+    color: red;
+    font-style: italic;
+}
+
+.ui-datepicker .ui-datepicker-title select {
+    color: #000 !important;
+}
+
+.affix {
+    top: 0;
+    width: 100%;
+    z-index: 9999 !important;
+}
+
+.affix + .container-fluid {
+    padding-top: 70px;
+}
+
+.fixed-panel-small {
+    min-height: 150px;
+    max-height: 150px;
+    overflow-y: scroll;
+}
+
+.fixed-panel {
+    min-height: 250px;
+    max-height: 250px;
+    overflow-y: scroll;
+}
+
+.fixed-panel-large {
+    min-height: 555px;
+    max-height: 555px;
+    overflow-y: scroll;
+}
+
+.bold-text {
+    font-weight: bold;
+}
+
+.selected-background {
+    background-color: #DFF0D8;
+    padding: 1em 1em;
+    border: 1px solid green;
+    -moz-box-shadow: 3px 3px 5px 6px #ccc;
+    -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+    box-shadow: 3px 3px 5px 6px #ccc;
+}
+
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
+
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px; /* Adjusts for spacing */
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.bright-red-bg {
+ background-color: #FF5733;
+ font-weight: bold;
+}
+
+.bright-green-bg {
+ background-color: #42FF33;
+ font-weight: bold;
+}

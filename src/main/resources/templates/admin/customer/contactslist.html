@@ -1,0 +1,81 @@
+<div>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#contact-details">Contact Details</a></li>
+        <li><a data-toggle="tab" href="#tps-history">TPS History</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="contact-details">
+            <div class="panel panel-primary small">
+                <div class="panel-heading">Contact Details</div>
+                <div class="panel-body">
+                    <div th:if="${not #lists.isEmpty(doNotContactNumbers)}">
+                        <b class="text-danger text-uppercase lead">This customer prefers not to be contacted under customer references:</b>
+                        <b class="text-danger text-uppercase lead" th:each="dn : ${doNotContactNumbers}" th:text="${dn.customerReference} + ';'"></b>
+                    </div>
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th>Contact Name</th>
+                            <th>Contact Number</th>
+                            <th>Mobile Number</th>
+                            <th>Email Address</th>
+                            <th>Note</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td th:text="${customer.firstName} + ' ' +${customer.lastName}">&nbsp;</td>
+                            <td th:class="${contactNumberStyle}" th:text="${customer.contactNumber}"></td>
+                            <td th:class="${mobileNumberStyle}" th:text="${customer.mobileNumber}"></td>
+                            <td colspan="2" th:text="${customer.emailAddress}"></td>
+                        </tr>
+                        <tr th:each="tc : ${tpsContacts}">
+                            <td th:text="${tc.contact.contactName}"></td>
+                            <td th:class="${tc.contactNumberStyle}" th:text="${tc.contact.contactNumber}"></td>
+                            <td th:class="${tc.mobileNumberStyle }" th:text="${tc.contact.mobileNumber}"></td>
+                            <td th:text="${tc.contact.emailAddress}"></td>
+                            <td th:text="${tc.contact.note}"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <ul class="list-inline small">
+                                    <li class="bg-success">Safe to call</li>
+                                    <li class="bg-danger">Restricted</li>
+                                    <li class="text-muted">TPS check not conducted</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="tps-history">
+            <div class="panel-body panel-primary fixed-panel-small">
+                <div class="panel-heading">TPS History</div>
+                <div class="panel-body">
+                    <table class="table table-hover table-condensed small">
+                        <thead>
+                        <tr>
+                            <th>Number</th>
+                            <th>Message</th>
+                            <th>Status Code</th>
+                            <th>Date Checked</th>
+                            <th>Created By</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="t:${tpsHistory}">
+                            <td th:text="${t.number}"></td>
+                            <td th:text="${t.message}"></td>
+                            <td th:text="${t.statusCode}"></td>
+                            <td th:text="${#dates.format(t.dateCreated, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                            <td th:text="${t.createdBy.firstName}+' '+${t.createdBy.lastName}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

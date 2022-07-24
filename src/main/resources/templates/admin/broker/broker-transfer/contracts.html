@@ -1,0 +1,505 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>Brokers</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+<div class="container-fluid">
+  <h2>Broker Contracts Transfer - Contracts available for
+    <span th:text="${selectedBroker.firstName} + ' ' + ${selectedBroker.lastName}"></span>
+  </h2>
+
+  <div class="row">
+    <div class="col-md-12">
+      <a class="btn btn-default" th:href="@{/admin/broker/brokers}">Brokers List</a>
+    </div>
+  </div>
+  <p>&nbsp;</p>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Gas Contracts</div>
+        <div class="panel-body">
+          <table class="table table-bordered table-condensed table-striped small">
+            <thead>
+            <tr>
+              <th>Log Type</th>
+              <th>Supply</th>
+              <th># of contracts</th>
+              <th>New Broker</th>
+              <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contractPackage : ${brokerContracts.gasContracts}">
+              <td class="col-md-4" th:text="${contractPackage.logType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.supplyType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.numberOfContracts}"></td>
+              <td class="col-md-5">
+                <select class="form-control input-sm"
+                        th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_broker'" th:if="${contractPackage.numberOfContracts != 0}">
+                  <option>Please select</option>
+                  <option th:each="brokers : ${brokers}"
+                          th:text="${brokers.firstName}+ ' '+${brokers.lastName}"
+                          th:value="${brokers.id}">
+                  </option>
+                </select>
+              </td>
+              <td class="col-md-1"
+                  th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_update_panel'">
+                <button class="btn btn-xs btn-default"
+                        data-toggle="modal"
+                        th:attr="data-previous-broker=''+${selectedBroker.id}+'',
+                          data-previous-broker-name=''+${selectedBroker.firstName}+' ' +${selectedBroker.lastName}+ '',
+                          data-supply-type=''+${contractPackage.supplyType}+'',
+                          data-log-type=''+${contractPackage.logType}+'',
+                          data-target='#transfer-modal'"
+                        th:if="${contractPackage.numberOfContracts != 0}">
+                  Transfer
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Electricity Contracts</div>
+        <div class="panel-body">
+          <table class="table table-bordered table-condensed table-striped small">
+            <thead>
+            <tr>
+              <th>Log Type</th>
+              <th>Supply</th>
+              <th># of contracts</th>
+              <th>New Broker</th>
+              <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contractPackage : ${brokerContracts.electricityContracts}">
+              <td class="col-md-4" th:text="${contractPackage.logType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.supplyType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.numberOfContracts}"></td>
+              <td class="col-md-5">
+                <select class="form-control input-sm"
+                        th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_broker'" th:if="${contractPackage.numberOfContracts != 0}">
+                  <option>Please select</option>
+                  <option th:each="brokers : ${brokers}"
+                          th:text="${brokers.firstName}+ ' '+${brokers.lastName}"
+                          th:value="${brokers.id}">
+                  </option>
+                </select>
+              </td>
+              <td class="col-md-1"
+                  th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_update_panel'">
+                <button class="btn btn-xs btn-default"
+                        data-toggle="modal"
+                        th:attr="data-previous-broker=''+${selectedBroker.id}+'',
+                          data-previous-broker-name=''+${selectedBroker.firstName}+' ' +${selectedBroker.lastName}+ '',
+                          data-supply-type=''+${contractPackage.supplyType}+'',
+                          data-log-type=''+${contractPackage.logType}+'',
+                          data-target='#transfer-modal'"
+                        th:if="${contractPackage.numberOfContracts != 0}">
+                  Transfer
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Solar Contracts</div>
+        <div class="panel-body">
+          <table class="table table-bordered table-condensed table-striped small">
+            <thead>
+            <tr>
+              <th>Log Type</th>
+              <th>Supply</th>
+              <th># of contracts</th>
+              <th>New Broker</th>
+              <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contractPackage : ${brokerContracts.solarContracts}">
+              <td class="col-md-4" th:text="${contractPackage.logType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.supplyType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.numberOfContracts}"></td>
+              <td class="col-md-5">
+                <select class="form-control input-sm"
+                        th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_broker'" th:if="${contractPackage.numberOfContracts != 0}">
+                  <option>Please select</option>
+                  <option th:each="brokers : ${brokers}"
+                          th:text="${brokers.firstName}+ ' '+${brokers.lastName}"
+                          th:value="${brokers.id}">
+                  </option>
+                </select>
+              </td>
+              <td class="col-md-1"
+                  th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_update_panel'">
+                <button class="btn btn-xs btn-default"
+                        data-toggle="modal"
+                        th:attr="data-previous-broker=''+${selectedBroker.id}+'',
+                          data-previous-broker-name=''+${selectedBroker.firstName}+' ' +${selectedBroker.lastName}+ '',
+                          data-supply-type=''+${contractPackage.supplyType}+'',
+                          data-log-type=''+${contractPackage.logType}+'',
+                          data-target='#transfer-modal'"
+                        th:if="${contractPackage.numberOfContracts != 0}">
+                  Transfer
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Water Contracts</div>
+        <div class="panel-body">
+          <table class="table table-bordered table-condensed table-striped small">
+            <thead>
+            <tr>
+              <th>Log Type</th>
+              <th>Supply</th>
+              <th># of contracts</th>
+              <th>New Broker</th>
+              <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contractPackage : ${brokerContracts.waterContracts}">
+              <td class="col-md-4" th:text="${contractPackage.logType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.supplyType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.numberOfContracts}"></td>
+              <td class="col-md-5">
+                <select class="form-control input-sm"
+                        th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_broker'" th:if="${contractPackage.numberOfContracts != 0}">
+                  <option>Please select</option>
+                  <option th:each="brokers : ${brokers}"
+                          th:text="${brokers.firstName}+ ' '+${brokers.lastName}"
+                          th:value="${brokers.id}">
+                  </option>
+                </select>
+              </td>
+              <td class="col-md-1"
+                  th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_update_panel'">
+                <button class="btn btn-xs btn-default"
+                        data-toggle="modal"
+                        th:attr="data-previous-broker=''+${selectedBroker.id}+'',
+                          data-previous-broker-name=''+${selectedBroker.firstName}+' ' +${selectedBroker.lastName}+ '',
+                          data-supply-type=''+${contractPackage.supplyType}+'',
+                          data-log-type=''+${contractPackage.logType}+'',
+                          data-target='#transfer-modal'"
+                        th:if="${contractPackage.numberOfContracts != 0}">
+                  Transfer
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">VOIP Contracts</div>
+        <div class="panel-body">
+          <table class="table table-bordered table-condensed table-striped small">
+            <thead>
+            <tr>
+              <th>Log Type</th>
+              <th>Supply</th>
+              <th># of contracts</th>
+              <th>New Broker</th>
+              <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contractPackage : ${brokerContracts.voipContracts}">
+              <td class="col-md-4" th:text="${contractPackage.logType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.supplyType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.numberOfContracts}"></td>
+              <td class="col-md-5">
+                <select class="form-control input-sm"
+                        th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_broker'" th:if="${contractPackage.numberOfContracts != 0}">
+                  <option>Please select</option>
+                  <option th:each="brokers : ${brokers}"
+                          th:text="${brokers.firstName}+ ' '+${brokers.lastName}"
+                          th:value="${brokers.id}">
+                  </option>
+                </select>
+              </td>
+              <td class="col-md-1"
+                  th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_update_panel'">
+                <button class="btn btn-xs btn-default"
+                        data-toggle="modal"
+                        th:attr="data-previous-broker=''+${selectedBroker.id}+'',
+                          data-previous-broker-name=''+${selectedBroker.firstName}+' ' +${selectedBroker.lastName}+ '',
+                          data-supply-type=''+${contractPackage.supplyType}+'',
+                          data-log-type=''+${contractPackage.logType}+'',
+                          data-target='#transfer-modal'"
+                        th:if="${contractPackage.numberOfContracts != 0}">
+                  Transfer
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Landline Contracts</div>
+        <div class="panel-body">
+          <table class="table table-bordered table-condensed table-striped small">
+            <thead>
+            <tr>
+              <th>Log Type</th>
+              <th>Supply</th>
+              <th># of contracts</th>
+              <th>New Broker</th>
+              <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contractPackage : ${brokerContracts.landlineContracts}">
+              <td class="col-md-4" th:text="${contractPackage.logType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.supplyType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.numberOfContracts}"></td>
+              <td class="col-md-5">
+                <select class="form-control input-sm"
+                        th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_broker'" th:if="${contractPackage.numberOfContracts != 0}">
+                  <option>Please select</option>
+                  <option th:each="brokers : ${brokers}"
+                          th:text="${brokers.firstName}+ ' '+${brokers.lastName}"
+                          th:value="${brokers.id}">
+                  </option>
+                </select>
+              </td>
+              <td class="col-md-1"
+                  th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_update_panel'">
+                <button class="btn btn-xs btn-default"
+                        data-toggle="modal"
+                        th:attr="data-previous-broker=''+${selectedBroker.id}+'',
+                          data-previous-broker-name=''+${selectedBroker.firstName}+' ' +${selectedBroker.lastName}+ '',
+                          data-supply-type=''+${contractPackage.supplyType}+'',
+                          data-log-type=''+${contractPackage.logType}+'',
+                          data-target='#transfer-modal'"
+                        th:if="${contractPackage.numberOfContracts != 0}">
+                  Transfer
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Mobile Contracts</div>
+        <div class="panel-body">
+          <table class="table table-bordered table-condensed table-striped small">
+            <thead>
+            <tr>
+              <th>Log Type</th>
+              <th>Supply</th>
+              <th># of contracts</th>
+              <th>New Broker</th>
+              <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contractPackage : ${brokerContracts.mobileContracts}">
+              <td class="col-md-4" th:text="${contractPackage.logType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.supplyType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.numberOfContracts}"></td>
+              <td class="col-md-5">
+                <select class="form-control input-sm"
+                        th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_broker'" th:if="${contractPackage.numberOfContracts != 0}">
+                  <option>Please select</option>
+                  <option th:each="brokers : ${brokers}"
+                          th:text="${brokers.firstName}+ ' '+${brokers.lastName}"
+                          th:value="${brokers.id}">
+                  </option>
+                </select>
+              </td>
+              <td class="col-md-1"
+                  th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_update_panel'">
+                <button class="btn btn-xs btn-default"
+                        data-toggle="modal"
+                        th:attr="data-previous-broker=''+${selectedBroker.id}+'',
+                          data-previous-broker-name=''+${selectedBroker.firstName}+' ' +${selectedBroker.lastName}+ '',
+                          data-supply-type=''+${contractPackage.supplyType}+'',
+                          data-log-type=''+${contractPackage.logType}+'',
+                          data-target='#transfer-modal'"
+                        th:if="${contractPackage.numberOfContracts != 0}">
+                  Transfer
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Broadband Contracts</div>
+        <div class="panel-body">
+          <table class="table table-bordered table-condensed table-striped small">
+            <thead>
+            <tr>
+              <th>Log Type</th>
+              <th>Supply</th>
+              <th># of contracts</th>
+              <th>New Broker</th>
+              <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contractPackage : ${brokerContracts.broadbandContracts}">
+              <td class="col-md-4" th:text="${contractPackage.logType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.supplyType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.numberOfContracts}"></td>
+              <td class="col-md-5">
+                <select class="form-control input-sm"
+                        th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_broker'" th:if="${contractPackage.numberOfContracts != 0}">
+                  <option>Please select</option>
+                  <option th:each="brokers : ${brokers}"
+                          th:text="${brokers.firstName}+ ' '+${brokers.lastName}"
+                          th:value="${brokers.id}">
+                  </option>
+                </select>
+              </td>
+              <td class="col-md-1"
+                  th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_update_panel'">
+                <button class="btn btn-xs btn-default"
+                        data-toggle="modal"
+                        th:attr="data-previous-broker=''+${selectedBroker.id}+'',
+                          data-previous-broker-name=''+${selectedBroker.firstName}+' ' +${selectedBroker.lastName}+ '',
+                          data-supply-type=''+${contractPackage.supplyType}+'',
+                          data-log-type=''+${contractPackage.logType}+'',
+                          data-target='#transfer-modal'"
+                        th:if="${contractPackage.numberOfContracts != 0}">
+                  Transfer
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Merchant Services Contracts</div>
+        <div class="panel-body">
+          <table class="table table-bordered table-condensed table-striped small">
+            <thead>
+            <tr>
+              <th>Log Type</th>
+              <th>Supply</th>
+              <th># of contracts</th>
+              <th>New Broker</th>
+              <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contractPackage : ${brokerContracts.merchantServicesContracts}">
+              <td class="col-md-4" th:text="${contractPackage.logType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.supplyType}"></td>
+              <td class="col-md-1" th:text="${contractPackage.numberOfContracts}"></td>
+              <td class="col-md-5">
+                <select class="form-control input-sm"
+                        th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_broker'" th:if="${contractPackage.numberOfContracts != 0}">
+                  <option>Please select</option>
+                  <option th:each="brokers : ${brokers}"
+                          th:text="${brokers.firstName}+ ' '+${brokers.lastName}"
+                          th:value="${brokers.id}">
+                  </option>
+                </select>
+              </td>
+              <td class="col-md-1"
+                  th:id="${contractPackage.supplyType} +'_'+${contractPackage.logType}+'_update_panel'">
+                <button class="btn btn-xs btn-default"
+                        data-toggle="modal"
+                        th:attr="data-previous-broker=''+${selectedBroker.id}+'',
+                          data-previous-broker-name=''+${selectedBroker.firstName}+' ' +${selectedBroker.lastName}+ '',
+                          data-supply-type=''+${contractPackage.supplyType}+'',
+                          data-log-type=''+${contractPackage.logType}+'',
+                          data-target='#transfer-modal'"
+                        th:if="${contractPackage.numberOfContracts != 0}">
+                  Transfer
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="transfer-modal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" data-dismiss="modal" type="button">&times;</button>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+$('#transfer-modal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget); // Button that triggered the modal
+  var previousBroker = button.data('previous-broker');
+  var previousBrokerName = button.data('previous-broker-name');
+  var supplyType = button.data('supply-type');
+  var logType = button.data('log-type');
+
+  var newBroker = document.getElementById(''+supplyType+'_'+logType+'_broker');
+
+  var modalBody = "<h3>Transfer " + supplyType + " " + logType + " contracts from " + previousBrokerName + " to " + newBroker.options[newBroker.selectedIndex].innerText + "</h3>";
+
+  var modalConfirmButton = '<p><a class="btn btn-danger" id="'+ supplyType  +'_'+ logType +'_button"
+   href="javascript:transferBrokerContracts(\''+previousBroker+'\', \''+newBroker.value+'\', \''+supplyType+'\', \''+logType+'\');">Confirm</a></p>';
+
+  if (newBroker.options[newBroker.selectedIndex].index === 0) {
+    modalBody = "<h3>Please select a broker</h3>";
+    modalConfirmButton = '';
+  }
+
+  var modal = $(this);
+  modal.find('.modal-header').text('Transfer Contracts to new Broker');
+  modal.find('.modal-body').html(modalBody + modalConfirmButton);
+
+})
+</script>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

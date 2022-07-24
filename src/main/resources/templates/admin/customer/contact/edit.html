@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+    <title>Customer Contact Management</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+<div class="container">
+    <h1
+        th:text="${contact.customer.fullBusinessNameAndAddress}">Customer Details</h1>
+    <h2>Site Management</h2>
+    <form class="form-horizontal" th:object="${contact}" th:action="@{/contact}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{version}"/>
+        <input type="hidden" id="customer" name="customer" th:value="${contact.customer.id}"/>
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="contactName">Contact Name</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control input-sm" placeholder="Contact Name" th:field="*{contactName}" required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="contactNumber">Contact Number</label>
+            <div class="col-sm-5">
+                <input class="form-control input-sm" placeholder="Contact Number" th:field="*{contactNumber}" type="text"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="mobileNumber">Mobile Number</label>
+            <div class="col-sm-5">
+                <input class="form-control input-sm" placeholder="Mobile Number" th:field="*{mobileNumber}" type="text"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="emailAddress">Email Address</label>
+            <div class="col-sm-5">
+                <input class="form-control input-sm" placeholder="Email Address" th:field="*{emailAddress}" type="text"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3" for="note">Note</label>
+            <div class="col-sm-5">
+                <input class="form-control input-sm" placeholder="Note" th:field="*{note}" type="text"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-10">
+                <a sec:authorize="hasAuthority('SUPERADMIN')" th:if="${contact.id}" id="delModalButton" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal">
+                    Delete</a>
+                <button type="submit" class="btn btn-success btn-sm">Save</button>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal" role="dialog" th:if="${contact.id}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Delete</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>This site will be permanently deleted and cannot be recovered. Are you sure?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a sec:authorize="hasAuthority('SUPERADMIN')" id="delButton" class="btn btn-danger btn-sm"
+                           th:href="@{/admin/customer/contact/deleteContact/{id}/(id=${contact.id})}">Delete Permanently</a>
+                        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

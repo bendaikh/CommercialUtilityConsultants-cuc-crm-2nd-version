@@ -1,0 +1,51 @@
+<div class="form-group">
+  <label class="control-label col-md-2" for="q">Search: </label>
+  <div class="col-md-7">
+    <input class="form-control input-sm" id="q" name="q" placeholder="Customer Reference" type="text"/>
+  </div>
+  <div class="col-md-3">
+    <a class="btn btn-success btn-sm" th:href="'javascript:loadCustomerSearch(\'customer-search-div\', \''+${customerSite.id}+'\', q.value);'">Search</a>
+  </div>
+</div>
+
+<div class="row" th:if="${searchResult}">
+  <div class="col-md-12">
+    <table class="table table-condensed small">
+      <thead>
+      <tr>
+        <th>Customer Reference</th>
+        <th>Business</th>
+        <th>&nbsp;</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td th:text="${searchResult.customerReference}">Customer Reference</td>
+        <td th:text="${searchResult.fullBusinessNameAndAddress}">Business</td>
+        <td><a class="btn btn-success btn-sm" data-target="#myModal" data-toggle="modal">Select</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" data-dismiss="modal" type="button">&times;</button>
+          <h4 class="modal-title">Transfer Site</h4>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to transfer this site to <b th:text="${searchResult.fullBusinessNameAndAddress}"></b></p>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-danger btn-sm"
+             id="delButton"
+             th:href="@{'/admin/customer/transfer-customer-site'(selectedCustomerSite = ${customerSite.id}, selectedCustomer = ${searchResult.id})}">Transfer</a>
+          <button class="btn btn-success btn-sm" data-dismiss="modal" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="../static/fragments/layout :: site-head">
+        <title>Brokers Management</title>
+    </head>
+    <body>
+
+
+        <header th:replace="../static/fragments/layout :: header"/>
+
+        <div class="container">
+            <h2>Edit User</h2>
+            <form class="form-horizontal" th:object="${user}" th:action="@{/updateUser}" method="post" role="form">
+                <input type="hidden" th:field="*{id}"/>  
+                <input type="hidden" th:field="*{version}"/>  
+                
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="firstName">Name</label>
+                    <div class="col-sm-2"> 
+                        <input type="text" class="form-control input-sm" placeholder="First name" th:field="*{firstName}" required="required"/>
+                    </div>
+                    <div class="col-sm-2"> 
+                        <input type="text" class="form-control input-sm" placeholder="Last name" th:field="*{lastName}" required="required"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="username">User name</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control input-sm" placeholder="Username" th:field="*{username}" required="required" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="email">Email</label>
+                    <div class="col-sm-4"> 
+                        <input type="email" class="form-control input-sm" placeholder="Email" th:field="*{email}" required="required"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="diallerAgentReference">Dialler Agent Reference</label>
+                    <div class="col-sm-4">
+                        <input class="form-control input-sm" placeholder="Dialler Agent Reference" th:field="*{diallerAgentReference}" type="text"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="role">User Rights</label>
+                    <div class="col-sm-4">
+                        <select th:field="*{roles}" class="form-control input-sm" th:if="${user.roles != null}" required="required">
+                            <option value="1">ADMIN</option>
+                            <option value="2">SUPERADMIN</option>
+                            <option value="3">BROKER</option>
+                            <option value="4">EXTERNAL_BROKER</option>
+                            <option value="5">LEADS</option>
+                        </select>
+                        <select name="roles" id="roles" class="form-control input-sm" th:if="${user.roles == null}" required="required">
+                            <option value="1">ADMIN</option>
+                            <option value="2">SUPERADMIN</option>
+                            <option value="3">BROKER</option>
+                            <option value="4">EXTERNAL_BROKER</option>
+                            <option value="5">LEADS</option>
+                        </select>
+                    </div>
+                </div>
+                 <div class="form-group" th:if="${user.broker?.id != null}">
+                    <label class="control-label col-sm-3" for="active">Broker</label>
+                    <div class="col-sm-4"> 
+                        <select name="broker" id="broker" class="form-control input-sm" th:if="${user.broker?.id != null}">
+                        	<option value="0">Please select</option>
+                        	<option th:each="b : ${brokers}" th:value="${b.id}" th:text="${b.firstName}+' '+${b.lastName}" th:selected="(${user.broker.id} == ${b.id})">Broker Name</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" th:if="${user.broker?.id == null}">
+                    <label class="control-label col-sm-3" for="active">Broker</label>
+                    <div class="col-sm-4"> 
+                        <select name="broker" id="broker" class="form-control input-sm" th:if="${user.broker?.id == null}">
+                        	<option value="0">Please select</option>
+                        	<option th:each="b : ${brokers}" th:value="${b.id}" th:text="${b.firstName}+' '+${b.lastName}">Broker Name</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3" for="active">Active</label>
+                    <div class="col-sm-4"> 
+                        <select th:field="*{active}" class="form-control input-sm" required="required">
+                        	<option value="1">Yes</option>
+                        	<option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group"> 
+                    <div class="col-sm-offset-3 col-sm-10">
+                        <button type="submit" class="btn btn-success btn-sm">Save</button>
+                    </div>
+                </div>
+            </form>
+            
+        </div>
+        <div th:replace="../static/fragments/layout :: footer" />
+    </body>
+</html>

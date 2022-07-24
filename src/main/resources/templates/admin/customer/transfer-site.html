@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>Site Management</title>
+</head>
+<script th:inline="javascript">
+/*<![CDATA[*/
+  $(document).ready(function () {
+      loadCustomerSearch("customer-search-div", [[${customerSite.id}]], "");
+  });
+/*]]>*/
+
+</script>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+<div class="container">
+  <h1 th:text="${customerDetails.fullBusinessNameAndAddress}"></h1>
+  <h2>Transfer Site to another customer</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="panel panel-warning">
+        <div class="panel-heading">Current Customer</div>
+        <div class="panel-body">
+          <span>Transfer site and contracts from:</span>
+          <h4 th:text="${customerDetails.fullBusinessNameAndAddress}"></h4>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="panel panel-success">
+        <div class="panel-heading">New Customer</div>
+        <div class="panel-body" id="customer-search-div">Panel Content</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

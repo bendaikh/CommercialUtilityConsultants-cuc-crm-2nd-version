@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+    <title>Upload Customers</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+<div class="container-fluid" sec:authorize="isAuthenticated()">
+    <h3>Data Upload</h3>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Dialler Export</h3>
+                </div>
+
+                <div class="panel-body">
+                    <p>This page will output Callbacks and Leads</p>
+                    <a class="btn btn-info" href="/runDialler">Run Dialler to export all data</a>
+                    <a class="btn btn-info" href="/runLatestDialler">Run Dialler to export latest data</a>
+                </div>
+                <div class="panel-footer">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

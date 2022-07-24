@@ -1,0 +1,72 @@
+<table class="table table-condensed table-striped table-bordered small">
+  <tr>
+    <td colspan="4"><h4 th:text="${utilityContract.utilityType}"></h4></td>
+  </tr>
+  <tr>
+    <td class="info">Product Held</td>
+    <td colspan="3" th:text="${utilityContract.productHeld}">Product Held</td>
+  </tr>
+  <tr>
+    <td class="info">Site Reference</td>
+    <td th:text="${utilityContract.accountNumber}">site_reference</td>
+    <td class="info">Broker</td>
+    <td th:text="${utilityContract.broker.businessName}">broker_name</td>
+  </tr>
+  <tr>
+    <td class="info">Supplier</td>
+    <td th:text="${utilityContract.supplier.businessName}"></td>
+    <td class="info">Call Back Date and Time</td>
+    <td th:text="${utilityContract.callbackDateTime != null} ? ${#dates.format(utilityContract.callbackDateTime, 'dd/MM/yyyy HH:mm')}"></td>
+  </tr>
+  <tr>
+    <td class="info">Current Supplier Price</td>
+    <td th:text="${utilityContract.currentSupplierPrice}"></td>
+    <td class="info">Number of lines</td>
+    <td th:text="${utilityContract.numberOfLines}">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="info">Start Date</td>
+    <td th:text="${utilityContract.startDate != null} ? ${#dates.format(utilityContract.startDate, 'dd/MM/yyyy')}"></td>
+    <td class="info">End Date</td>
+    <td th:text="${utilityContract.endDate != null} ? ${#dates.format(utilityContract.endDate, 'dd/MM/yyyy')}"></td>
+  </tr>
+  <tr>
+    <td class="info">Log Type</td>
+    <td th:text="${utilityContract.logType}"></td>
+    <td class="info">Priority</td>
+    <td th:text="${utilityContract.contractPriority}"></td>
+  </tr>
+  <tr>
+    <td class="info">Contract Renewed</td>
+    <td th:text="${utilityContract.contractRenewed}"></td>
+    <td class="info">Do Not Renew</td>
+    <td th:text="${utilityContract.doNotRenew}"></td>
+  </tr>
+  <tr>
+    <td class="info">Lost Renewal</td>
+    <td th:text="${utilityContract.lostRenewal}"></td>
+    <td class="info">&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="info">Reason</td>
+    <td th:text="${utilityContract.contractReason?.description}"></td>
+    <td class="info">Campaign</td>
+    <td th:text="${utilityContract.campaign}">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="info" colspan="4">Notes</td>
+  </tr>
+  <tr>
+    <td colspan="4" th:text="${utilityContract.notes}">No notes</td>
+  </tr>
+  <tr>
+    <td colspan="4" th:id="'annualConsumption_'+${utilityContract.id}">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <a class="btn btn-warning" th:href="@{/admin/customer/edit-utility-contract/{id}(id=${utilityContract.id})}">Edit
+        Contract</a>
+    </td>
+  </tr>
+</table>

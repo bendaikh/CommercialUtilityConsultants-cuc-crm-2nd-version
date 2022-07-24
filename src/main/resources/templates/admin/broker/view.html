@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+<title>View Broker</title>
+</head>
+<body>
+	<header th:replace="../static/fragments/layout :: header" />
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<a class="btn btn-primary" th:href="@{/admin/broker/view/{id}/(id=${broker.id})}">Broker Details</a> 
+				<a class="btn btn-default" th:href="@{/admin/broker/brokercustomers/{id}/(id=${broker.id})}">Customers</a> <a class="btn btn-default"
+					th:href="@{/admin/broker/brokerdocuments/{id}/(id=${broker.id})}">Documents</a> <a class="btn btn-default"
+					th:href="@{/admin/broker/brokernotes/{id}/(id=${broker.id})}">Notes</a>
+			</div>
+		</div>
+		<p>&nbsp;</p>
+
+				<h3>Broker Details</h3>
+				Created By <span th:text="${broker.createdBy.firstName}"></span> on <span th:text="${#dates.format(broker.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></span>
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="panel-group small">
+							<div class="panel panel-info">
+								<div class="panel-heading">
+									Business Details <a class="btn btn-default btn-xs" th:href="@{/admin/broker/edit/{id}/(id=${broker.id})}">Edit Broker</a>
+								</div>
+								<div class="panel-body">
+									<table class="table table-condensed table-striped table-hover">
+										<thead>
+											<tr>
+												<th class="info" colspan="2">Business Details <span class="label label-success" th:if="${broker.soleTrader}">SOLE TRADER</span></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>Broker Reference</td>
+												<td th:text="${broker.brokerReference}">Broker Reference</td>
+											</tr>
+											<tr>
+												<td>Business Name</td>
+												<td th:text="${broker.businessName}">&nbsp;</td>
+											</tr>
+											<tr>
+												<td>Business Address</td>
+												<td th:text="${broker.businessAddr}">&nbsp;</td>
+											</tr>
+											<tr>
+												<td>&nbsp;</td>
+												<td th:text="${broker.businessAddr1}">&nbsp;</td>
+											</tr>
+											<tr>
+												<td>Business City</td>
+												<td th:text="${broker.businessCity}">&nbsp;</td>
+											</tr>
+											<tr>
+												<td>Business Postcode</td>
+												<td th:text="${broker.businessPostcodeOut} + ' ' +${broker.businessPostcodeIn}">&nbsp;</td>
+											</tr>
+											<tr>
+												<td>LTD Reg No</td>
+												<td th:text="${broker.ltdRegNo}">&nbsp;</td>
+											</tr>
+											<tr>
+													<td>Contact Number</td>
+													<td><span th:text="${broker.contactNumber}"></span></td>
+												</tr>
+												<tr>
+													<td>Mobile Number</td>
+													<td><span th:text="${broker.mobileNumber}"></span></td>
+												</tr>
+												<tr>
+													<td>Email Address</td>
+													<td><span th:text="${broker.emailAddress}"></span></td>
+												</tr>
+												<tr>
+													<td>Name</td>
+													<td th:text="${broker.firstName} + ' ' +${broker.lastName}">Broker Name</td>
+												</tr>
+												<tr>
+													<td>Address</td>
+													<td><span th:text="${broker.stAddr}"></span> <br /> <span th:text="${broker.stAddr1}"></span> <br /> <span
+														th:text="${broker.stCity}"></span> <br /> <span th:text="${broker.stPostcodeOut}"></span> <span th:text="${broker.stPostcodeIn}"></span></td>
+												</tr>
+												<tr>
+													<td>Date Of Birth</td>
+													<td><span th:text="${broker.dob}"></span></td>
+												</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+
+	<div th:replace="../static/fragments/layout :: footer" />
+</body>
+</html>

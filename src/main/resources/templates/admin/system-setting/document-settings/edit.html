@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>View customer documents</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+
+<div class="container" sec:authorize="isAuthenticated()">
+
+  <h1>Edit Folder</h1>
+  <div class="col-md-6">
+    <p class="lead">This folder has <span th:text="${numberOfDocuments}"></span> documents.</p>
+    <form class="form-horizontal" method="post" role="form" th:action="@{/admin/system-setting/document-settings/save-folder}" th:object="${documentFolder}">
+      <input th:field="*{id}" type="hidden"/>
+      <input th:field="*{parentFolderId}" th:if="${hasSubFolders}" type="hidden"/>
+      <div class="form-group">
+        <label for="folderName">Folder Name</label>
+        <input class="form-control input-sm" placeholder="Folder Name" th:field="*{folderName}" type="text"/>
+      </div>
+      <div class="form-group" th:if="${!hasSubFolders}">
+        <label for="parentFolderId">Parent Folder</label>
+        <select class="form-control input-sm" th:field="*{parentFolderId}">
+          <option value="0">No Parent</option>
+          <option th:each="parentFolder : ${parentFolders}"
+                  th:text="${parentFolder.folderName}" th:value="${parentFolder.id}">
+          </option>
+        </select>
+      </div>
+      <div class="form-group" th:if="${hasSubFolders}">
+        <label for="parentFolderId">Parent Folder</label>
+        <p class="text-danger"><b>This folder has subfolders. You can not give this folder a parent folder.</b></p>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-success btn-sm" type="submit">Save</button>
+        <button class="btn btn-danger btn-sm"
+                data-target="#deleteModal"
+                data-toggle="modal"
+                id="deleteModalButton"
+                th:if="${numberOfDocuments == 0 AND !hasSubFolders }"
+                type="button">Delete
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="modal fade" id="deleteModal" role="dialog" th:if="${numberOfDocuments == 0 AND !hasSubFolders }">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" data-dismiss="modal" type="button">&times;</button>
+          <h4 class="modal-title">Delete Folder</h4>
+        </div>
+        <div class="modal-body">
+          <p>This folder will be permanently deleted and cannot be recovered. Are you sure?</p>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-danger btn-sm" id="delButton" sec:authorize="hasAnyAuthority('SUPERADMIN','ADMIN')"
+             th:href="@{/admin/system-setting/document-settings/delete-folder/{id}/(id=${documentFolder.id})}">Delete Permanently</a>
+          <button class="btn btn-default btn-sm" data-dismiss="modal" type="button">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>
+

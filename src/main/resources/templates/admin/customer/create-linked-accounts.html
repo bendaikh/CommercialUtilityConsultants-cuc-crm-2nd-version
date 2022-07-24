@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-6">
+    <input class="form-control" id="linkedCustomerReference" placeholder="Customer Reference" type="text"/>
+  </div>
+  <div class="col-md-6">
+    <a class="btn btn-info"
+       th:href="'javascript:searchCustomerReference(\''+ ${customer.id} +'\', linkedCustomerReference.value);'">Search</a>
+    <a class="btn btn-warning"
+       th:href="'javascript:loadLinkedAccounts(\''+ ${customer.id} +'\');'">Back</a>
+  </div>
+</div>
+<p>&nbsp;</p>
+<div class="row">
+  <div th:if="${searchResult}" th:inline="text">
+    <div class="col-md-12">
+      <table class="table table-condensed small">
+        <thead>
+        <tr>
+          <th>Customer Reference</th>
+          <th>Business Name</th>
+          <th>Address</th>
+          <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>[[${searchResult.customerReference}]]</td>
+          <td>[[${searchResult.businessName}]]</td>
+          <td>[[${searchResult.fullBusinessNameAndAddress}]]</td>
+          <td><a class="btn btn-success btn-xs"
+                 th:href="'javascript:saveLinkedAccount(\''+ ${customer.id} +'\', \''+ ${searchResult.id} +'\');'">Add</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

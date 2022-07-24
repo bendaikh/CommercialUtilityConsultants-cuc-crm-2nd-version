@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>Users Transfer Portal</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+<div class="container-fluid">
+  <h2>User Notes Transfer for <span th:text="${selectedUser.firstName + ' ' + selectedUser.lastName}"></span>
+  </h2>
+
+  <div class="row">
+    <div class="col-md-12">
+      <a class="btn btn-default" th:href="@{/admin/users/users}">Users List</a>
+      <a class="btn btn-default" th:href="@{/admin/users/transfer-portal/{id}/(id=${selectedUser.id})}">Transfer Portal</a>
+    </div>
+  </div>
+  <p>&nbsp;</p>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="panel panel-primary">
+        <div class="panel-heading">Transfer Tagged Notes</div>
+        <div class="panel-body">
+          <table class="table table-striped small">
+            <thead>
+            <tr>
+              <th>Type</th>
+              <th>Number of Notes</th>
+            </tr>
+            </thead>
+            <tr>
+              <td>Tagged Notes</td>
+              <td th:text="${notes.numberOfTaggedNotes}"></td>
+            </tr>
+            <tr>
+              <td>Tagged Child Notes</td>
+              <td th:text="${notes.numberOfTaggedChildNotes}"></td>
+            </tr>
+            <tr>
+              <td>Transfer to</td>
+              <td class="col-md-5">
+                <select class="form-control input-sm"
+                        id="notes_new_user" th:if="${ notes.numberOfTaggedNotes != 0 || notes.numberOfTaggedChildNotes != 0 }">
+                  <option>Please select</option>
+                  <option th:each="user : ${users}"
+                          th:text="${user.firstName}+ ' '+${user.lastName}"
+                          th:value="${user.id}">
+                  </option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="col-md-1" colspan="2" id="update_panel">
+                <button class="btn btn-sm btn-success"
+                        data-toggle="modal"
+                        id="modal_button"
+                        th:attr="data-previous-user=''+${selectedUser.id}+'',
+                            data-previous-user-name=''+${selectedUser.firstName}+' ' +${selectedUser.lastName}+ '',
+                            data-target='#transfer-modal'"
+                        th:if="${ notes.numberOfTaggedNotes != 0 || notes.numberOfTaggedChildNotes != 0 }">
+                  Transfer
+                </button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="modal fade" id="transfer-modal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" data-dismiss="modal" type="button">&times;</button>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+
+$('#transfer-modal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget); // Button that triggered the modal
+  var previousUser = button.data('previous-user');
+  var previousUserName = button.data('previous-user-name');
+
+  var newUser = document.getElementById('notes_new_user');
+
+  var modalBody = "<h3>Transfer notes from " + previousUserName + " to " + newUser.options[newUser.selectedIndex].innerText + "</h3>";
+
+  var modalConfirmButton = '<p><a class="btn btn-danger" id="transfer_button"
+   href="javascript:transferUserNotes(\''+previousUser+'\', \''+newUser.value+'\');">Confirm</a></p>';
+
+  if (newUser.options[newUser.selectedIndex].index === 0) {
+    modalBody = "<h3>Please select a user</h3>";
+    modalConfirmButton = '';
+  }
+
+  var modal = $(this);
+  modal.find('.modal-header').text('Transfer Contracts to another User');
+  modal.find('.modal-body').html(modalBody + modalConfirmButton);
+
+})
+
+
+
+</script>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

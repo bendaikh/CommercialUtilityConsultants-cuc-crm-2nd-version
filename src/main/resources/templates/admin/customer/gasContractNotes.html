@@ -1,0 +1,169 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="container">
+    <div class="media" th:each="note:${gasContractNotes}">
+        <a class="pull-left" href="#">
+            <img class="media-object" src="/images/av.png" style="width:40px"/>
+            <br/>
+            <button class="btn btn-xs btn-info" data-toggle="modal"
+                    th:attr="data-target='#customerNote_'+${note.id}">Open <span class="badge" th:text="${#lists.size(note.customerChildNoteList)}">7</span></button>
+        </a>
+        <div class="media-body">
+            <h4 class="media-heading">
+                <span th:text="${note.subject}">Subject</span>
+                <small>
+                    <i th:text="'Posted on '+ ${#dates.format(note.dateCreated, 'dd/MM/yyyy HH:mm:ss')} +' by'">Date Created</i>
+                    <strong><i th:text="${note.createdBy.firstName}+ ' ' +${note.createdBy.lastName}">Created By</i></strong>
+                    <i th:text="'|| Modified on '+ ${#dates.format(note.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')} +' by'">Last Modified Date</i>
+                    <strong><i th:text="${note.lastModifiedBy.firstName}+ ' ' +${note.lastModifiedBy.lastName}">Modified By</i></strong>
+                </small>
+            </h4>
+            <p class="small" th:inline="text">Tagged User: <b class="text-danger">[[${note.taggedUser != null} ? ${note.taggedUser.firstName}+'
+                '+${note.taggedUser.lastName}]]</b>
+                | Completed: <b class="text-danger">[[${note.completed}]]</b>
+                | Quick Win: <b class="text-success">[[${note.quickWin}]]</b>
+                | Due by Date: <b class="text-danger">[[${note.dueByDate != null} ? ${#dates.format(note.dueByDate, 'dd/MM/yyyy')}]]</b>
+                | Priority: <b class="text-danger">[[${note.priority}]]</b>
+                | Related To: <b class="text-danger">[[${note.relatedTo}]]</b>
+            </p>
+            <div class="col-md-9">
+                <p class="text-success" th:inline="text">
+                    <strong>[[${#strings.abbreviate(note.note,100)}]]</strong>
+                </p>
+            </div>
+
+
+            <div class="modal fade" role="dialog" th:id="'customerNote_'+${note.id}">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="fixed-panel-large">
+                                <div class="media">
+                                    <a class="pull-left" href="#">
+                                        <img class="media-object" src="/images/av.png" style="width:40px"/>
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">
+                                            <span th:text="${note.subject}">Subject</span>
+                                            <small>
+                                                <i th:text="'Posted on '+ ${#dates.format(note.dateCreated, 'dd/MM/yyyy HH:mm:ss')} +' by'">Date Created</i>
+                                                <strong><i th:text="${note.createdBy.firstName}+ ' ' +${note.createdBy.lastName}">Created By</i></strong>
+                                                <i th:text="'|| Modified on '+ ${#dates.format(note.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')} +' by'">Last Modified Date</i>
+                                                <strong><i th:text="${note.lastModifiedBy.firstName}+ ' ' +${note.lastModifiedBy.lastName}">Modified By</i></strong>
+                                            </small>
+                                        </h4>
+                                        <p class="small" th:inline="text">Tagged User: <b class="text-danger">[[${note.taggedUser != null} ? ${note.taggedUser.firstName}+'
+                                            '+${note.taggedUser.lastName}]]</b>
+                                            | Completed: <b class="text-danger">[[${note.completed}]]</b>
+                                            | Quick Win: <b class="text-success">[[${note.quickWin}]]</b>
+                                            | Due by Date: <b class="text-danger">[[${note.dueByDate != null} ? ${#dates.format(note.dueByDate, 'dd/MM/yyyy')}]]</b>
+                                            | Priority: <b class="text-danger">[[${note.priority}]]</b>
+                                            | Related To: <b class="text-danger">[[${note.relatedTo}]]</b>
+                                        </p>
+                                        <p class="text-success" th:inline="text">
+                                            <strong>[[${note.note}]]</strong>
+                                        </p>
+                                        <div class="media" th:each="childNoteItem:${note.customerChildNoteList}">
+                                            <div class="media-left">
+                                                <img class="media-object" src="/images/av2.png" style="width:45px"/>
+                                            </div>
+                                            <div class="media-body">
+                                                <small>
+                                                    <i th:text="'Posted on '+ ${#dates.format(childNoteItem.dateCreated, 'dd/MM/yyyy HH:mm:ss')} +' by'">Date Created</i>
+                                                    <strong><i th:text="${childNoteItem.createdBy.firstName}+ ' ' +${childNoteItem.createdBy.lastName}">Created By</i></strong>
+                                                    <i th:text="'|| Modified on '+ ${#dates.format(childNoteItem.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')} +' by'">Last Modified
+                                                        Date</i>
+                                                    <strong><i th:text="${childNoteItem.lastModifiedBy.firstName}+ ' ' +${childNoteItem.lastModifiedBy.lastName}">Modified
+                                                        By</i></strong>
+                                                </small>
+                                                <p class="small" th:inline="text">Tagged User: <b class="text-danger">[[${childNoteItem.replyTaggedUser != null} ?
+                                                    ${childNoteItem.replyTaggedUser.firstName}+'
+                                                    '+${childNoteItem.replyTaggedUser.lastName}]]</b>
+                                                    | Completed: <b class="text-danger">[[${childNoteItem.replyCompleted}]]</b>
+                                                    | Quick Win: <b class="text-success">[[${childNoteItem.quickWin}]]</b>
+                                                    | Due by Date: <b class="text-danger">[[${childNoteItem.replyDueByDate != null} ? ${#dates.format(childNoteItem.replyDueByDate,
+                                                        'dd/MM/yyyy')}]]</b>
+                                                    | Priority: <b class="text-danger">[[${childNoteItem.replyPriority}]]</b>
+                                                    | Related To: <b class="text-danger">[[${childNoteItem.replyRelatedTo}]]</b>
+                                                </p>
+                                                <p class="text-success" th:inline="text">[[${childNoteItem.message}]]</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <form class="form-horizontal" method="post" role="form" th:action="@{/addGasChildNote}">
+                                        <input id="customer" name="customer" th:value="${note.customer.id}" type="hidden"/>
+                                        <input id="customerNote" name="customerNote" th:value="${note.id}" type="hidden"/>
+                                        <div class="form-group-sm">
+                                            <div class="col-sm-12">
+                                                <textarea class="form-control" id="message" name="message" placeholder="Add message here" rows="2"></textarea>
+                                            </div>
+                                        </div>
+                                        <p>&nbsp;</p>
+                                        <div class="form-group-sm">
+                                            <div class="col-sm-2">
+                                                <select class="form-control input-sm" id="replyTaggedUser" name="replyTaggedUser">
+                                                    <option value="">Tagged User</option>
+                                                    <option th:each="u:${users}" th:text="${u.firstName}+' '+${u.lastName}" th:value="${u.id}"></option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <input class="form-control input-sm" name="altReplyDueByDate"
+                                                       placeholder="Due by Date"
+                                                       readonly="readonly"
+                                                       th:attr="id='altReplyDueByDate_'+${note.id}"
+                                                       type="text"/>
+                                                <input id="replyDueByDate" name="replyDueByDate" th:attr="id='replyDueByDate_'+${note.id}" type="hidden"/>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <select class="form-control input-sm" id="replyPriority" name="replyPriority">
+                                                    <option value="LOW">LOW</option>
+                                                    <option value="MEDIUM">MEDIUM</option>
+                                                    <option value="HIGH">HIGH</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label>Quick Win: <input id="quickWin" name="quickWin" type="checkbox"/></label>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <select class="form-control input-sm" id="replyRelatedTo" name="replyRelatedTo">
+                                                    <option value="">Related to</option>
+                                                    <option th:each="relatedTo : ${T(mycrm.configuration.RelatedTo).values()}"
+                                                            th:text="${relatedTo}" th:value="${relatedTo}"></option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label class="small">Completed: <input id="replyCompleted" name="replyCompleted" type="checkbox"/></label>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button class="btn btn-sm btn-success">Submit</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <script th:inline="javascript">
+                                    /*<![CDATA[*/
+                                    $(function () {
+                                        $("#altReplyDueByDate_[[${note.id}]]").datepicker({
+                                            changeMonth: true,
+                                            changeYear: true,
+                                            dateFormat: "dd/mm/yy",
+                                            altFormat: "yy-mm-dd",
+                                            altField: "#replyDueByDate_[[${note.id}]]",
+                                            yearRange: "-4:+4",
+                                            hideIfNoPrevNext: true
+                                        });
+                                    });
+                                    /*]]>*/
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

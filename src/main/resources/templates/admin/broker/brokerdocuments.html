@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+<title>View Broker</title>
+</head>
+<body>
+	<header th:replace="../static/fragments/layout :: header" />
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<a class="btn btn-default" th:href="@{/admin/broker/view/{id}/(id=${broker.id})}">Broker Details</a> 
+				<a class="btn btn-default" th:href="@{/admin/broker/brokercustomers/{id}/(id=${broker.id})}">Customers</a> <a class="btn btn-primary"
+					th:href="@{/admin/broker/brokerdocuments/{id}/(id=${broker.id})}">Documents</a> <a class="btn btn-default"
+					th:href="@{/admin/broker/brokernotes/{id}/(id=${broker.id})}">Notes</a>
+			</div>
+		</div>
+		<p>&nbsp;</p>
+		<h3>Broker Documents</h3>
+		<div class="row">
+			<div class="col-sm-8">
+				<div class="panel panel-default">
+					<div class="panel-heading">Documents</div>
+					<div class="panel-body">
+						<table class="table table-condensed table-striped table-bordered">
+							<thead>
+								<tr class="info small">
+									<th>File Title</th>
+									<th>File Name</th>
+									<th>File Path</th>
+									<th>Date Created</th>
+									<th>Uploaded By</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="d, countDoc :${brokerDocuments}" class="small">
+									<td th:text="${d.fileTitle}"></td>
+									<td th:text="${d.fileName}"></td>
+									<td><a th:href="@{/admin/broker/opendocument/{id}/(id=${d.id})}" th:text="${d.fileName}"></a></td>
+									<td th:text="${#dates.format(d.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
+									<td th:text="${d.createdBy.firstName}+' '+${d.createdBy.lastName}"></td>
+								</tr>
+								<tr>
+									<td colspan="5"><a th:href="@{/admin/broker/uploaddocument/{id}/(id=${broker.id})}" class="btn btn-success btn-xs">Upload New
+											Document</a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="../static/fragments/layout :: footer" />
+</body>
+</html>

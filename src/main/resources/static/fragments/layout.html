@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="site-head">
+  <title>CEC - Broker Management System</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7-1/css/bootstrap.css" media="screen"
+        rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.css}"/>
+  <link href="http://cdn.jsdelivr.net/jquery.ui/1.12.1/jquery-ui.min.css" rel="stylesheet" th:href="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.css}"/>
+  <script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js" th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+  <script src="http://cdn.jsdelivr.net/jquery.ui/1.12.1/jquery-ui.min.js" th:src="@{/webjars/jquery-ui/1.12.1/jquery-ui.min.js}"></script>
+  <script src="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+  <script src="../static/js/moment-with-locales.js" th:src="@{/js/moment-with-locales.js}"></script>
+  <script src="../static/js/broker-scripts.js" th:src="@{/js/broker-scripts.js}"></script>
+  <script src="../static/js/jquery.validate.min.js" th:src="@{/js/jquery.validate.min.js}"></script>
+  <link href="../static/css/mycrm.css" media="screen" rel="stylesheet" th:href="@{/css/mycrm.css}"/>
+  <link href="../static/css/jquery.datetimepicker.css" rel="stylesheet" th:href="@{/css/jquery.datetimepicker.css}"/>
+</head>
+<body>
+<header th:fragment="header" th:remove="tag">
+  <nav class="navbar navbar-default" data-offset-top="197" data-spy="affix">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <img height="50px" src="/images/cec-logo.png"/>
+        <button class="navbar-toggle" data-target="#myNavbar" data-toggle="collapse" type="button">
+          <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar" sec:authorize="isAuthenticated()">
+        <ul class="nav navbar-nav">
+          <li><a href="/">Login</a></li>
+          <li><a href="/admin/index">Home</a></li>
+          <li class="dropdown" sec:authorize="hasAnyAuthority('SUPERADMIN')">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Brokers <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/broker/brokers">Broker List</a></li>
+              <li><a href="/admin/broker/newbroker">Create New Broker</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Customers <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/customer/customers/1" sec:authorize="!hasAnyAuthority('EXTERNAL_BROKER')">Customers List</a></li>
+              <li><a href="/admin/customer/newcustomer">Create New Customers</a></li>
+            </ul>
+          </li>
+          <li class="dropdown" sec:authorize="hasAnyAuthority('SUPERADMIN')">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Users <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/users/users">Users List</a></li>
+              <li><a href="/admin/users/newuser">Create New User</a></li>
+            </ul>
+          </li>
+          <li class="dropdown" sec:authorize="hasAnyAuthority('SUPERADMIN')">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Suppliers <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/supplier/suppliers">Suppliers List</a></li>
+              <li><a href="/admin/supplier/newsupplier">Create New Supplier</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Gas/Electric <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/customer/customercontracts/1">Gas/Electric Contracts</a></li>
+              <li><a href="/admin/renewals/index/1">Renewals</a></li>
+              <li><a href="/admin/leads/index/1">Leads</a></li>
+              <li><a href="/admin/callbacks/index/1">Callbacks</a></li>
+              <li><a href="/admin/lost-renewals/index/1">Lost Renewals</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Utilities <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/utility/index/1">Utility Contracts</a></li>
+              <li><a href="/admin/utility/leads/1">Leads</a></li>
+              <li><a href="/admin/utility/renewals/1">Renewals</a></li>
+              <li><a href="/admin/utility/callbacks/1">Callbacks</a></li>
+              <li><a href="/admin/utility/lost-renewals/1">Lost Renewals</a></li>
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Merchant Services <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/admin/merchant-services/index/1">Contracts</a></li>
+              <li><a href="/admin/merchant-services/renewals/1">Renewals</a></li>
+            </ul>
+          </li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <a class="btn btn-danger navbar-btn" href="/logout" sec:authorize="isAuthenticated()"
+             th:href="@{/logout}"
+             th:title="${#authentication.principal.username} +' '+${#authentication.authorities}">
+            Logout <span class="glyphicon glyphicon-log-in"></span>
+          </a>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<div th:fragment="footer" th:remove="tag">
+  <footer class="footer">
+    <div class="container">
+      <div class="col-md-6">
+        <p class="text-muted text-left">&copy; <b th:text="${execInfo.now.time}"></b></p>
+      </div>
+      <div class="col-md-6">
+        <p class="text-muted text-right">
+          <span class="glyphicon glyphicon-user"></span>
+          <b sec:authorize="isAuthenticated()" th:text="${#authentication.principal.username} +' '+${#authentication.authorities}"></b>
+        </p>
+      </div>
+    </div>
+  </footer>
+  <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+
+
+  </script>
+</div>
+<div th:fragment="callbackDateTime" th:remove="tag">
+  <div class="modal fade" id="callback-diary" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close" data-dismiss="modal" type="button">&times;</button>
+          <h4 class="modal-title">Diary</h4>
+        </div>
+        <div class="modal-body" id="callback_diary_div">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+$('#callback-diary').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget); // Button that triggered the modal
+//  var gasContractId = button.data('gas-contract');
+
+  var modal = $(this);
+  modal.find('.modal-body').load('/admin/customer/diary/index');
+})
+
+
+
+  </script>
+  <script src="../static/js/jquery.datetimepicker.full.js" th:src="@{/js/jquery.datetimepicker.full.js}"></script>
+  <script th:inline="javascript">
+        /*
+        window.onerror = function(errorMsg) {
+        $('#console').html($('#console').html()+'<br />'+errorMsg)
+        }*/
+
+        $.datetimepicker.setLocale('en');
+
+        $('#callbackDateTime').datetimepicker({
+            dayOfWeekStart: 1,
+            format: 'Y-m-d H:i:00',
+            lang: 'en',
+            step: 15
+        });
+
+  </script>
+</div>
+</body>
+</html>

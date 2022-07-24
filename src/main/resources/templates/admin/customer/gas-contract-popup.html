@@ -1,0 +1,113 @@
+<table class="table table-condensed table-striped table-bordered small">
+  <tr>
+    <td colspan="4"><h4 th:text="${gasContract.supplyType}"></h4></td>
+  </tr>
+  <tr>
+    <td class="info">MPR</td>
+    <td th:text="${gasContract.accountNumber}">MPR</td>
+    <td class="info">Broker</td>
+    <td th:text="${gasContract.broker.businessName}">broker_name</td>
+  </tr>
+  <tr>
+    <td class="info">Gas Supplier</td>
+    <td colspan="3" th:text="${gasContract.supplier.businessName}"></td>
+  </tr>
+  <tr>
+    <td class="info">Unit Rate</td>
+    <td th:text="${gasContract.unitRate}"></td>
+    <td class="info">Standing Charge</td>
+    <td th:text="${gasContract.standingCharge} + ' ' + ${gasContract.standingChargeFrequency}"></td>
+  </tr>
+  <tr>
+    <td class="info">Start Date</td>
+    <td th:text="${gasContract.startDate != null} ? ${#dates.format(gasContract.startDate, 'dd/MM/yyyy')}"></td>
+    <td class="info">End Date</td>
+    <td th:text="${gasContract.endDate != null} ? ${#dates.format(gasContract.endDate, 'dd/MM/yyyy')}"></td>
+  </tr>
+  <tr>
+    <td class="info">Log Type</td>
+    <td th:text="${gasContract.logType}"></td>
+    <td class="info">Priority</td>
+    <td th:text="${gasContract.contractPriority}"></td>
+  </tr>
+  <tr>
+    <td class="info">EAQ</td>
+    <td colspan="3" th:text="${gasContract.estimatedAnnualQuantity}">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="info">Broker Uplift</td>
+    <td th:text="${gasContract.brokerUplift}"></td>
+    <td class="info">Direct Debit</td>
+    <td th:text="${gasContract.directDebit}">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="info">Contract Renewed</td>
+    <td th:text="${gasContract.contractRenewed}"></td>
+    <td class="info">Do Not Renew</td>
+    <td th:text="${gasContract.doNotRenew}"></td>
+  </tr>
+  <tr>
+    <td class="info">Lost Renewal</td>
+    <td th:text="${gasContract.lostRenewal}"></td>
+    <td class="info">&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="info">Reason</td>
+    <td th:text="${gasContract.contractReason?.description}"></td>
+    <td class="info">Meter Serial Number</td>
+    <td th:text="${gasContract.meterSerialNumber}">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="info">Call Back Date and Time</td>
+    <td th:text="${gasContract.callbackDateTime != null} ? ${#dates.format(gasContract.callbackDateTime, 'dd/MM/yyyy HH:mm')}"></td>
+    <td class="info">Supplier Customer Reference Number</td>
+    <td th:text="${gasContract.supplierCustomerReferenceNumber}"></td>
+  </tr>
+  <tr>
+    <td class="info">Campaign</td>
+    <td th:text="${gasContract.campaign}"></td>
+    <td class="info">SMART Meter</td>
+    <td th:text="${gasContract.smartMeter}">&nbsp;</td>
+  </tr>
+  <tr sec:authorize="hasAuthority('SUPERADMIN')">
+    <td class="info">Upfront Percentage</td>
+    <td th:text="${gasContract.upfrontPercentage}"></td>
+    <td class="info">Commission Duration</td>
+    <td th:text="${gasContract.commissionDuration}"></td>
+  </tr>
+  <tr>
+    <td class="info" colspan="4">Notes</td>
+  </tr>
+  <tr>
+    <td colspan="4" th:text="${gasContract.notes}">No notes</td>
+  </tr>
+  <tr>
+    <td colspan="4" th:id="'annualConsumption_'+${gasContract.id}">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <table>
+        <tr>
+          <td th:inline="text">Welcome Pack Sent To Customer <b>[[${gasContract.welcomePackSentToCustomer} ? 'Yes':'No']]</b></td>
+          <td th:inline="text">Previous Supply Terminated <b>[[${gasContract.previousSupplyTerminated} ? 'Yes':'No']]</b></td>
+          <td th:inline="text">Contract Sent To Customer <b>[[${gasContract.contractSentToCustomer} ? 'Yes':'No']]</b></td>
+          <td th:inline="text">Current Supply Terminated <b>[[${gasContract.currentSupplyTerminated} ? 'Yes':'No']]</b></td>
+          <td th:inline="text">Courtesy Call Made <b>[[${gasContract.courtesyCall} ? 'Yes':'No']]</b></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4">
+      <!-- 	<button class="btn btn-info" id="gasButton" name="gasButton" th:onclick="|retrieveGas('annualConsumption_'+${gasContract.id}, ${gasContract.id})|" type="button">Gas</button>  -->
+      <!-- 	<a th:href="@{/admin/customer/editgascontract/{id}(id=${gasContract.id})}" class="btn btn-warning" -->
+      <!-- 			th:if="${(gasContract.broker.id == #authentication.principal.broker?.id  -->
+      <!-- 			or #strings.contains(#authentication.principal.authorities,'SUPERADMIN') -->
+      <!-- 			or #strings.contains(#authentication.principal.authorities,'ADMIN'))}">Edit -->
+      <!-- 			Contract</a> -->
+      <a class="btn btn-warning" th:href="@{/admin/customer/editgascontract/{id}(id=${gasContract.id})}">Edit
+        Contract</a>
+    </td>
+  </tr>
+</table>

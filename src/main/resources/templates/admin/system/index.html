@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+<title>CEC Consultants - Broker Management System</title>
+</head>
+<body>
+	<div th:replace="../static/fragments/layout :: header">
+		<!-- ============================================================================ -->
+		<!-- This content is only used for static prototyping purposes (natural templates)-->
+		<!-- and is therefore entirely optional, as this markup fragment will be included -->
+		<!-- from "fragments/header.html" at runtime.                                     -->
+		<!-- ============================================================================ -->
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">CEC Consultants - Broker
+						Management System</a>
+				</div>
+				<ul class="nav navbar-nav">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="/logout" th:href="@{/logout}">Logout</a></li>
+					</ul>
+				</ul>
+			</div>
+		</nav>
+	</div>
+	<div class="container-fluid">
+	
+		<div class="row">
+			<div class="col-md-12">
+				<p th:inline="text">Principal UserName = [[${#authentication.principal.username}]]</p>
+				<p th:inline="text">Principal Authorities = [[${#authentication.principal.authorities}]]</p>
+				<p th:inline="text">Principal First Name = [[${#authentication.principal.firstName}]]</p>
+				<p th:inline="text">Principal Last Name = [[${#authentication.principal.lastName}]]</p>
+				<p th:inline="text">Principal ID = [[${#authentication.principal.id}]]</p>
+				<p th:inline="text">Principal = [[${#authentication.principal}]]</p>
+				<p th:inline="text">Principal Broker ID = [[${#authentication.principal.broker?.id}]]</p>
+			</div>
+		</div>
+
+		
+	</div>
+	<div th:replace="../static/fragments/layout :: footer" />
+</body>
+</html>

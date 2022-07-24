@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+<title>Brokers</title>
+</head>
+<body>
+	<header th:replace="../static/fragments/layout :: header" />
+	<div class="container-fluid">
+	<h2>My Customers</h2>
+		<div class="well">
+			<form action="mycustomers" method="get" th:object="${contractSearch}" class="form-inline">
+				<div class="form-group">
+          <label for="q">Search
+            <a data-placement="right"
+               data-toggle="tooltip"
+               href="#"
+               title="Search by Customer Reference, Business Name, Site Name, Site Address,
+                       Site City, Customer First Name &amp; Last Name, Site Registration No,
+                       Site Postcode, MPAN Bottom Line, MPR">
+              <span class="glyphicon glyphicon-info-sign"></span>
+            </a>
+          </label>
+          <input class="form-control input-sm" th:field="*{q}" type="text"/>
+        </div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-sm btn-info">Submit</button>
+				</div>
+			</form>
+		</div>
+
+        <div>Time Taken: <span th:text="${timeTaken}"></span> ms</div>
+
+        <table class="table table-striped table-hover table-condensed">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Customer Reference</th>
+					<th>Business Name</th>
+					<th>Business Address</th>
+					<th>Business Address 1</th>
+					<th>Business City</th>
+					<th>Post Code</th>
+					<th>Contact Number</th>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Email</th>
+					<th>Date Created</th>
+					<th>&nbsp;</th>			 
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="customer, row : ${customers}" class="text-success">
+					<td th:text="${row.count}"></td>					
+					<td th:text="${customer.customerReference}">Customer Reference</td>
+					<td th:text="${customer.businessName}">Business Name</td>
+					<td th:text="${customer.businessAddr}">Business Addr</td>
+					<td th:text="${customer.businessAddr1}">Business Addr1</td>
+					<td th:text="${customer.businessCity}">Business City</td>
+					<td class="text-nowrap" th:text="${customer.businessPostcodeOut} +' '+${customer.businessPostcodeIn}">Post Code</td>
+					<td class="text-nowrap" th:text="${customer.contactNumber}">Contact Number</td>
+					<td th:text="${customer.firstName}">First Name</td>
+					<td th:text="${customer.lastName}">Last Name</td>
+					<td th:text="${customer.emailAddress}">Email</td>
+					<td th:text="${#dates.format(customer.dateCreated, 'dd/MM/yyyy')}">Date Created</td>
+					<td class="text-nowrap"><a th:href="@{/admin/customer/view/{id}/(id=${customer.id})}">View Customer</a></td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+	<div th:replace="../static/fragments/layout :: footer" />
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+    <title>Brokers</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+<div class="container-fluid">
+    <h2>Gas/Electric Contracts</h2>
+    <div class="well">
+        <form th:action="@{1}" method="get" th:object="${contractSearch}" class="form-inline">
+            <div class="form-group">
+              <label for="q">Search
+                <a data-placement="right"
+                   data-toggle="tooltip"
+                   href="#"
+                   title="Search by Customer Reference, Business Name, Site Name, Site Address,
+                       Site City, Customer First Name &amp; Last Name, Site Registration No,
+                       Site Postcode, MPAN Bottom Line, MPR">
+                  <span class="glyphicon glyphicon-info-sign"></span>
+                </a>
+              </label>
+              <input class="form-control input-sm" th:field="*{q}" type="text"/>
+            </div>
+            <div class="form-group">
+                <label for="supplyType">Supply</label>
+                <select class="form-control input-sm" th:field="*{supplyType}">
+                    <option value="">All</option>
+                    <option value="GAS">Gas</option>
+                    <option value="ELEC">Electric</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="logType">Log Type</label>
+                <select class="form-control input-sm" th:field="*{logType}">
+                    <option value="">All</option>
+                    <option th:each="logType : ${T(mycrm.configuration.LogType).values()}"
+                            th:text="${logType}" th:value="${logType}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Start Date</label>
+                <input type="text" th:field="*{fromDate}" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label>End Date</label>
+                <input type="text" th:field="*{toDate}" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="broker">Broker</label>
+                <select class="form-control input-sm" th:field="*{broker}">
+                    <option value="">All</option>
+                    <option th:each="brokers : ${brokers}" th:text="${brokers.firstName}+ ' '+${brokers.lastName}" th:value="${brokers.id}"
+                            th:selected="(${brokers.id} == ${broker})"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="supplier">Supplier</label>
+                <select class="form-control input-sm" th:field="*{supplier}">
+                    <option value="">All</option>
+                    <option th:each="suppliers : ${suppliers}" th:text="${suppliers.businessName}" th:value="${suppliers.id}"
+                            th:selected="(${suppliers.id} == ${supplier})"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="campaign">Campaign</label>
+                <select class="form-control input-sm" th:field="*{campaign}">
+                    <option value="">All</option>
+                    <option th:each="c : ${campaigns}"
+                            th:selected="(${c} == ${campaign})"
+                            th:text="${c}"
+                            th:value="${c}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="orderby">Order By</label>
+                <select class="form-control input-sm" id="orderby" name="orderby">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-sm btn-info">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="pager" th:if="${ totalPages > 1 }">
+                <li class="previous"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber - 1},
+                                        q = ${contractSearch.q},
+                                        supplyType = ${contractSearch.supplyType},
+                                        logType = ${contractSearch.logType},
+                                        fromDate = ${contractSearch.fromDate},
+                                        toDate = ${contractSearch.toDate},
+                                        broker = ${contractSearch.broker?.id},
+                                        supplier = ${contractSearch.supplier?.id},
+                                        campaign = ${contractSearch.campaign},
+                           				orderby = )}"
+                                        th:if="${ pageNumber &gt; 1 }">Previous</a></li>
+
+                <li class="next"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber + 1},
+                                        q = ${contractSearch.q},
+                                        supplyType = ${contractSearch.supplyType},
+                                        logType = ${contractSearch.logType},
+                                        fromDate = ${contractSearch.fromDate},
+                                        toDate = ${contractSearch.toDate},
+                                        broker = ${contractSearch.broker?.id},
+                                        supplier = ${contractSearch.supplier?.id},
+                                        campaign = ${contractSearch.campaign},
+                           				orderby = )}"
+                                    th:if="${ pageNumber &lt; totalPages }">Next</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div th:inline="text">
+                Showing [[${totalResults}]] contracts.
+                Page [[${pageNumber}]] of [[${totalPages}]] pages - time taken [[${timeTaken}]] ms.
+                [[${totalContracts}]] contracts in the database.
+            </div>
+
+        </div>
+    </div>
+
+    <table class="table table-striped table-hover table-condensed">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>&nbsp;</th>
+            <th>Supply</th>
+            <th>Customer Reference</th>
+            <th>Company Registration No</th>
+            <th>Business Name</th>
+            <th>Site Name</th>
+            <th>Site Post Code</th>
+            <th>Log Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Supplier</th>
+            <th>Date Created</th>
+            <th>Broker</th>
+            <th>Campaign</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cc, row : ${customerContracts}" th:classappend="${cc.contractStatus == 'ENDED'} ? text-danger">
+            <td th:text="${row.count}"></td>
+            <td><span th:if="${cc.contractStatus == 'ENDED'}" class="label label-danger">ENDED</span></td>
+            <td th:text="${cc.supplyType}">&nbsp;</td>
+            <td><a th:inline="text" th:href="@{/admin/customer/view/{id}/(id=${cc.customer.id})}">[[${cc.customer.customerReference}]]</a></td>
+            <td th:text="${cc.customerSite.registrationNo}">Registration Number</td>
+            <td><a th:inline="text" th:href="@{/admin/customer/view/{id}/(id=${cc.customer.id})}">[[${cc.customer.businessName}]]</a></td>
+            <td th:text="${cc.customerSite.siteName}">Customer Site Name</td>
+            <td th:text="${cc.customerSite.sitePostcodeOut} + ' ' +${cc.customerSite.sitePostcodeIn}">Customer Site Post Code Out and In</td>
+            <td th:inline="text">[[${cc.logType}]]</td>
+            <td th:text="${cc.startDate != null} ? ${#dates.format(cc.startDate, 'dd/MM/yyyy')}">Start Date</td>
+            <td th:text="${cc.endDate != null} ? ${#dates.format(cc.endDate, 'dd/MM/yyyy')}">End Date</td>
+            <td th:text="${cc.supplier.businessName}">Supplier</td>
+            <td th:text="${#dates.format(cc.dateCreated, 'dd/MM/yyyy')}">Date Created</td>
+            <td th:text="${cc.broker.firstName}+' '+${cc.broker.lastName}">Broker</td>
+            <td th:text="${cc.campaign}">Campaign</td>
+            <td><a class="btn btn-primary btn-xs" th:href="@{/admin/customer/viewsite/{id}/(id=${cc.customerSite.id})}">View</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="pager" th:if="${ totalPages > 1 }">
+                <li class="previous"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber - 1},
+                                        q = ${contractSearch.q},
+                                        supplyType = ${contractSearch.supplyType},
+                                        logType = ${contractSearch.logType},
+                                        fromDate = ${contractSearch.fromDate},
+                                        toDate = ${contractSearch.toDate},
+                                        broker = ${contractSearch.broker?.id},
+                                        supplier = ${contractSearch.supplier?.id},
+                                        campaign = ${contractSearch.campaign},
+                           				orderby = )}"
+                                        th:if="${ pageNumber &gt; 1 }">Previous</a></li>
+
+                <li class="next"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber + 1},
+                                        q = ${contractSearch.q},
+                                        supplyType = ${contractSearch.supplyType},
+                                        logType = ${contractSearch.logType},
+                                        fromDate = ${contractSearch.fromDate},
+                                        toDate = ${contractSearch.toDate},
+                                        broker = ${contractSearch.broker?.id},
+                                        supplier = ${contractSearch.supplier?.id},
+                                        campaign = ${contractSearch.campaign},
+                           				orderby = )}"
+                                    th:if="${ pageNumber &lt; totalPages }">Next</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="row" th:if="${totalPages > 0 and !customerContracts.isEmpty()}">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#jumpToPage">Jump to page</button>
+            <div id="jumpToPage" class="collapse">
+                <ul class="pagination pagination-sm">
+                    <li><a id="totalResultsPagination" th:each="i : ${#numbers.sequence( 1, totalPages)}"
+                           th:href="@{{pageNumber}(pageNumber = ${i},
+                           				q = ${contractSearch.q},
+                           				supplyType = ${contractSearch.supplyType},
+                           				logType = ${contractSearch.logType},
+                           				fromDate = ${contractSearch.fromDate},
+                           				toDate = ${contractSearch.toDate},
+                           				broker = ${contractSearch.broker?.id},
+                           				supplier = ${contractSearch.supplier?.id},
+                           				campaign = ${contractSearch.campaign},
+                           				orderby = )}"
+                           th:text="${i}">#</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="../static/fragments/layout :: footer"/>
+</body>
+</html>

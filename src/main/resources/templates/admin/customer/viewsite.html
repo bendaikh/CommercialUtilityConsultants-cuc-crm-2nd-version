@@ -1,0 +1,555 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+<title>View customer</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"></header>
+<div class="container-fluid" sec:authorize="isAuthenticated()">
+	<h1 th:text="${customerSite.fullSiteNameAndAddress}">View Site</h1>
+	<div class="row">
+		<div class="col-md-12">
+			<a class="btn btn-default" th:href="@{/admin/customer/view/{id}/(id=${customerSite.customer.id})}">Customer Details</a>
+			<a class="btn btn-default" th:href="@{/admin/customer/customersites/{id}/(id=${customerSite.customer.id})}">Sites</a>
+			<a class="btn btn-default" th:href="@{/admin/customer/customerdocuments/{id}/(id=${customerSite.customer.id})}">Documents</a>
+			<a class="btn btn-default" th:href="@{/admin/customer/customernotes/{id}/(id=${customerSite.customer.id})}">Notes</a>
+		</div>
+	</div>
+	<p>&nbsp;</p>
+	<div class="alert alert-warning small" th:if="${not #lists.isEmpty(siteTransferMessage)}">
+		<ol>
+			<li th:each="s: ${siteTransferMessage}" th:text="${s}"></li>
+		</ol>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<a class="btn btn-default"
+				 th:href="@{/admin/customer/editsite/{id}/(id=${customerSite.id})}"
+				 title="Edit Site">
+				<span class="glyphicon glyphicon-eye-open"></span> Edit Site Details
+			</a>
+			<a class="btn btn-default"
+				 th:href="@{/admin/customer/gascontract(customerID=${customerSite.customer.id},customerSiteID=${customerSite.id})}"
+				 title="Gas Contract">
+					<span class="glyphicon glyphicon-fire"></span> Create Gas Contract
+				</a>
+			<a class="btn btn-default"
+				 th:href="@{/admin/customer/eleccontract(customerID=${customerSite.customer.id},customerSiteID=${customerSite.id})}"
+				 title="Electricity Contract">
+				<span class="glyphicon glyphicon-flash"></span> Create Electricity Contract
+			</a>
+			<a class="btn btn-default"
+				 th:href="@{/admin/customer/manage-utility-contract/{id}/(id=${customerSite.id})}"
+				 title="Utility Contract">
+				<span class="glyphicon glyphicon-plus"></span> Create Utility Contract
+			</a>
+			<a class="btn btn-default"
+         th:href="@{/admin/customer/manage-merchant-services/{id}/(id=${customerSite.id})}"
+         title="Merchant Services Contract">
+        <span class="glyphicon glyphicon-plus"></span> Create Merchant Services Contract
+      </a>
+		</div>
+		</div>
+		<p>&nbsp;</p>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-warning">
+					<div class="panel-heading">Gas Supply History</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-condensed">
+								<thead>
+									<tr>
+										<th>&nbsp;</th>
+										<th>Lost Renewal</th>
+										<th>Broker</th>
+										<th>Start Date</th>
+										<th>End Date</th>
+										<th>MPR</th>
+										<th>Log Type</th>
+										<th>Date Created</th>
+										<th>&nbsp;</th>
+									</tr>
+                </thead>
+								<tr class="small" th:each="gasContract:${gasCustomerContracts}">
+									<td><span class="label label-danger" th:if="${gasContract.contractStatus == 'ENDED'}">ENDED</span></td>
+									<td>
+										<span class="glyphicon glyphicon-ok" th:if="${gasContract.lostRenewal == true}"></span>
+									</td>
+									<td th:text="${gasContract.broker.firstName}+' '+${gasContract.broker.lastName}">Broker</td>
+									<td th:text="${gasContract.startDate != null} ? ${#dates.format(gasContract.startDate, 'dd/MM/yyyy')}"></td>
+									<td th:text="${gasContract.endDate != null} ? ${#dates.format(gasContract.endDate, 'dd/MM/yyyy')}"></td>
+									<td th:text="${gasContract.accountNumber}"></td>
+									<td>
+										<span class="text-success glyphicon glyphicon-star" th:if="${gasContract.current == true}" title="Current Contract"></span>
+
+										<button class="btn btn-xs">
+											<span class="glyphicon glyphicon-fire"></span>
+											<span th:text="${gasContract.logType}"></span>
+										</button>
+
+										<button class="btn btn-xs btn-default"
+														data-toggle="modal"
+														th:attr="data-gas-contract-comm=''+${gasContract?.id}+'', data-site-name=''+${customerSite.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+														th:disabled="!${gasContract}">
+											<span class="glyphicon glyphicon-send" title="Gas Comms"></span>
+										</button>
+									</td>
+                  <td th:text="${gasContract.dateCreated != null} ? ${#dates.format(gasContract.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
+                  <td>
+
+                    <!-- 									<a  -->
+                    <!-- 										th:if="${(gasContract.broker.id == #authentication.principal.broker?.id  -->
+                    <!--  												or #strings.contains(#authentication.principal.authorities,'SUPERADMIN') -->
+                    <!--  												or #strings.contains(#authentication.principal.authorities,'ADMIN'))}" -->
+                    <!-- 										class="btn btn-success btn-xs" th:href="@{/admin/customer/editgascontract/{id}(id=${gasContract.id})}"><span class="glyphicon glyphicon-fire"></span> -->
+                    <!-- 											Open</a> -->
+                    <a class="btn btn-success btn-xs" th:href="@{/admin/customer/editgascontract/{id}(id=${gasContract.id})}"><span class="glyphicon glyphicon-fire"></span>
+                      Open</a>
+                  </td>
+                  <!-- 									<td><a class="btn btn-info btn-xs" th:href="@{/admin/customer/gasconsumption/{id}(id=${gasContract.id})}">Gas Consumption</a></td> -->
+                </tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-success">
+					<div class="panel-heading">Electricity Supply History</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-condensed">
+								<thead>
+								<tr>
+									<th>&nbsp;</th>
+									<th>Lost Renewal</th>
+									<th>Broker</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+									<th>MPAN Bottom Line</th>
+									<th>Log Type</th>
+									<th>Date Created</th>
+									<th>&nbsp;</th>
+								</tr>
+                </thead>
+								<tr class="small" th:each="electricContract:${elecCustomerContracts}">
+									<td><span class="label label-danger" th:if="${electricContract.contractStatus == 'ENDED'}">ENDED</span></td>
+									<td>
+										<span class="glyphicon glyphicon-ok" th:if="${electricContract.lostRenewal == true}"></span>
+									</td>
+									<td th:text="${electricContract.broker.firstName}+' '+${electricContract.broker.lastName}">Broker</td>
+									<td th:text="${electricContract.startDate != null} ? ${#dates.format(electricContract.startDate, 'dd/MM/yyyy')}"></td>
+									<td th:text="${electricContract.endDate != null} ? ${#dates.format(electricContract.endDate, 'dd/MM/yyyy')}"></td>
+									<td th:text="${electricContract.accountNumber}"></td>
+									<td>
+										<button class="btn btn-xs">
+											<span class="text-success glyphicon glyphicon-star" th:if="${electricContract.current == true}" title="Current Contract"></span>
+
+											<span class="glyphicon glyphicon-flash"></span>
+											<span th:text="${electricContract.logType}"></span></button>
+
+										<button class="btn btn-xs btn-default"
+														data-toggle="modal"
+														th:attr="data-electric-contract-comm=''+${electricContract?.id}+'', data-site-name=''+${customerSite.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+														th:disabled="!${electricContract}">
+											<span class="glyphicon glyphicon-send" title="Electric Comms"></span>
+										</button>
+									</td>
+                  <td th:text="${electricContract.dateCreated != null} ? ${#dates.format(electricContract.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
+                  <td>
+                    <!-- 									<a -->
+                    <!-- 										th:if="${(electricContract.broker.id == #authentication.principal.broker?.id or #strings.contains(#authentication.principal.authorities,'SUPERADMIN'))}" -->
+                    <!-- 										class="btn btn-success btn-xs" th:href="@{/admin/customer/editeleccontract/{id}(id=${electricContract.id})}"><span class="glyphicon glyphicon-flash"></span> -->
+                    <!-- 											Open</a> -->
+                    <a class="btn btn-success btn-xs" th:href="@{/admin/customer/editeleccontract/{id}(id=${electricContract.id})}"><span class="glyphicon glyphicon-flash"></span>
+                      Open</a>
+
+
+                  </td>
+                  <!-- 									<td><a class="btn btn-info btn-xs" th:href="@{/admin/customer/elecconsumption/{id}(id=${electricContract.id})}">Electricity Consumption</a></td> -->
+                </tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Solar Supply History</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-condensed">
+								<thead>
+								<tr>
+									<th>&nbsp;</th>
+									<th>Lost Renewal</th>
+									<th>Broker</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+									<th>Site Reference</th>
+									<th>Log Type</th>
+									<th>Date Created</th>
+									<th>&nbsp;</th>
+								</tr>
+								</thead>
+								<tr class="small" th:each="sc:${solarContracts}">
+									<td><span class="label label-danger" th:if="${sc.contractStatus == 'ENDED'}">ENDED</span></td>
+									<td>
+										<span class="glyphicon glyphicon-ok" th:if="${sc.lostRenewal == true}"></span>
+									</td>
+									<td th:text="${sc.broker.firstName}+' '+${sc.broker.lastName}">Broker</td>
+									<td th:text="${sc.startDate != null} ? ${#dates.format(sc.startDate, 'dd/MM/yyyy')}"></td>
+									<td th:text="${sc.endDate != null} ? ${#dates.format(sc.endDate, 'dd/MM/yyyy')}"></td>
+									<td th:text="${sc.accountNumber}"></td>
+									<td>
+										<span class="text-success glyphicon glyphicon-star" th:if="${sc.current == true}" title="Current Contract"></span>
+
+										<button class="btn btn-xs"><span class="glyphicon glyphicon-flash"></span> <span th:text="${sc.logType}"></span></button>
+
+									</td>
+									<td th:text="${sc.dateCreated != null} ? ${#dates.format(sc.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
+									<td>
+										<a class="btn btn-success btn-xs"
+											 th:href="@{/admin/customer/edit-utility-contract/{id}(id=${sc.id})}">
+											<span class="glyphicon glyphicon-flash"></span>
+											Open
+										</a>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-info">
+					<div class="panel-heading">Water Supply History</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-condensed">
+								<thead>
+								<tr>
+									<th>&nbsp;</th>
+									<th>Lost Renewal</th>
+									<th>Broker</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+									<th>Site Reference</th>
+									<th>Log Type</th>
+									<th>Date Created</th>
+									<th>&nbsp;</th>
+								</tr>
+								</thead>
+								<tr class="small" th:each="wc:${waterContracts}">
+									<td><span class="label label-danger" th:if="${wc.contractStatus == 'ENDED'}">ENDED</span></td>
+									<td>
+										<span class="glyphicon glyphicon-ok" th:if="${wc.lostRenewal == true}"></span>
+									</td>
+									<td th:text="${wc.broker.firstName}+' '+${wc.broker.lastName}">Broker</td>
+									<td th:text="${wc.startDate != null} ? ${#dates.format(wc.startDate, 'dd/MM/yyyy')}"></td>
+									<td th:text="${wc.endDate != null} ? ${#dates.format(wc.endDate, 'dd/MM/yyyy')}"></td>
+									<td th:text="${wc.accountNumber}"></td>
+									<td>
+										<span class="text-success glyphicon glyphicon-star" th:if="${wc.current == true}" title="Current Contract"></span>
+										<button class="btn btn-xs"><span class="glyphicon glyphicon-flash"></span> <span th:text="${wc.logType}"></span></button>
+									</td>
+									<td th:text="${wc.dateCreated != null} ? ${#dates.format(wc.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
+									<td>
+										<a class="btn btn-success btn-xs"
+											 th:href="@{/admin/customer/edit-utility-contract/{id}(id=${wc.id})}">
+											<span class="glyphicon glyphicon-flash"></span>
+											Open
+										</a>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-warning">
+					<div class="panel-heading">VOIP Supply History</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-condensed">
+								<thead>
+								<tr>
+									<th>&nbsp;</th>
+									<th>Lost Renewal</th>
+									<th>Broker</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+									<th>Site Reference</th>
+									<th>Log Type</th>
+									<th>Date Created</th>
+									<th>&nbsp;</th>
+								</tr>
+								</thead>
+								<tr class="small" th:each="voip:${voipContracts}">
+									<td><span class="label label-danger" th:if="${voip.contractStatus == 'ENDED'}">ENDED</span></td>
+									<td>
+										<span class="glyphicon glyphicon-ok" th:if="${voip.lostRenewal == true}"></span>
+									</td>
+									<td th:text="${voip.broker.firstName}+' '+${voip.broker.lastName}">Broker</td>
+									<td th:text="${voip.startDate != null} ? ${#dates.format(voip.startDate, 'dd/MM/yyyy')}"></td>
+									<td th:text="${voip.endDate != null} ? ${#dates.format(voip.endDate, 'dd/MM/yyyy')}"></td>
+									<td th:text="${voip.accountNumber}"></td>
+									<td>
+										<span class="text-success glyphicon glyphicon-star" th:if="${voip.current == true}" title="Current Contract"></span>
+
+										<button class="btn btn-xs"><span class="glyphicon glyphicon-flash"></span> <span th:text="${voip.logType}"></span></button>
+
+									</td>
+									<td th:text="${voip.dateCreated != null} ? ${#dates.format(voip.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
+									<td>
+										<a class="btn btn-success btn-xs"
+											 th:href="@{/admin/customer/edit-utility-contract/{id}(id=${voip.id})}">
+											<span class="glyphicon glyphicon-flash"></span>
+											Open
+										</a>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-danger">
+					<div class="panel-heading">Landline Supply History</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-condensed">
+								<thead>
+								<tr>
+									<th>&nbsp;</th>
+									<th>Lost Renewal</th>
+									<th>Broker</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+									<th>Site Reference</th>
+									<th>Log Type</th>
+									<th>Date Created</th>
+									<th>&nbsp;</th>
+								</tr>
+								</thead>
+								<tr class="small" th:each="landline:${landlineContracts}">
+									<td><span class="label label-danger" th:if="${landline.contractStatus == 'ENDED'}">ENDED</span></td>
+									<td>
+										<span class="glyphicon glyphicon-ok" th:if="${landline.lostRenewal == true}"></span>
+									</td>
+									<td th:text="${landline.broker.firstName}+' '+${landline.broker.lastName}">Broker</td>
+									<td th:text="${landline.startDate != null} ? ${#dates.format(landline.startDate, 'dd/MM/yyyy')}"></td>
+									<td th:text="${landline.endDate != null} ? ${#dates.format(landline.endDate, 'dd/MM/yyyy')}"></td>
+									<td th:text="${landline.accountNumber}"></td>
+									<td>
+										<span class="text-success glyphicon glyphicon-star" th:if="${landline.current == true}" title="Current Contract"></span>
+										<button class="btn btn-xs"><span class="glyphicon glyphicon-flash"></span> <span th:text="${landline.logType}"></span></button>
+									</td>
+									<td th:text="${landline.dateCreated != null} ? ${#dates.format(landline.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
+									<td>
+										<a class="btn btn-success btn-xs"
+											 th:href="@{/admin/customer/edit-utility-contract/{id}(id=${landline.id})}">
+											<span class="glyphicon glyphicon-flash"></span>
+											Open
+										</a>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">Mobile Supply History</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-condensed">
+								<thead>
+								<tr>
+									<th>&nbsp;</th>
+									<th>Lost Renewal</th>
+									<th>Broker</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+									<th>Site Reference</th>
+									<th>Log Type</th>
+									<th>Date Created</th>
+									<th>&nbsp;</th>
+								</tr>
+								</thead>
+								<tr class="small" th:each="mobile:${mobileContracts}">
+									<td><span class="label label-danger" th:if="${mobile.contractStatus == 'ENDED'}">ENDED</span></td>
+									<td>
+										<span class="glyphicon glyphicon-ok" th:if="${mobile.lostRenewal == true}"></span>
+									</td>
+									<td th:text="${mobile.broker.firstName}+' '+${mobile.broker.lastName}">Broker</td>
+									<td th:text="${mobile.startDate != null} ? ${#dates.format(mobile.startDate, 'dd/MM/yyyy')}"></td>
+									<td th:text="${mobile.endDate != null} ? ${#dates.format(mobile.endDate, 'dd/MM/yyyy')}"></td>
+									<td th:text="${mobile.accountNumber}"></td>
+									<td>
+										<span class="text-success glyphicon glyphicon-star" th:if="${mobile.current == true}" title="Current Contract"></span>
+
+										<button class="btn btn-xs"><span class="glyphicon glyphicon-flash"></span> <span th:text="${mobile.logType}"></span></button>
+
+									</td>
+									<td th:text="${mobile.dateCreated != null} ? ${#dates.format(mobile.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
+									<td>
+										<a class="btn btn-success btn-xs"
+											 th:href="@{/admin/customer/edit-utility-contract/{id}(id=${mobile.id})}">
+											<span class="glyphicon glyphicon-flash"></span>
+											Open
+										</a>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-info">
+					<div class="panel-heading">Broadband Supply History</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-condensed">
+								<thead>
+								<tr>
+									<th>&nbsp;</th>
+									<th>Lost Renewal</th>
+									<th>Broker</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+									<th>Site Reference</th>
+									<th>Log Type</th>
+									<th>Date Created</th>
+									<th>&nbsp;</th>
+								</tr>
+								</thead>
+								<tr class="small" th:each="broadband:${broadbandContracts}">
+									<td><span class="label label-danger" th:if="${broadband.contractStatus == 'ENDED'}">ENDED</span></td>
+									<td>
+										<span class="glyphicon glyphicon-ok" th:if="${broadband.lostRenewal == true}"></span>
+									</td>
+									<td th:text="${broadband.broker.firstName}+' '+${broadband.broker.lastName}">Broker</td>
+									<td th:text="${broadband.startDate != null} ? ${#dates.format(broadband.startDate, 'dd/MM/yyyy')}"></td>
+									<td th:text="${broadband.endDate != null} ? ${#dates.format(broadband.endDate, 'dd/MM/yyyy')}"></td>
+									<td th:text="${broadband.accountNumber}"></td>
+									<td>
+										<span class="text-success glyphicon glyphicon-star" th:if="${broadband.current == true}" title="Current Contract"></span>
+
+										<button class="btn btn-xs"><span class="glyphicon glyphicon-flash"></span> <span th:text="${broadband.logType}"></span></button>
+
+									</td>
+									<td th:text="${broadband.dateCreated != null} ? ${#dates.format(broadband.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
+									<td>
+										<a class="btn btn-success btn-xs"
+											 th:href="@{/admin/customer/edit-utility-contract/{id}(id=${broadband.id})}">
+											<span class="glyphicon glyphicon-flash"></span>
+											Open
+										</a>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Merchant Services Supply History</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table table-condensed">
+							<thead>
+							<tr>
+								<th>&nbsp;</th>
+								<th>Broker</th>
+								<th>Start Date</th>
+								<th>End Date</th>
+								<th>Merchant ID</th>
+								<th>Log Type</th>
+								<th>Date Created</th>
+								<th>&nbsp;</th>
+							</tr>
+							</thead>
+							<tr class="small" th:each="merchant:${merchantServicesContracts}">
+								<td><span class="label label-danger" th:if="${merchant.contractStatus == 'ENDED'}">ENDED</span></td>
+								<td th:text="${merchant.broker.firstName}+' '+${merchant.broker.lastName}">Broker</td>
+								<td th:text="${merchant.startDate != null} ? ${#dates.format(merchant.startDate, 'dd/MM/yyyy')}"></td>
+								<td th:text="${merchant.endDate != null} ? ${#dates.format(merchant.endDate, 'dd/MM/yyyy')}"></td>
+								<td th:text="${merchant.merchantId}"></td>
+								<td>
+									<span class="text-success glyphicon glyphicon-star" th:if="${merchant.current == true}" title="Current Contract"></span>
+
+									<button class="btn btn-xs"><span class="glyphicon glyphicon-flash"></span> <span th:text="${merchant.logType}"></span></button>
+
+								</td>
+								<td th:text="${merchant.dateCreated != null} ? ${#dates.format(merchant.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
+								<td>
+									<a class="btn btn-success btn-xs"
+										 th:href="@{/admin/customer/edit-merchant-services/{id}(id=${merchant.id})}">
+										<span class="glyphicon glyphicon-flash"></span>
+										Open
+									</a>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="utility-modal" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button class="close" data-dismiss="modal" type="button">&times;</button>
+				</div>
+				<div class="modal-body">
+
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$('#utility-modal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var siteName = button.data('site-name')
+  var gasContractCommId = button.data('gas-contract-comm')
+  var electricContractCommId = button.data('electric-contract-comm')
+  var utilityContractCommId = button.data('utility-contract-comm')
+
+  var modal = $(this)
+  modal.find('.modal-header').text(siteName)
+  if(gasContractCommId) {
+    modal.find('.modal-body').load('/admin/customer/gas-communication-popup/'+gasContractCommId)
+  }
+  if(electricContractCommId) {
+    modal.find('.modal-body').load('/admin/customer/electric-communication-popup/'+electricContractCommId)
+  }
+  if(utilityContractCommId) {
+    modal.find('.modal-body').load('/admin/customer/utility-communication-popup/'+utilityContractCommId)
+  }
+})
+
+</script>
+<div th:replace="../static/fragments/layout :: footer"></div>
+</body>
+</html>
