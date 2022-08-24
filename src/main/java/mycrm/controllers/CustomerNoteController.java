@@ -29,7 +29,7 @@ import java.util.List;
 @Controller
 public class CustomerNoteController {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final CustomerService customerService;
     private final CustomerNoteService customerNoteService;

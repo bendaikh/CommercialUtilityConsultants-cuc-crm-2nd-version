@@ -38,7 +38,7 @@ import java.util.List;
 @Controller
 public class EnergyContractController {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final GasContractService gasContractService;
     private final ElecContractService elecContractService;

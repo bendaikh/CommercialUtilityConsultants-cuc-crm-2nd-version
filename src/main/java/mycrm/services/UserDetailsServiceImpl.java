@@ -21,7 +21,7 @@ import java.util.Set;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final UserRepository userRepo;
 
@@ -43,7 +43,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getRole()));
         }
 
-        loggedInUser = new LoggedInUser(username, user.getPasswordHash(), (user.getActive() == 1 ? true : false), true,
+        loggedInUser = new LoggedInUser(username, user.getPasswordHash(), (user.getActive() == 1), true,
                 true, true, grantedAuthorities, user.getId(), user.getFirstName(), user.getLastName(), user.getEmail());
 
         if (user.getBroker() != null) {

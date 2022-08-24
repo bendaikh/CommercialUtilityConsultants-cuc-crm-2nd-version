@@ -35,7 +35,7 @@ import java.util.List;
 @Controller
 public class SiteController {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final CustomerSiteService customerSiteService;
     private final CustomerService customerService;

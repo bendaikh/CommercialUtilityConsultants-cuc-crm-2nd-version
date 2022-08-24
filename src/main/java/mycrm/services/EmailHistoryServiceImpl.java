@@ -22,7 +22,7 @@ import java.util.List;
 @Primary
 public class EmailHistoryServiceImpl implements EmailHistoryService {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final EmailHistoryRepository emailHistoryRepository;
 

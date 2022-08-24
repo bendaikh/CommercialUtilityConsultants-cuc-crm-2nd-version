@@ -19,11 +19,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Service
 @Primary
 public class TpsCheckRestClientImpl implements TpsCheckRestClient {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     private final PluginService pluginService;
     @Value("${tps.provider.name}")
     private String tpsApiService;
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     @Autowired
     public TpsCheckRestClientImpl(PluginService pluginService, RestTemplateBuilder restTemplateBuilder) {

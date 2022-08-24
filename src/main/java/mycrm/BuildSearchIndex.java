@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class BuildSearchIndex implements ApplicationListener<ApplicationReadyEvent> {
 	
-	private static Logger logger = LogManager.getLogger();
+	private static final Logger logger = LogManager.getLogger();
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -27,10 +27,9 @@ public class BuildSearchIndex implements ApplicationListener<ApplicationReadyEve
 			fullTextEntityManager.createIndexer().startAndWait();
 
 		} catch (InterruptedException e) {
-			logger.info("An error occurred trying to build the search index: " + e.toString());
+			logger.info("An error occurred trying to build the search index: " + e);
 		}
-		return;
 
-	}
+    }
 
 }

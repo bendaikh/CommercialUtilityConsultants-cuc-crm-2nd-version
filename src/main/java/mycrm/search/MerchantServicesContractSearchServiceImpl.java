@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 @Primary
 public class MerchantServicesContractSearchServiceImpl implements MerchantServicesContractSearchService {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     private final MerchantServicesService merchantServicesService;
     private final UserHelper userHelper;
 

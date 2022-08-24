@@ -21,7 +21,7 @@ import java.util.stream.StreamSupport;
 @Primary
 public class CourtesyCallTaskServiceImpl implements CourtesyCallTaskService {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final SearchHelper searchHelper;
 

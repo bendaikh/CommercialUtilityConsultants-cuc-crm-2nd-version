@@ -42,18 +42,17 @@ public class CustomerSiteTransferHistoryServiceImpl implements CustomerSiteTrans
     }
 
     private String transferMessage(CustomerSiteTransferHistory history) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("This site was moved from ");
-        builder.append(history.getPreviousBusinessName());
-        builder.append(" ");
-        builder.append("by ");
-        builder.append(history.getCreatedBy().getFirstName());
-        builder.append(" ");
-        builder.append(history.getCreatedBy().getLastName());
-        builder.append(" ");
-        builder.append("on ");
-        builder.append(convertDateToString(history.getDateCreated()));
-        return builder.toString();
+        String builder = "This site was moved from " +
+                history.getPreviousBusinessName() +
+                " " +
+                "by " +
+                history.getCreatedBy().getFirstName() +
+                " " +
+                history.getCreatedBy().getLastName() +
+                " " +
+                "on " +
+                convertDateToString(history.getDateCreated());
+        return builder;
     }
 
     private String convertDateToString(Date date) {

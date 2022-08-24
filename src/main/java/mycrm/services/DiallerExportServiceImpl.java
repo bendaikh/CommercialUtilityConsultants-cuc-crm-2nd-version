@@ -22,7 +22,7 @@ import java.util.Set;
 @Service
 @Primary
 public class DiallerExportServiceImpl implements DiallerExportService {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     private final DiallerExportRepository diallerExportRepository;
     private final DiallerRestClient diallerRestClient;
     private final DiallerExportJSONWriter writer;
@@ -64,9 +64,7 @@ public class DiallerExportServiceImpl implements DiallerExportService {
         if (newDiallerDataSet.isEmpty() && updatedDiallerDataSet.isEmpty()) {
             logger.info("No latest Dialler data to upload.");
             try {
-                StringBuilder failedEmailBody = new StringBuilder();
-                failedEmailBody.append("<p>No data was uploaded today</p>");
-                emailTemplateService.sendDiallerUploadNotNeeded(failedEmailBody.toString());
+                emailTemplateService.sendDiallerUploadNotNeeded("<p>No data was uploaded today</p>");
             } catch (Exception e) {
                 logger.info("Failed to send lack of data email");
             }

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoginAttemptsLogger {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final UserService userService;
     private final UserStatsService userStatsService;
@@ -39,15 +39,15 @@ public class LoginAttemptsLogger {
 //        logger.info("  Session Id: " + details.getSessionId());
 //        logger.info("  Request URL: " + auditEvent.getData().get("requestUrl"));
 
-        if (!auditEvent.getPrincipal().toString().equals("anonymousUser")) {
+        if (!auditEvent.getPrincipal().equals("anonymousUser")) {
             User user = userService.findUserByUsername(auditEvent.getPrincipal());
             userStatsService.create(new UserStat(auditEvent.getPrincipal(), user, details.getRemoteAddress(),
                     (String) auditEvent.getData().get("requestUrl"), details.getSessionId(),
-                    auditEvent.getType().toString()));
+                    auditEvent.getType()));
         } else {
             userStatsService.create(new UserStat(auditEvent.getPrincipal(), null, details.getRemoteAddress(),
                     (String) auditEvent.getData().get("requestUrl"), details.getSessionId(),
-                    auditEvent.getType().toString()));
+                    auditEvent.getType()));
         }
     }
 }

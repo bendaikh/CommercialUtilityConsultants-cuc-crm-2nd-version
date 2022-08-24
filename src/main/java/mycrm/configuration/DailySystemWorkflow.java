@@ -17,7 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Configuration
 @EnableScheduling
 public class DailySystemWorkflow {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     private final DiallerExportService diallerExportService;
     private final RenewalEmailService renewalEmailService;
     private final EmailSettingService emailSettingService;

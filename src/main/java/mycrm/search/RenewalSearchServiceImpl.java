@@ -18,7 +18,7 @@ import java.util.List;
 @Primary
 public class RenewalSearchServiceImpl implements RenewalSearchService {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final EnergyContractSearchService energyContractSearchService;
     private final UserHelper userHelper;

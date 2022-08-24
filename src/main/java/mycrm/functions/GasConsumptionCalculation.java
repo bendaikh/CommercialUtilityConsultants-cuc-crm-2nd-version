@@ -8,7 +8,7 @@ public class GasConsumptionCalculation {
 
 	public Long calculateTotalGasConsumption(List<GasConsumption> gasConsumption) {
 
-		Long total = 0l;
+		Long total = 0L;
 		for (GasConsumption g : gasConsumption) {
 			
 			total += g.getAnnualConsumption();

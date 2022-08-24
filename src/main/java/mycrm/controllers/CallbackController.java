@@ -20,7 +20,7 @@ import java.util.List;
 @Controller
 public class CallbackController {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final SupplierService supplierService;
     private final BrokerService brokerService;

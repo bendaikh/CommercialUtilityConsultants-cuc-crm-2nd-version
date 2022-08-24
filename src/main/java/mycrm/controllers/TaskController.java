@@ -35,7 +35,7 @@ import java.util.List;
 @Controller
 public class TaskController {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final CustomerNoteService customerNoteService;
     private final UserService userService;

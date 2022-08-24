@@ -16,7 +16,7 @@ import java.util.List;
 @Primary
 public class LeadSearchServiceImpl implements LeadSearchService {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final UserHelper userHelper;
     private final EnergyContractSearchService energyContractSearchService;

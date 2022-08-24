@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class EmailServiceController {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final GasContractService gasContractService;
     private final ElecContractService elecContractService;

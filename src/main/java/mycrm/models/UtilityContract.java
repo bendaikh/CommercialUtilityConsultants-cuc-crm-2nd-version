@@ -377,9 +377,7 @@ public class UtilityContract extends Auditable<User> {
 
     public boolean isRenewable() {
         if (getLogType() != null && "LIVE".equals(getLogType())) {
-            if (getEndDate() != null && getEndDate().after(getToday())) {
-                return true;
-            }
+            return getEndDate() != null && getEndDate().after(getToday());
         }
         return false;
     }

@@ -29,7 +29,7 @@ import mycrm.services.BrokerService;
 @Controller
 public class BrokerDocumentController {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final BrokerDocumentService brokerDocumentService;
     private final BrokerService brokerService;

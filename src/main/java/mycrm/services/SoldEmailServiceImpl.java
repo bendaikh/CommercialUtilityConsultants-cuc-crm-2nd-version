@@ -14,11 +14,11 @@ import java.util.List;
 @Service
 @Primary
 public class SoldEmailServiceImpl implements SoldEmailService {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     private final EmailTemplateService emailTemplateService;
     private final EmailHistoryService emailHistoryService;
     private final CustomerDataService customerDataService;
-    private EmailType emailType = EmailType.SOLD;
+    private final EmailType emailType = EmailType.SOLD;
 
     public SoldEmailServiceImpl(EmailTemplateService emailTemplateService,
                                 EmailHistoryService emailHistoryService,

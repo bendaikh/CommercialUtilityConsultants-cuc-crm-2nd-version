@@ -8,7 +8,7 @@ public enum Action {
 
     private final String name;
 
-    private Action(String value) {
+    Action(String value) {
         this.name = value;
     }
 

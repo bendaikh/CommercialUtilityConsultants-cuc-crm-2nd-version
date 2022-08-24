@@ -27,7 +27,7 @@ import java.util.Map;
 @Primary
 public class EmailTemplateServiceImpl implements EmailTemplateService {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final EmailService emailService;
     private final Configuration configuration;
@@ -134,7 +134,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
         String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
 
-        String to[] = {"mohammed@commercialutilityconsultants.co.uk"};
+        String[] to = {"mohammed@commercialutilityconsultants.co.uk"};
 
         emailService.sendMimeMessage(to, subject, text);
     }
@@ -154,7 +154,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
         String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
 
-        String to[] = {"mohammed@commercialutilityconsultants.co.uk"};
+        String[] to = {"mohammed@commercialutilityconsultants.co.uk"};
 
         emailService.sendMimeMessage(to, subject, text);
     }
@@ -177,7 +177,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
         String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
 
-        String to[] = {"mohammed@commercialutilityconsultants.co.uk"};
+        String[] to = {"mohammed@commercialutilityconsultants.co.uk"};
 
         emailService.sendMimeMessage(to, subject, text);
     }
@@ -267,7 +267,7 @@ public class EmailTemplateServiceImpl implements EmailTemplateService {
 
             if (template != null) {
                 String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
-                String to[] = {emailAddress};
+                String[] to = {emailAddress};
                 emailService.sendMimeMessage(to, subject, text);
                 return true;
             }

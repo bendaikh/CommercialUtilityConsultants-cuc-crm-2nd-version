@@ -27,7 +27,7 @@ import java.util.Set;
 @Service
 @Primary
 public class DiallerDataManipulationServiceImpl implements DiallerDataManipulationService {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final PluginService pluginService;
 

@@ -93,9 +93,6 @@ public class CustomerServiceJpaImpl implements CustomerService {
     @Override
     public Customer findByCustomerReference(String customerReference) {
         Customer result = this.customerRepo.findByCustomerReference(customerReference);
-        if (result == null) {
-            return null;
-        }
 
         return result;
     }

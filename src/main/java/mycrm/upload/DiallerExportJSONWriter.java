@@ -15,7 +15,7 @@ import java.util.Set;
 @Component
 public class DiallerExportJSONWriter {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private static FileWriter file;
 

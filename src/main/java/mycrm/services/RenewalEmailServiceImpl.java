@@ -19,13 +19,13 @@ import java.util.List;
 @Primary
 public class RenewalEmailServiceImpl implements RenewalEmailService {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     private final GasContractService gasContractService;
     private final ElecContractService elecContractService;
     private final EmailTemplateService emailTemplateService;
     private final EmailHistoryService emailHistoryService;
     private final CustomerDataService customerDataService;
-    private EmailType emailType = EmailType.RENEWAL;
+    private final EmailType emailType = EmailType.RENEWAL;
 
     @Autowired
     public RenewalEmailServiceImpl(GasContractService gasContractService,

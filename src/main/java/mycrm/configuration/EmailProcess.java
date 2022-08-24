@@ -4,7 +4,7 @@ public enum EmailProcess {
     AUTOMATED("AUTOMATED"),
     MANUAL("MANUAL");
 
-    private String name;
+    private final String name;
 
     EmailProcess(String name) {
         this.name = name;

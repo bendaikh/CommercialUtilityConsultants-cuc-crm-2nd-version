@@ -40,14 +40,14 @@ import java.util.Arrays;
 @Service
 @Primary
 public class DiallerRestClientImpl implements DiallerRestClient {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final DiallerResponseService diallerResponseService;
     private final PluginService pluginService;
     @Value("${dialler.provider.name}")
     private String diallerProviderName;
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     @Autowired
     public DiallerRestClientImpl(DiallerResponseService diallerResponseService, PluginService pluginService,

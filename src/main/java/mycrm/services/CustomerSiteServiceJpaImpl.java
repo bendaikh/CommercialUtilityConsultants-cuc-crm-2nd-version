@@ -24,7 +24,7 @@ import java.util.List;
 @Primary
 public class CustomerSiteServiceJpaImpl implements CustomerSiteService {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final CustomerSiteRepository sitesRepo;
     private final GasContractService gasContractService;

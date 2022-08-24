@@ -105,20 +105,19 @@ public class BrokerTransferHistoryServiceImpl implements BrokerTransferHistorySe
     }
 
     private String transferMessage(BrokerTransferHistory brokerTransferHistory, Broker previousBroker) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Contract transferred from ");
-        builder.append(previousBroker.getFirstName());
-        builder.append(" ");
-        builder.append(previousBroker.getLastName());
-        builder.append(" ");
-        builder.append("by ");
-        builder.append(brokerTransferHistory.getCreatedBy().getFirstName());
-        builder.append(" ");
-        builder.append(brokerTransferHistory.getCreatedBy().getLastName());
-        builder.append(" ");
-        builder.append("on ");
-        builder.append(convertDateToString(brokerTransferHistory.getDateCreated()));
-        return builder.toString();
+        String builder = "Contract transferred from " +
+                previousBroker.getFirstName() +
+                " " +
+                previousBroker.getLastName() +
+                " " +
+                "by " +
+                brokerTransferHistory.getCreatedBy().getFirstName() +
+                " " +
+                brokerTransferHistory.getCreatedBy().getLastName() +
+                " " +
+                "on " +
+                convertDateToString(brokerTransferHistory.getDateCreated());
+        return builder;
     }
 
     private String convertDateToString(Date date) {

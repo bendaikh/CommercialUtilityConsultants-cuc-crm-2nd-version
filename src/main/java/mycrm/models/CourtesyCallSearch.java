@@ -4,9 +4,9 @@ import java.util.List;
 
 public class CourtesyCallSearch {
 
-    private int totalPages;
-    private int pageNumber;
-    private List<CourtesyCallTask> courtesyCallTaskList;
+    private final int totalPages;
+    private final int pageNumber;
+    private final List<CourtesyCallTask> courtesyCallTaskList;
 
     public CourtesyCallSearch(int totalPages, int pageNumber, List<CourtesyCallTask> courtesyCallTaskList) {
         this.totalPages = totalPages;

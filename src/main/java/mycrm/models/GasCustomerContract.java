@@ -14,7 +14,7 @@ public class GasCustomerContract extends EnergyContract<User> {
 
     @Field
     @Column(nullable = false, length = 4)
-    private String supplyType = "GAS";
+    private final String supplyType = "GAS";
 
     public GasCustomerContract() {
     }

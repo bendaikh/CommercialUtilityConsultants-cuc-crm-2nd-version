@@ -5,7 +5,7 @@ public enum DiallerDatasetType {
     UPDATE("update"),
     DELETE("delete");
 
-    private String method;
+    private final String method;
 
     DiallerDatasetType(String method) {
         this.method = method;

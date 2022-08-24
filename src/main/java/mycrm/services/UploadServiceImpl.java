@@ -37,7 +37,7 @@ import java.util.Locale;
 @Primary
 public class UploadServiceImpl implements UploadService {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     //    private final Pattern firstPart = Pattern.compile("[A-Z]{1,2}[0-9R][0-9A-Z]?");
 //    private final Pattern secondPart = Pattern.compile("[0-9][A-Z-[CIKMOV]]{2}");
     private final CustomerService customerService;
@@ -362,7 +362,7 @@ public class UploadServiceImpl implements UploadService {
     }
 
     private boolean isSoleTrader(Boolean soleTrader) {
-        return soleTrader == null ? false : soleTrader;
+        return soleTrader != null && soleTrader;
     }
 
     private Date convertStringToDate(String date) {
@@ -393,7 +393,7 @@ public class UploadServiceImpl implements UploadService {
 
 
     private long convertStringToLong(String value) {
-        return StringUtils.hasText(value) ? Long.parseLong(value.replaceAll(",", "")) : 0l;
+        return StringUtils.hasText(value) ? Long.parseLong(value.replaceAll(",", "")) : 0L;
     }
 
     private double convertStringToDouble(String value) {

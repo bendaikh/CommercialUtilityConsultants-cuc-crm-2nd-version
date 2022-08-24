@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class DiallerController {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final PluginService pluginService;
 

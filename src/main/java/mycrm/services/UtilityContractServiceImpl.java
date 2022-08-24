@@ -28,7 +28,7 @@ import java.util.List;
 @Primary
 public class UtilityContractServiceImpl implements UtilityContractService {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final UtilityContractRepository utilityContractRepository;
     private final LogTypeHistoryService logTypeHistoryService;

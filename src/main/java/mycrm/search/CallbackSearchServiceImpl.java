@@ -22,7 +22,7 @@ import java.util.List;
 @Primary
 public class CallbackSearchServiceImpl implements CallbackSearchService {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final UserHelper userHelper;
     private final EnergyContractSearchService energyContractSearchService;

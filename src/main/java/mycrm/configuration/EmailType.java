@@ -7,7 +7,7 @@ public enum EmailType {
     OBJECTED("OBJECTED"),
     LIVE("LIVE");
 
-    private String type;
+    private final String type;
 
     EmailType(String type) {
         this.type = type;

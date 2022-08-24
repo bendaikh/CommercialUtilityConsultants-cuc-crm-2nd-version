@@ -20,7 +20,7 @@ import java.util.List;
 @Controller
 public class BrokerNoteController {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final BrokerNoteService brokerNoteService;
     private final BrokerService brokerService;

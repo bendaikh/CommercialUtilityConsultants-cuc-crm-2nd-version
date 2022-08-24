@@ -14,11 +14,11 @@ import java.util.List;
 @Service
 @Primary
 public class ObjectedEmailServiceImpl implements ObjectedEmailService {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     private final EmailTemplateService emailTemplateService;
     private final EmailHistoryService emailHistoryService;
     private final CustomerDataService customerDataService;
-    private EmailType emailType = EmailType.OBJECTED;
+    private final EmailType emailType = EmailType.OBJECTED;
 
     public ObjectedEmailServiceImpl(EmailTemplateService emailTemplateService,
                                     EmailHistoryService emailHistoryService, CustomerDataService customerDataService) {

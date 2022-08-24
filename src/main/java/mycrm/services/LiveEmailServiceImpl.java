@@ -16,11 +16,11 @@ import java.util.List;
 @Primary
 public class LiveEmailServiceImpl implements LiveEmailService {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
     private final EmailTemplateService emailTemplateService;
     private final EmailHistoryService emailHistoryService;
     private final CustomerDataService customerDataService;
-    private EmailType emailType = EmailType.LIVE;
+    private final EmailType emailType = EmailType.LIVE;
 
     @Autowired
     public LiveEmailServiceImpl(EmailTemplateService emailTemplateService,

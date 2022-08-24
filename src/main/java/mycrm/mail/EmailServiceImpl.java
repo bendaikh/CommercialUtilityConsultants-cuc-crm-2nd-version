@@ -15,7 +15,7 @@ import javax.mail.internet.MimeMessage;
 @Component
 public class EmailServiceImpl implements EmailService {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final JavaMailSender javaMailSender;
 

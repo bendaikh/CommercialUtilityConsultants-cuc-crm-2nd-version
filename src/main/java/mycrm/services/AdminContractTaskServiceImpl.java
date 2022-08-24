@@ -93,7 +93,7 @@ public class AdminContractTaskServiceImpl implements AdminContractTaskService {
                 .supplier(utilityContract.getSupplier())
                 .broker(utilityContract.getBroker())
                 .dateCreated(utilityContract.getDateCreated())
-                .createdBy((User) utilityContract.getCreatedBy())
+                .createdBy(utilityContract.getCreatedBy())
                 .accountNumber(utilityContract.getAccountNumber())
                 .build()));
         return processingTasks;

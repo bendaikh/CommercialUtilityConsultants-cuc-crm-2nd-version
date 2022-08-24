@@ -14,7 +14,7 @@ public class ElecCustomerContract extends EnergyContract<User> {
 
     @Field
     @Column(nullable = false, length = 4)
-    private String supplyType = "ELEC";
+    private final String supplyType = "ELEC";
 
     @Column(nullable = true, length = 10)
     private double dayRate;

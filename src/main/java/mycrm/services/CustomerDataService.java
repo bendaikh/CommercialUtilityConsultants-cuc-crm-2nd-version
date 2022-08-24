@@ -10,11 +10,12 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Component
 public class CustomerDataService {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final ContactService contactService;
 
@@ -27,7 +28,7 @@ public class CustomerDataService {
         logger.info("Getting primary email address for {}", customer.getBusinessName());
 
         if (StringUtils.hasText(customer.getEmailAddress())) {
-            return Arrays.asList(customer.getEmailAddress());
+            return Collections.singletonList(customer.getEmailAddress());
         }
         return new ArrayList<>();
     }

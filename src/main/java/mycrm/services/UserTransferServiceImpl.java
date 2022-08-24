@@ -18,7 +18,7 @@ import java.util.List;
 @Primary
 public class UserTransferServiceImpl implements UserTransferService {
 
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     private final CustomerNoteService customerNoteService;
     private final CustomerChildNoteService customerChildNoteService;
