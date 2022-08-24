@@ -73,10 +73,21 @@ public class CustomerNote extends Auditable<User> {
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private UtilityContract utilityContract;
 
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    private MerchantServicesContract merchantServicesContract;
+
     @OneToMany(mappedBy = "customerNote")
     List<CustomerChildNote> customerChildNoteList;
 
     public CustomerNote() {
+    }
+
+    public MerchantServicesContract getMerchantServicesContract() {
+        return merchantServicesContract;
+    }
+
+    public void setMerchantServicesContract(MerchantServicesContract merchantServicesContract) {
+        this.merchantServicesContract = merchantServicesContract;
     }
 
     public Long getId() {

@@ -5,6 +5,12 @@
 </head>
 <body>
 <header th:replace="../static/fragments/layout :: header"/>
+<script th:if="${merchantServicesContract.id}" th:inline="javascript">
+    /*<![CDATA[*/
+    showMerchantServiceContractNotes(/*[[${merchantServicesContract.id}]]*/);
+    showTpsContactsList(/*[[${customerSite.customer.id}]]*/);
+    /*]]>*/
+</script>
 <div class="container-fluid">
   <h1 th:text="${customerSite.fullSiteNameAndAddress}">Site</h1>
   <h2>Manage Merchant Services Contract</h2>
@@ -431,6 +437,91 @@
           </div>
         </div>
       </form>
+    </div>
+  </div>
+  <div class="col-md-6" th:if="${merchantServicesContract.id}">
+    <div class="panel panel-info">
+      <div class="panel-heading">Contract Notes</div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <a class="btn btn-default pull-right" data-target="#newNoteModal" data-toggle="modal">Create new note</a>
+          </div>
+        </div>
+        <div id="merchant-services-contract-notes-div"></div>
+      </div>
+    </div>
+    <div class="modal fade" id="newNoteModal" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" data-dismiss="modal" type="button">&times;</button>
+            <h4 class="modal-title">New Note</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal" id="merchantNote" name="merchantNote">
+              <input id="customer" name="customer" th:value="${merchantServicesContract.customerSite.customer.id}" type="hidden"/>
+              <input id="elecCustomerContract" name="elecCustomerContract" type="hidden" value=""/>
+              <input id="gasCustomerContract" name="gasCustomerContract" type="hidden" value=""/>
+              <input id="utilityContract" name="utilityContract" type="hidden" value=""/>
+              <input id="merchantServicesContract" name="merchantServicesContract" th:value="${merchantServicesContract.id}" type="hidden"/>
+              <div class="form-group">
+                <div class="col-md-6">
+                  <input class="form-control" id="subject" name="subject" placeholder="Subject" required="required" type="text"/>
+                </div>
+                <div class="col-md-6">
+                  <select class="form-control input-sm" id="taggedUser" name="taggedUser">
+                    <option value="">Tagged User</option>
+                    <option th:each="u:${users}" th:text="${u.firstName}+' '+${u.lastName}" th:value="${u.id}"></option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12">
+                  <textarea class="form-control" cols="100" id="note" name="note" placeholder="Enter note here" required="required" rows="5"></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-3">
+                  <label>Completed: <input id="completed" name="completed" type="checkbox"/></label>
+                </div>
+                <div class="col-md-3">
+                  <input class="form-control input-sm" id="altDueByDate" name="altDueByDate" placeholder="Due by Date" readonly="readonly"
+                         th:value="*{dueByDate != null} ? *{#dates.format(dueByDate, 'dd/MM/yyyy')}" type="text"/>
+                  <input id="dueByDate" name="dueByDate" th:value="*{dueByDate}" type="hidden"/>
+                </div>
+                <div class="col-md-3">
+                  <select class="form-control input-sm" id="priority" name="priority">
+                    <option value="LOW">LOW</option>
+                    <option value="MEDIUM">MEDIUM</option>
+                    <option value="HIGH">HIGH</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <label>Quick Win: <input id="quickWin" name="quickWin" type="checkbox"/></label>
+                </div>
+                <div class="col-md-3">
+                  <select class="form-control input-sm" id="relatedTo" name="relatedTo">
+                    <option value="">Related to</option>
+                    <option th:each="relatedTo : ${T(mycrm.configuration.RelatedTo).values()}"
+                            th:text="${relatedTo}" th:value="${relatedTo}"></option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-4">
+                  <a class="btn btn-success" th:href="'javascript:saveMerchantServicesContractNote(\''+ ${merchantServicesContract.id} +'\');'">
+                    <span class="glyphicon glyphicon-save"></span> Add Note
+                  </a>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

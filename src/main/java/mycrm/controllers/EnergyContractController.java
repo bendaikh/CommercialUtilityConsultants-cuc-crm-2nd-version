@@ -1,25 +1,7 @@
 package mycrm.controllers;
 
-import mycrm.models.Broker;
-import mycrm.models.Contact;
-import mycrm.models.CustomerNote;
-import mycrm.models.ElecCustomerContract;
-import mycrm.models.GasCustomerContract;
-import mycrm.models.Supplier;
-import mycrm.models.User;
-import mycrm.models.UtilityContract;
-import mycrm.services.BrokerService;
-import mycrm.services.BrokerTransferHistoryService;
-import mycrm.services.ContactService;
-import mycrm.services.ContractReasonService;
-import mycrm.services.ContractService;
-import mycrm.services.CustomerNoteService;
-import mycrm.services.CustomerSiteService;
-import mycrm.services.ElecContractService;
-import mycrm.services.GasContractService;
-import mycrm.services.SupplierService;
-import mycrm.services.UserService;
-import mycrm.services.UtilityContractService;
+import mycrm.models.*;
+import mycrm.services.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +35,8 @@ public class EnergyContractController {
     private final UtilityContractService utilityContractService;
     private final BrokerTransferHistoryService brokerTransferHistoryService;
 
+    private final MerchantServicesService merchantServicesService;
+
     @Value("${default.broker.id}")
     private Long defaultBrokerId;
 
@@ -60,7 +44,8 @@ public class EnergyContractController {
     public EnergyContractController(GasContractService gasContractService, ElecContractService elecContractService,
                                     SupplierService supplierService, BrokerService brokerService, UserService userService, ContractReasonService contractReasonService,
                                     CustomerSiteService customerSiteService, CustomerNoteService customerNoteService, ContactService contactService,
-                                    ContractService contractService, UtilityContractService utilityContractService, BrokerTransferHistoryService brokerTransferHistoryService) {
+                                    ContractService contractService, UtilityContractService utilityContractService, BrokerTransferHistoryService brokerTransferHistoryService,
+                                    MerchantServicesService merchantServicesService) {
         this.gasContractService = gasContractService;
         this.elecContractService = elecContractService;
         this.supplierService = supplierService;
@@ -73,6 +58,7 @@ public class EnergyContractController {
         this.contractService = contractService;
         this.utilityContractService = utilityContractService;
         this.brokerTransferHistoryService = brokerTransferHistoryService;
+        this.merchantServicesService = merchantServicesService;
     }
 
     // new gas contract
@@ -200,6 +186,15 @@ public class EnergyContractController {
         model.addAttribute("users", userService.findAll());
         return "admin/customer/utility-contract-notes";
     }
+    @RequestMapping("/admin/customer/merchant-services-contract-notes")
+    public String getMerchantServiceContractNotes(@RequestParam Long id, Model model) {
+
+        MerchantServicesContract merchantServicesContract = merchantServicesService.findById(id);
+
+        model.addAttribute("merchantServiceContractNotes", customerNoteService.findByMerchantServicesContractOrderByDateCreatedDesc(merchantServicesContract));
+        model.addAttribute("users", userService.findAll());
+        return "admin/customer/merchant-services-contract-notes";
+    }
 
     // create elec contract notes
     @RequestMapping(value = "/elecContractNote", method = RequestMethod.POST)
@@ -220,6 +215,11 @@ public class EnergyContractController {
     public String saveUtilityContractNote(CustomerNote customerNote) {
         CustomerNote savedNote = customerNoteService.save(customerNote);
         return "redirect:/admin/customer/edit-utility-contract/" + savedNote.getUtilityContract().getId();
+    }
+    @RequestMapping(value = "/merchantServiceContractNote", method = RequestMethod.POST)
+    public String saveMerchantServiceContractNote(CustomerNote customerNote) {
+        CustomerNote savedNote = customerNoteService.save(customerNote);
+        return "redirect:/admin/customer/edit-merchant-services/" + savedNote.getMerchantServicesContract().getId();
     }
 
     @RequestMapping("/admin/customer/editeleccontract/{id}")

@@ -1,11 +1,6 @@
 package mycrm.services;
 
-import mycrm.models.Customer;
-import mycrm.models.CustomerNote;
-import mycrm.models.ElecCustomerContract;
-import mycrm.models.GasCustomerContract;
-import mycrm.models.User;
-import mycrm.models.UtilityContract;
+import mycrm.models.*;
 import mycrm.repositories.CustomerNoteRepository;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,6 +125,11 @@ public class CustomerNoteServiceJpaImpl implements CustomerNoteService {
     @Override
     public List<CustomerNote> findByUtilityContractOrderByDateCreatedDesc(UtilityContract utilityContract) {
         return this.customerNotesRepo.findByUtilityContractOrderByDateCreatedDesc(utilityContract);
+    }
+
+    @Override
+    public List<CustomerNote> findByMerchantServicesContractOrderByDateCreatedDesc(MerchantServicesContract merchantServicesContract) {
+        return this.customerNotesRepo.findByMerchantServicesContractOrderByDateCreatedDesc(merchantServicesContract);
     }
 
     @Override

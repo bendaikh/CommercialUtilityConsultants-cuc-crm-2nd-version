@@ -1,11 +1,6 @@
 package mycrm.services;
 
-import mycrm.models.Customer;
-import mycrm.models.CustomerNote;
-import mycrm.models.ElecCustomerContract;
-import mycrm.models.GasCustomerContract;
-import mycrm.models.User;
-import mycrm.models.UtilityContract;
+import mycrm.models.*;
 
 import java.util.List;
 
@@ -49,6 +44,7 @@ public interface CustomerNoteService {
 
     List<CustomerNote> findByUtilityContractOrderByDateCreatedDesc(UtilityContract utilityContract);
 
+    List<CustomerNote> findByMerchantServicesContractOrderByDateCreatedDesc(MerchantServicesContract merchantServicesContract);
     int countTaggedNotesByUser(User user);
 
     List<CustomerNote> findByTaggedUser(User user);

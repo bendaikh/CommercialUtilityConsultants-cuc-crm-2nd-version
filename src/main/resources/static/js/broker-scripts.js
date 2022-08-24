@@ -403,11 +403,31 @@ function showUtilityContractNotes(id) {
     });
 }
 
+function showMerchantServiceContractNotes(id) {
+    console.log("entered with this id");
+    console.log(id);
+    $.get('/admin/customer/merchant-services-contract-notes', {
+        id: id
+    }, function (data) {
+        console.log("+++++++++++++++++++++++");
+        console.log(data);
+        $('#merchant-services-contract-notes-div').html(data);
+    });
+}
 function saveUtilityContractNote(id) {
     if ($('#utilityNote').valid()) {
         $.post('/utilityContractNote', $('#utilityNote').serialize(), function (data) {
             showUtilityContractNotes(id);
             $('#utilityNote').get(0).reset();
+            $('#newNoteModal').modal('hide');
+        });
+    }
+}
+function saveMerchantServicesContractNote(id) {
+    if ($('#merchantNote').valid()) {
+        $.post('/merchantServiceContractNote', $('#merchantNote').serialize(), function (data) {
+            showMerchantServiceContractNotes(id);
+            $('#merchantNote').get(0).reset();
             $('#newNoteModal').modal('hide');
         });
     }

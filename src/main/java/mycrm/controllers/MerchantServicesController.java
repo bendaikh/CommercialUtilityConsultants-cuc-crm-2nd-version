@@ -1,10 +1,6 @@
 package mycrm.controllers;
 
-import mycrm.models.Broker;
-import mycrm.models.MerchantServicesContract;
-import mycrm.models.MerchantServicesContractSearch;
-import mycrm.models.MerchantServicesSearchResult;
-import mycrm.models.User;
+import mycrm.models.*;
 import mycrm.search.MerchantServicesContractSearchService;
 import mycrm.services.BrokerService;
 import mycrm.services.BrokerTransferHistoryService;
@@ -186,6 +182,43 @@ public class MerchantServicesController {
         return "admin/merchant-services/callbacks";
     }
 
+    @RequestMapping("/admin/merchant-services/leads/{page}")
+    public String viewMerchantServiceLeads(MerchantServicesContractSearch merchantServicesContractSearch, Model model, @PathVariable("page") int page) {
+
+        merchantServicesContractSearch.setLeadSearch(true);
+        long startTime = System.currentTimeMillis();
+        MerchantServicesSearchResult merchantServicesSearchResult =
+                merchantServicesContractSearchService.searchMerchantServicesContract(merchantServicesContractSearch, page);
+        long endTime = System.currentTimeMillis();
+        long timeTaken = (endTime - startTime);
+        model.addAttribute("brokers", brokerService.findAll());
+        model.addAttribute("leads", merchantServicesSearchResult.getReturnedContracts());
+        model.addAttribute("totalResults", merchantServicesSearchResult.getReturnedContractCount());
+        model.addAttribute("totalPages", merchantServicesSearchResult.getTotalPages());
+        model.addAttribute("totalContracts", merchantServicesSearchResult.getTotalContractCount());
+        model.addAttribute("pageNumber", page);
+        model.addAttribute("timeTaken", timeTaken);
+        return "admin/merchant-services/leads";
+    }
+
+    @RequestMapping("/admin/merchant-services/lost-renewals/{page}")
+    public String viewLostMerchantServiceRenewals(MerchantServicesContractSearch merchantServicesContractSearch, Model model, @PathVariable("page") int page) {
+
+        merchantServicesContractSearch.setLeadSearch(true);
+        long startTime = System.currentTimeMillis();
+        MerchantServicesSearchResult merchantServicesSearchResult =
+                merchantServicesContractSearchService.searchMerchantServicesContract(merchantServicesContractSearch, page);
+        long endTime = System.currentTimeMillis();
+        long timeTaken = (endTime - startTime);
+        model.addAttribute("brokers", brokerService.findAll());
+        model.addAttribute("lostRenewals", merchantServicesSearchResult.getReturnedContracts());
+        model.addAttribute("totalResults", merchantServicesSearchResult.getReturnedContractCount());
+        model.addAttribute("totalPages", merchantServicesSearchResult.getTotalPages());
+        model.addAttribute("totalContracts", merchantServicesSearchResult.getTotalContractCount());
+        model.addAttribute("pageNumber", page);
+        model.addAttribute("timeTaken", timeTaken);
+        return "admin/merchant-services/lost-renewals";
+    }
     @PreAuthorize("hasAuthority('SUPERADMIN')")
     @RequestMapping("/admin/customer/deleteMerchantContract/{id}")
     public String deleteMerchantContract(@PathVariable("id") Long id) {

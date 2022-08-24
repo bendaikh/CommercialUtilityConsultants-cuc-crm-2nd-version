@@ -12,4 +12,5 @@ public class MerchantServicesSearchResult {
     private long returnedContractCount;
     private long totalContractCount;
     private int totalPages;
+
 }

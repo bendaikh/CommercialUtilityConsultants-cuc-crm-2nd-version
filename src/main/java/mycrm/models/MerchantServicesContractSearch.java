@@ -27,4 +27,34 @@ public class MerchantServicesContractSearch {
     private boolean lostRenewal;
     private int monthsRemaining;
     private String monthRemainingDate;
+
+    public MerchantServicesContractSearch() {
+    }
+
+    @Override
+    public String toString() {
+        return "MerchantServicesContractSearch{" +
+                "q='" + q + '\'' +
+                ", logType='" + logType + '\'' +
+                ", fromDate='" + fromDate + '\'' +
+                ", toDate='" + toDate + '\'' +
+                ", broker=" + broker +
+                ", loggedInUser=" + loggedInUser +
+                ", pendingBroker=" + pendingBroker +
+                ", customerContractSearch=" + customerContractSearch +
+                ", renewalSearch=" + renewalSearch +
+                ", leadSearch=" + leadSearch +
+                ", callbackSearch=" + callbackSearch +
+                ", lostRenewalSearch=" + lostRenewalSearch +
+                ", myCustomerSearch=" + myCustomerSearch +
+                ", denyExternalBrokerAccess=" + denyExternalBrokerAccess +
+                ", showInternalBrokerOwnContractsOnly=" + showInternalBrokerOwnContractsOnly +
+                ", showExternalBrokerOwnContractsOnly=" + showExternalBrokerOwnContractsOnly +
+                ", showInternalBrokerOwnAndPendingContracts=" + showInternalBrokerOwnAndPendingContracts +
+                ", showExternalBrokerOwnAndPendingContracts=" + showExternalBrokerOwnAndPendingContracts +
+                ", lostRenewal=" + lostRenewal +
+                ", monthsRemaining=" + monthsRemaining +
+                ", monthRemainingDate='" + monthRemainingDate + '\'' +
+                '}';
+    }
 }

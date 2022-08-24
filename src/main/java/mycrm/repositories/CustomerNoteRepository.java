@@ -1,11 +1,6 @@
 package mycrm.repositories;
 
-import mycrm.models.Customer;
-import mycrm.models.CustomerNote;
-import mycrm.models.ElecCustomerContract;
-import mycrm.models.GasCustomerContract;
-import mycrm.models.User;
-import mycrm.models.UtilityContract;
+import mycrm.models.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -52,6 +47,10 @@ public interface CustomerNoteRepository extends JpaRepository<CustomerNote, Long
 
     @Query("SELECT cn from CustomerNote cn WHERE cn.elecCustomerContract=(:elecCustomerContract) ORDER BY cn.dateCreated DESC")
     List<CustomerNote> findTopByElecCustomerContractOrderByDateCreatedDesc(@Param("elecCustomerContract") ElecCustomerContract elecCustomerContract, Pageable pageable);
+
+    @Query("SELECT cn from CustomerNote cn WHERE cn.merchantServicesContract=(:merchantServicesContract) ORDER BY cn.dateCreated DESC")
+    List<CustomerNote> findByMerchantServicesContractOrderByDateCreatedDesc(@Param("merchantServicesContract") MerchantServicesContract merchantServicesContract);
+
 
     @Transactional
     @Modifying
