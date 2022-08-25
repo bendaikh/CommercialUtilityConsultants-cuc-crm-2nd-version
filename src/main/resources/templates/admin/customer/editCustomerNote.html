@@ -85,6 +85,14 @@
                   th:value="${e.id}"></option>
         </select>
       </div>
+      <div class="col-md-4" style="margin-top:8px">
+        <select class="form-control input-sm" id="merchantServicesContract" name="merchantServicesContract">
+          <option value="">merchant service Contracts</option>
+          <option th:each="e:${merchantServiceContract}"
+                  th:text="${e.logType}+' '+${e.startDate != null ? e.startDate: ''}+' '+${e.endDate != null ? e.endDate: ''}+' '+${e.customerSite.siteName}+', '+${e.customerSite.siteAddr}+', '+${e.customerSite.siteCity}+', '+${e.customerSite.sitePostcodeOut}+' '+${e.customerSite.sitePostcodeIn}"
+                  th:value="${e.id}"></option>
+        </select>
+      </div>
     </div>
     <div class="form-group">
       <div class="col-sm-4">

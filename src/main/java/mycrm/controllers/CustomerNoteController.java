@@ -1,19 +1,7 @@
 package mycrm.controllers;
 
-import mycrm.models.Contact;
-import mycrm.models.Customer;
-import mycrm.models.CustomerChildNote;
-import mycrm.models.CustomerNote;
-import mycrm.services.ContactService;
-import mycrm.services.CustomerChildNoteService;
-import mycrm.services.CustomerNoteService;
-import mycrm.services.CustomerService;
-import mycrm.services.ElecContractService;
-import mycrm.services.EmailTemplateService;
-import mycrm.services.GasContractService;
-import mycrm.services.LinkedAccountService;
-import mycrm.services.UserService;
-import mycrm.services.UtilityContractService;
+import mycrm.models.*;
+import mycrm.services.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +28,8 @@ public class CustomerNoteController {
     private final CustomerChildNoteService customerChildNoteService;
     private final EmailTemplateService emailTemplateService;
     private final UtilityContractService utilityContractService;
+
+    private final MerchantServicesService merchantServicesService;
     private final LinkedAccountService linkedAccountService;
 
     @Autowired
@@ -49,7 +39,7 @@ public class CustomerNoteController {
                                   GasContractService gasContractService,
                                   ElecContractService elecContractService,
                                   ContactService contactService, CustomerChildNoteService customerChildNoteService, EmailTemplateService emailTemplateService,
-                                  UtilityContractService utilityContractService, LinkedAccountService linkedAccountService) {
+                                  UtilityContractService utilityContractService, LinkedAccountService linkedAccountService, MerchantServicesService merchantServicesService) {
         this.customerService = customerService;
         this.customerNoteService = customerNoteService;
         this.userService = userService;
@@ -60,6 +50,7 @@ public class CustomerNoteController {
         this.emailTemplateService = emailTemplateService;
         this.utilityContractService = utilityContractService;
         this.linkedAccountService = linkedAccountService;
+        this.merchantServicesService = merchantServicesService;
     }
 
     // view customer notes
@@ -77,10 +68,17 @@ public class CustomerNoteController {
         model.addAttribute("gasCustomerContracts", gasContractService.findByCustomerOrderByEndDateDesc(customer));
         model.addAttribute("elecCustomerContracts", elecContractService.findByCustomerOrderByEndDateDesc(customer));
         model.addAttribute("utilityContracts", utilityContractService.findByCustomerOrderByEndDateDesc(customer));
+        model.addAttribute("merchantServiceContract", merchantServicesService.findByCustomerOrderByEndDateDesc(customer));
         model.addAttribute("contactList", contactList);
         model.addAttribute("noteId", noteId);
         model.addAttribute("childNoteId", childNoteId);
         model.addAttribute("linkedAccountsSize", linkedAccountService.findByCustomer(customer).size());
+        List<MerchantServicesContract> merchant = merchantServicesService.findByCustomerOrderByEndDateDesc(customer);
+        List<UtilityContract> utility = utilityContractService.findByCustomerOrderByEndDateDesc(customer);
+        System.out.println("#######################################");
+        System.out.println(merchant);
+        System.out.println("#######################################");
+        System.out.println(utility);
         return "admin/customer/customernotes";
     }
 
@@ -88,7 +86,6 @@ public class CustomerNoteController {
     @RequestMapping(value = "/customerNote", method = RequestMethod.POST)
     public String saveNote(CustomerNote customerNote) {
         CustomerNote createdNote = customerNoteService.save(customerNote);
-
         if (createdNote == null) {
             return "redirect:/admin/customer/customernotes/" + customerNote.getCustomer().getId();
         }
@@ -164,6 +161,18 @@ public class CustomerNoteController {
     public String saveElectricChildNote(CustomerChildNote customerChildNote) {
         customerChildNoteService.save(customerChildNote);
         return "redirect:/admin/customer/editeleccontract/" + customerChildNote.getCustomerNote().getElecCustomerContract().getId();
+    }
+
+    @RequestMapping(value = "/addUtilityChildNote", method = RequestMethod.POST)
+    public String saveUtilityChildNote(CustomerChildNote customerChildNote) {
+        customerChildNoteService.save(customerChildNote);
+        return "redirect:/admin/customer/editutilitycontract/" + customerChildNote.getCustomerNote().getUtilityContract().getId();
+    }
+
+    @RequestMapping(value = "/addMerchantServiceChildNote", method = RequestMethod.POST)
+    public String saveMerchantServiceChildNote(CustomerChildNote customerChildNote) {
+        customerChildNoteService.save(customerChildNote);
+        return "redirect:/admin/customer/editMerchantServicecontract/" + customerChildNote.getCustomerNote().getMerchantServicesContract().getId();
     }
 
     /*CHILD GAS NOTES*/

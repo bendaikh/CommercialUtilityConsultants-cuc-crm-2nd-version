@@ -70,7 +70,7 @@
       </div>
     </div>
     <div class="well well-sm">
-      <form class="form-horizontal" id="form" method="post" th:action="@{/utilityContract}" th:object="${utilityContract}">
+      <form class="form-horizontal" id="form" method="post" th:action="@{/addUtilityChildNote}" th:object="${utilityContract}">
         <input th:field="*{id}" type="hidden"/>
         <input id="customerSite" name="customerSite" th:value="${customerSite.id}" type="hidden"/>
         <div class="form-group" sec:authorize="!hasAnyAuthority('BROKER','EXTERNAL_BROKER')">

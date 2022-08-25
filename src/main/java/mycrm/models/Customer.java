@@ -119,6 +119,17 @@ public class Customer extends Auditable<User> {
     @OneToMany(mappedBy = "customer")
     private Set<ElecCustomerContract> elecCustomerContracts = new HashSet<>();
 
+    /*@OneToMany(mappedBy = "customer")
+    private Set<MerchantServicesContract> merchantServicesContracts = new HashSet<>();
+
+    public Set<MerchantServicesContract> getMerchantServicesContracts() {
+        return merchantServicesContracts;
+    }
+
+    public void setMerchantServicesContracts(Set<MerchantServicesContract> merchantServicesContracts) {
+        this.merchantServicesContracts = merchantServicesContracts;
+    }*/
+
     @OneToMany(mappedBy = "customer")
     private Set<CustomerSite> customerSite = new HashSet<>();
 

@@ -264,6 +264,91 @@ public class EnergyContractController {
         return "admin/customer/editeleccontract";
     }
 
+    @RequestMapping("/admin/customer/editutilitycontract/{id}")
+    public String editUtilityContract(@PathVariable("id") Long id, Model model) {
+
+        UtilityContract utilityContract = utilityContractService.findById(id);
+
+        User user = userService.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+//        if(contractLocked(elecCustomerContract) && !user.isSuperAdmin()) {
+//            logger.info("Contract locked elecContractId={}", elecCustomerContract.getId());
+//            return "redirect:/unauthorised";
+//        }
+
+        // if the broker is CEC pending then give to broker who accesses it
+        if (user.isBroker() || user.isExternalBroker()) {
+
+            if (utilityContract.getBroker().getId() == defaultBrokerId) {
+                utilityContract.setBroker(user.getBroker());
+                utilityContract = utilityContractService.save(utilityContract);
+            } else if (!utilityContract.getBroker().equals(user.getBroker())) {
+                logger.info("Edit Electricity Contract - User is not the broker associated to this contract");
+                return "redirect:/unauthorised";
+            }
+        } else if (user.isLeads()) {
+            logger.info("Edit Electricity Contract - User is not super admin");
+            return "redirect:/unauthorised";
+        }
+        List<Broker> brokers = brokerService.findAll();
+        List<Supplier> suppliers = supplierService.findAllOrderByBusinessName();
+        System.out.println("ßßßßßßßßßßßßßßßßßßßßßßß custemer id");
+        System.out.println(utilityContract.getCustomerSite().getCustomer());
+        List<Contact> contactList = contactService.findByCustomer(utilityContract.getCustomerSite().getCustomer());
+        List<String> transferMessageList = brokerTransferHistoryService.findLatestUtilityBrokerTransferHistory(utilityContract);
+        model.addAttribute("transferMessageList", transferMessageList);
+        model.addAttribute("contactList", contactList);
+        model.addAttribute("utilityContractNotes", customerNoteService.findByUtilityContractOrderByDateCreatedDesc(utilityContract));
+        model.addAttribute("brokers", brokers);
+        model.addAttribute("suppliers", suppliers);
+        model.addAttribute("utilityContract", utilityContract);
+        model.addAttribute("contractReasons", contractReasonService.findAll());
+        model.addAttribute("users", userService.findAll());
+        model.addAttribute("campaigns", contractService.getCampaigns());
+        model.addAttribute("customerSite", customerSiteService.findById(utilityContract.getCustomerSite().getId()));
+        return "admin/customer/manage-utility-contract";
+    }
+    @RequestMapping("/admin/customer/editMerchantServicecontract/{id}")
+    public String editMerchantServiceContract(@PathVariable("id") Long id, Model model) {
+
+        MerchantServicesContract merchantServicesContract = merchantServicesService.findById(id);
+
+        User user = userService.findUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+//        if(contractLocked(elecCustomerContract) && !user.isSuperAdmin()) {
+//            logger.info("Contract locked elecContractId={}", elecCustomerContract.getId());
+//            return "redirect:/unauthorised";
+//        }
+
+        // if the broker is CEC pending then give to broker who accesses it
+        if (user.isBroker() || user.isExternalBroker()) {
+
+            if (merchantServicesContract.getBroker().getId() == defaultBrokerId) {
+                merchantServicesContract.setBroker(user.getBroker());
+                merchantServicesContract = merchantServicesService.save(merchantServicesContract);
+            } else if (!merchantServicesContract.getBroker().equals(user.getBroker())) {
+                logger.info("Edit Merchant Contract - User is not the broker associated to this contract");
+                return "redirect:/unauthorised";
+            }
+        } else if (user.isLeads()) {
+            logger.info("Edit Merchant Contract - User is not super admin");
+            return "redirect:/unauthorised";
+        }
+        List<Broker> brokers = brokerService.findAll();
+        List<Supplier> suppliers = supplierService.findAllOrderByBusinessName();
+        List<Contact> contactList = contactService.findByCustomer(merchantServicesContract.getCustomerSite().getCustomer());
+        List<String> transferMessageList = brokerTransferHistoryService.findLatestMerchantServicesBrokerTransferHistory(merchantServicesContract);
+        model.addAttribute("transferMessageList", transferMessageList);
+        model.addAttribute("contactList", contactList);
+        model.addAttribute("merchantServiceContractNotes", customerNoteService.findByMerchantServicesContractOrderByDateCreatedDesc(merchantServicesContract));
+        model.addAttribute("brokers", brokers);
+        model.addAttribute("suppliers", suppliers);
+        model.addAttribute("merchantServicesContract", merchantServicesContract);
+        model.addAttribute("contractReasons", contractReasonService.findAll());
+        model.addAttribute("users", userService.findAll());
+        model.addAttribute("campaigns", contractService.getCampaigns());
+        model.addAttribute("customerSite", customerSiteService.findById(merchantServicesContract.getCustomerSite().getId()));
+        return "admin/customer/manage-merchant-services";
+    }
+
     @PreAuthorize("hasAuthority('SUPERADMIN')")
     @RequestMapping("/admin/customer/deleteElecContract/{id}")
     public String deleteElecContract(@PathVariable("id") Long id) {
