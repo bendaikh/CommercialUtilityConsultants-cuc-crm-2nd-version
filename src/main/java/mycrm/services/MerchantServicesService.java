@@ -1,13 +1,7 @@
 package mycrm.services;
 
 import mycrm.configuration.LogType;
-import mycrm.models.Broker;
-import mycrm.models.BrokerTransferUpdate;
-import mycrm.models.Customer;
-import mycrm.models.CustomerSite;
-import mycrm.models.MerchantServicesContract;
-import mycrm.models.MerchantServicesContractSearch;
-import mycrm.models.MerchantServicesSearchResult;
+import mycrm.models.*;
 
 import java.util.List;
 
@@ -33,6 +27,15 @@ public interface MerchantServicesService {
     List<MerchantServicesContract> findByCustomer(Customer customer);
 
     List<MerchantServicesContract> findByBrokerAndLogTypeAndUtilityType(Broker broker, LogType logType);
+
+    List<MerchantServicesContract> findAllObjectedMerchantServiceContracts();
+
+    List<MerchantServicesContract> findAllVerbalMerchantServiceContracts();
+    List<MerchantServicesContract> findAllAdminContractProcessingTasks();
+
+    List<MerchantServicesContract> findAllMerchantContractsToTerminate();
+
+    List<MerchantServicesContract> findAllAdminMerchantServiceContractNewSalesTasks();
 
     int countByBrokerAndLogType(Broker broker, LogType logType);
 }

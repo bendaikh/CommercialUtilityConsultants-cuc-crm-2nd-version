@@ -1,6 +1,7 @@
 package mycrm.services;
 
 import mycrm.models.EnergyContract;
+import mycrm.models.MerchantServicesContract;
 import mycrm.models.PendingTerminationTask;
 import mycrm.models.UtilityContract;
 import mycrm.repositories.ElecContractRepository;
@@ -21,13 +22,16 @@ public class AdminContractTerminationTaskServiceImpl implements AdminContractTer
     private final GasContractRepository gasContractRepository;
     private final UtilityContractService utilityContractService;
 
+    private final MerchantServicesService merchantServicesService;
+
     @Autowired
     public AdminContractTerminationTaskServiceImpl(ElecContractRepository elecContractRepository,
                                                    GasContractRepository gasContractRepository,
-                                                   UtilityContractService utilityContractService) {
+                                                   UtilityContractService utilityContractService, MerchantServicesService merchantServicesService) {
         this.elecContractRepository = elecContractRepository;
         this.gasContractRepository = gasContractRepository;
         this.utilityContractService = utilityContractService;
+        this.merchantServicesService = merchantServicesService;
     }
 
     @Override
@@ -57,6 +61,16 @@ public class AdminContractTerminationTaskServiceImpl implements AdminContractTer
                 .endDate(utilityContract.getEndDate())
                 .currentSupplyTerminated(utilityContract.isCurrentSupplyTerminated())
                 .build()));
+
+        merchantContractList().forEach(merchantContract -> pendingTerminationTasks.add(PendingTerminationTask
+                .builder()
+                .id(merchantContract.getId())
+                .customer(merchantContract.getCustomerSite().getCustomer())
+                .supplyType(merchantContract.getSupplyType())
+                .startDate(merchantContract.getStartDate())
+                .endDate(merchantContract.getEndDate())
+                .currentSupplyTerminated(merchantContract.isCurrentSupplyTerminated())
+                .build()));
         return pendingTerminationTasks;
     }
 
@@ -83,5 +97,9 @@ public class AdminContractTerminationTaskServiceImpl implements AdminContractTer
 
     private List<UtilityContract> utilityContractList() {
         return new ArrayList<>(utilityContractService.findAllUtilityContractsToTerminate());
+    }
+
+    private List<MerchantServicesContract> merchantContractList() {
+        return new ArrayList<>(merchantServicesService.findAllMerchantContractsToTerminate());
     }
 }

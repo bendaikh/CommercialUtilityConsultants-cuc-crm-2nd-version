@@ -87,6 +87,12 @@ public class EnergyContractController {
 
         return "redirect:/admin/customer/viewsite/" + gasCustomerContract.getCustomerSite().getId();
     }
+    /*@RequestMapping(value = "/merchantServicesContract", method = RequestMethod.POST)
+    public String saveMerchantServicesContract(MerchantServicesContract merchantServicesContract) {
+        merchantServicesService.save(merchantServicesContract);
+
+        return "redirect:/admin/customer/viewsite/" + merchantServicesContract.getCustomerSite().getId();
+    }*/
 
     // open gas customer contract
     @RequestMapping("/admin/customer/editgascontract/{id}")

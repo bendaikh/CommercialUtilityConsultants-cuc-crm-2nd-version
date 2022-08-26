@@ -1,15 +1,7 @@
 package mycrm.services;
 
 import mycrm.configuration.LogType;
-import mycrm.models.Broker;
-import mycrm.models.BrokerTransferHistory;
-import mycrm.models.BrokerTransferUpdate;
-import mycrm.models.Customer;
-import mycrm.models.CustomerSite;
-import mycrm.models.LogTypeHistory;
-import mycrm.models.MerchantServicesContract;
-import mycrm.models.MerchantServicesContractSearch;
-import mycrm.models.MerchantServicesSearchResult;
+import mycrm.models.*;
 import mycrm.repositories.MerchantServicesRepository;
 import mycrm.repositories.MerchantServicesSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,6 +129,30 @@ public class MerchantServicesServiceImpl implements MerchantServicesService {
         return this.merchantServicesRepository.findByBrokerAndLogType(broker, logType.toString());
     }
 
+    @Override
+    public List<MerchantServicesContract> findAllObjectedMerchantServiceContracts() {
+        return this.merchantServicesRepository.findAllObjectedMerchantServiceContracts();
+    }
+
+    @Override
+    public List<MerchantServicesContract> findAllVerbalMerchantServiceContracts() {
+        return this.merchantServicesRepository.findAllVerbalMerchantServiceContracts();
+    }
+
+    @Override
+    public List<MerchantServicesContract> findAllAdminContractProcessingTasks() {
+        return this.merchantServicesRepository.findAllAdminContractProcessingTasks();
+    }
+
+    @Override
+    public List<MerchantServicesContract> findAllMerchantContractsToTerminate() {
+        return this.merchantServicesRepository.findAllMerchantServiceContractsToTerminate();
+    }
+
+    @Override
+    public List<MerchantServicesContract> findAllAdminMerchantServiceContractNewSalesTasks() {
+        return this.merchantServicesRepository.findAllAdminMerchantServiceContractNewSalesTasks();
+    }
     @Override
     public int countByBrokerAndLogType(Broker broker, LogType logType) {
         return this.merchantServicesRepository.countByBrokerAndLogType(broker, logType.toString());

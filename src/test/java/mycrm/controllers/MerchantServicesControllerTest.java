@@ -72,7 +72,7 @@ public class MerchantServicesControllerTest {
     @Test
     public void createMerchantServicesContract() throws Exception {
         MerchantServicesContract contract = new MerchantServicesContract();
-        contract.setId(0L);
+        contract.setId(0L);/**/
         contract.setCustomerSite(mockCustomerSite);
 
         when(mockMerchantServicesService.save(any(MerchantServicesContract.class))).thenReturn(contract);

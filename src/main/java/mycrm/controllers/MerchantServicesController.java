@@ -101,9 +101,9 @@ public class MerchantServicesController {
 
     @RequestMapping(value = "/merchantServicesContract", method = RequestMethod.POST)
     public String saveMerchantServicesContract(MerchantServicesContract merchantServicesContract) {
-        MerchantServicesContract contract = merchantServicesService.save(merchantServicesContract);
+        merchantServicesService.save(merchantServicesContract);
 
-        return "redirect:/admin/customer/viewsite/" + contract.getCustomerSite().getId();
+        return "redirect:/admin/customer/viewsite/" + merchantServicesContract.getCustomerSite().getId();
     }
 
     @RequestMapping("/admin/merchant-services/index/{pageNumber}")

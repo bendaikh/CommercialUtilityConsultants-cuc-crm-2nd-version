@@ -1,10 +1,6 @@
 package mycrm.services;
 
-import mycrm.models.EnergyContract;
-import mycrm.models.ObjectedTask;
-import mycrm.models.User;
-import mycrm.models.UtilityContract;
-import mycrm.models.VerbalTask;
+import mycrm.models.*;
 import mycrm.repositories.ElecContractRepository;
 import mycrm.repositories.GasContractRepository;
 import org.springframework.context.annotation.Primary;
@@ -19,18 +15,21 @@ public class WorkflowTaskServiceImpl implements WorkflowTaskService {
     private final GasContractRepository gasContractRepository;
     private final ElecContractRepository elecContractRepository;
     private final UtilityContractService utilityContractService;
+    private final MerchantServicesService merchantServicesService;
 
     public WorkflowTaskServiceImpl(GasContractRepository gasContractRepository,
                                    ElecContractRepository elecContractRepository,
-                                   UtilityContractService utilityContractService) {
+                                   UtilityContractService utilityContractService,MerchantServicesService merchantServicesService) {
         this.gasContractRepository = gasContractRepository;
         this.elecContractRepository = elecContractRepository;
         this.utilityContractService = utilityContractService;
+        this.merchantServicesService = merchantServicesService;
     }
 
     @Override
     public List<ObjectedTask> findAllObjectedContracts() {
         List<ObjectedTask> objectedTasks = new ArrayList<>();
+        Supplier supplier = new Supplier();
         objectedEnergyContracts().forEach(energyContract -> objectedTasks.add(ObjectedTask
                 .builder()
                 .id(energyContract.getId())
@@ -60,6 +59,20 @@ public class WorkflowTaskServiceImpl implements WorkflowTaskService {
                 .supplyType(utilityContract.getUtilityType())
                 .accountNumber(utilityContract.getAccountNumber())
                 .build()));
+        objectedMerchantServiceContracts().forEach(merchantContract -> objectedTasks.add(ObjectedTask
+                .builder()
+                .id(merchantContract.getId())
+                .broker(merchantContract.getBroker())
+                .customer(merchantContract.getCustomerSite().getCustomer())
+                .createdBy(merchantContract.getCreatedBy())
+                .customerSite(merchantContract.getCustomerSite())
+                .dateCreated(merchantContract.getDateCreated())
+                .startDate(merchantContract.getStartDate())
+                .endDate(merchantContract.getEndDate())
+                .supplier(supplier)
+                .supplyType(merchantContract.getSupplyType())
+                .accountNumber(merchantContract.getVatNumber())
+                .build()));
 
         return objectedTasks;
     }
@@ -67,6 +80,7 @@ public class WorkflowTaskServiceImpl implements WorkflowTaskService {
     @Override
     public List<VerbalTask> findAllVerbalContracts() {
         List<VerbalTask> verbalTasks = new ArrayList<>();
+        Supplier supplier = new Supplier();
         verbalEnergyContracts().forEach(energyContract -> verbalTasks.add(VerbalTask
                 .builder()
                 .id(energyContract.getId())
@@ -97,6 +111,21 @@ public class WorkflowTaskServiceImpl implements WorkflowTaskService {
                 .accountNumber(utilityContract.getAccountNumber())
                 .build()));
 
+        verbalMerchantServiceContracts().forEach(merchantContract -> verbalTasks.add(VerbalTask
+                .builder()
+                .id(merchantContract.getId())
+                .broker(merchantContract.getBroker())
+                .customer(merchantContract.getCustomerSite().getCustomer())
+                .createdBy(merchantContract.getCreatedBy())
+                .customerSite(merchantContract.getCustomerSite())
+                .dateCreated(merchantContract.getDateCreated())
+                .startDate(merchantContract.getStartDate())
+                .endDate(merchantContract.getEndDate())
+                .supplier(supplier)
+                .supplyType(merchantContract.getSupplyType())
+                .accountNumber(merchantContract.getVatNumber())
+                .build()));
+
         return verbalTasks;
     }
 
@@ -111,6 +140,10 @@ public class WorkflowTaskServiceImpl implements WorkflowTaskService {
         return this.utilityContractService.findAllObjectedUtilityContracts();
     }
 
+    private List<MerchantServicesContract> objectedMerchantServiceContracts() {
+        return this.merchantServicesService.findAllObjectedMerchantServiceContracts();
+    }
+
     private List<EnergyContract> verbalEnergyContracts() {
         List<EnergyContract> energyContracts = new ArrayList<>();
         energyContracts.addAll(gasContractRepository.findAllVerbalGasContracts());
@@ -120,5 +153,12 @@ public class WorkflowTaskServiceImpl implements WorkflowTaskService {
 
     private List<UtilityContract> verbalUtilityContracts() {
         return this.utilityContractService.findAllVerbalUtilityContracts();
+    }
+
+    private List<MerchantServicesContract> verbalMerchantServiceContracts() {
+        return this.merchantServicesService.findAllVerbalMerchantServiceContracts();
+    }
+    private List<MerchantServicesContract> verbalMerchantServicesContracts() {
+        return this.merchantServicesService.findAllVerbalMerchantServiceContracts();
     }
 }

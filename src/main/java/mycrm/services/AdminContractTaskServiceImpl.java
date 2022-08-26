@@ -1,10 +1,6 @@
 package mycrm.services;
 
-import mycrm.models.EnergyContract;
-import mycrm.models.NewSaleTask;
-import mycrm.models.ProcessingTask;
-import mycrm.models.User;
-import mycrm.models.UtilityContract;
+import mycrm.models.*;
 import mycrm.repositories.ElecContractRepository;
 import mycrm.repositories.GasContractRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +19,17 @@ public class AdminContractTaskServiceImpl implements AdminContractTaskService {
     private final GasContractRepository gasContractRepository;
     private final UtilityContractService utilityContractService;
 
+    private final MerchantServicesService merchantServicesService;
+
     @Autowired
     public AdminContractTaskServiceImpl(ElecContractRepository elecContractRepository,
                                         GasContractRepository gasContractRepository,
-                                        UtilityContractService utilityContractService) {
+                                        UtilityContractService utilityContractService,
+                                        MerchantServicesService merchantServicesService) {
         this.elecContractRepository = elecContractRepository;
         this.gasContractRepository = gasContractRepository;
         this.utilityContractService = utilityContractService;
+        this.merchantServicesService = merchantServicesService;
     }
 
     @Override
@@ -96,6 +96,23 @@ public class AdminContractTaskServiceImpl implements AdminContractTaskService {
                 .createdBy(utilityContract.getCreatedBy())
                 .accountNumber(utilityContract.getAccountNumber())
                 .build()));
+
+        merchatContractsProcessingList().forEach(merchantContract -> processingTasks.add(ProcessingTask
+                .builder()
+                .id(merchantContract.getId())
+                .supplyType(merchantContract.getSupplyType())
+                .customer(merchantContract.getCustomerSite().getCustomer())
+                .customerSite(merchantContract.getCustomerSite())
+                .startDate(merchantContract.getStartDate())
+                .endDate(merchantContract.getEndDate())
+                .contractSentToCustomer(merchantContract.isContractSentToCustomer())
+                .contractReceived(merchantContract.isContractReceived())
+                .supplier(new Supplier())
+                .broker(merchantContract.getBroker())
+                .dateCreated(merchantContract.getDateCreated())
+                .createdBy(merchantContract.getCreatedBy())
+                .accountNumber(merchantContract.getVatNumber())
+                .build()));
         return processingTasks;
     }
 
@@ -108,6 +125,10 @@ public class AdminContractTaskServiceImpl implements AdminContractTaskService {
 
     private List<UtilityContract> utilityContractsProcessingList() {
         return this.utilityContractService.findAllAdminContractProcessingTasks();
+    }
+
+    private List<MerchantServicesContract> merchatContractsProcessingList() {
+        return this.merchantServicesService.findAllAdminContractProcessingTasks();
     }
 
 
