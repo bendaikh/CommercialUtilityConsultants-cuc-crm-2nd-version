@@ -47,6 +47,7 @@ public class AdminContractTerminationTaskServiceImpl implements AdminContractTer
         List<PendingTerminationTask> pendingTerminationTasks = new ArrayList<>();
         pendingTerminationTasks.addAll(pendingTerminationTasksFromUtilityContracts());
         pendingTerminationTasks.addAll(pendingTerminationTasksFromEnergyContracts());
+        pendingTerminationTasks.addAll(pendingTerminationTasksFromMerchantServiceContracts());
         return pendingTerminationTasks;
     }
 
@@ -60,6 +61,29 @@ public class AdminContractTerminationTaskServiceImpl implements AdminContractTer
                 .startDate(utilityContract.getStartDate())
                 .endDate(utilityContract.getEndDate())
                 .currentSupplyTerminated(utilityContract.isCurrentSupplyTerminated())
+                .build()));
+
+        merchantContractList().forEach(merchantContract -> pendingTerminationTasks.add(PendingTerminationTask
+                .builder()
+                .id(merchantContract.getId())
+                .customer(merchantContract.getCustomerSite().getCustomer())
+                .supplyType(merchantContract.getSupplyType())
+                .startDate(merchantContract.getStartDate())
+                .endDate(merchantContract.getEndDate())
+                .currentSupplyTerminated(merchantContract.isCurrentSupplyTerminated())
+                .build()));
+        return pendingTerminationTasks;
+    }
+    private List<PendingTerminationTask> pendingTerminationTasksFromMerchantServiceContracts(){
+        List<PendingTerminationTask> pendingTerminationTasks = new ArrayList<>();
+        merchantContractList().forEach(merchatServiceContract -> pendingTerminationTasks.add(PendingTerminationTask
+                .builder()
+                .id(merchatServiceContract.getId())
+                .customer(merchatServiceContract.getCustomerSite().getCustomer())
+                .supplyType(merchatServiceContract.getSupplyType())
+                .startDate(merchatServiceContract.getStartDate())
+                .endDate(merchatServiceContract.getEndDate())
+                .currentSupplyTerminated(merchatServiceContract.isCurrentSupplyTerminated())
                 .build()));
 
         merchantContractList().forEach(merchantContract -> pendingTerminationTasks.add(PendingTerminationTask

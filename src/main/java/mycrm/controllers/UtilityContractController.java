@@ -77,6 +77,8 @@ public class UtilityContractController {
 
     @RequestMapping(value = "/utilityContract", method = RequestMethod.POST)
     public String saveUtilityContract(UtilityContract utilityContract) {
+        System.out.println("7777777777777777777");
+        System.out.println(utilityContract.isLostRenewal());
         UtilityContract contract = utilityContractService.save(utilityContract);
 
         return "redirect:/admin/customer/viewsite/" + contract.getCustomerSite().getId();

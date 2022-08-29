@@ -135,7 +135,7 @@ public class AdminContractTaskServiceImpl implements AdminContractTaskService {
     private List<NewSaleTask> mergeNewSalesTasks() {
         List<NewSaleTask> newSaleTasks = new ArrayList<>();
         newSaleTasks.addAll(newSaleTasksFromEnergyContracts());
-        newSaleTasks.addAll(newSaleTasksFromUtilityContracts());
+        newSaleTasks.addAll(newSaleTasksFromMerchantServiceContracts());
         return newSaleTasks;
     }
 
@@ -150,6 +150,20 @@ public class AdminContractTaskServiceImpl implements AdminContractTaskService {
                 .supplyType(utilityContract.getUtilityType())
                 .welcomePackSentToCustomer(utilityContract.isWelcomePackSentToCustomer())
                 .previousSupplyTerminated(utilityContract.isPreviousSupplyTerminated())
+                .build()));
+        return newSaleTasks;
+    }
+    private List<NewSaleTask> newSaleTasksFromMerchantServiceContracts() {
+        List<NewSaleTask> newSaleTasks = new ArrayList<>();
+        merchantServiceContractNewSalesList().forEach(merchantServiceContract -> newSaleTasks.add(NewSaleTask
+                .builder()
+                .id(merchantServiceContract.getId())
+                .customer(merchantServiceContract.getCustomerSite().getCustomer())
+                .customerSite(merchantServiceContract.getCustomerSite())
+                .startDate(merchantServiceContract.getStartDate())
+                .supplyType(merchantServiceContract.getSupplyType())
+                .welcomePackSentToCustomer(merchantServiceContract.isWelcomePackSentToCustomer())
+                .previousSupplyTerminated(merchantServiceContract.isPreviousSupplyTerminated())
                 .build()));
         return newSaleTasks;
     }
@@ -178,6 +192,9 @@ public class AdminContractTaskServiceImpl implements AdminContractTaskService {
 
     private List<UtilityContract> utilityContractNewSalesList() {
         return this.utilityContractService.findAllAdminUtilityContractNewSalesTasks();
+    }
+    private List<MerchantServicesContract> merchantServiceContractNewSalesList() {
+        return this.merchantServicesService.findAllAdminMerchantServiceContractNewSalesTasks();
     }
 
 }

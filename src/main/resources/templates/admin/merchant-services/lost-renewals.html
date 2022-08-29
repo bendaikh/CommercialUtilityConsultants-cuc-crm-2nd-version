@@ -24,7 +24,7 @@
     </nav>
 </div>
 <div class="container-fluid">
-    <h2>merchant service Leads</h2>
+    <h2>merchant service lost renewals</h2>
 
     <div class="well">
         <form class="form-inline" method="get" th:action="@{1}" th:object="${merchantServicesContractSearch}">
@@ -116,7 +116,6 @@
         </thead>
         <tbody>
         <tr class="text-success" th:classappend="${contract.contractStatus == 'ENDED'} ? text-danger : text-success" th:each="contract, row : ${lostRenewals}">
-
             <td th:text="${row.count}"></td>
             <td><span class="label label-danger" th:if="${contract.contractStatus == 'ENDED'}">ENDED</span></td>
             <td th:text="${contract.supplyType}"></td>
@@ -130,7 +129,7 @@
             <td th:text="${contract.currentSupplier}">Supplier</td>
             <td th:text="${#dates.format(contract.dateCreated, 'dd/MM/yyyy')}">Date Created</td>
             <td th:text="${contract.broker.firstName}+' '+${contract.broker.lastName}">Broker</td>
-            <td th:text="${contract.doNotRenew}">Lost Renewal</td>
+            <td th:text="${contract.lostRenewal}">Lost Renewal</td>
             <td><a class="btn btn-primary btn-xs" th:href="@{/admin/customer/viewsite/{id}/(id=${contract.customerSite.id})}">View</a></td>
         </tr>
 

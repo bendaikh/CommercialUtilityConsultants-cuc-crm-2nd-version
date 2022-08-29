@@ -1,9 +1,10 @@
 package mycrm.controllers;
 
-import mycrm.models.Broker;
-import mycrm.models.CustomerSite;
-import mycrm.models.MerchantServicesContract;
+import mycrm.models.*;
+import mycrm.search.MerchantServicesContractSearchService;
+import mycrm.search.UtilitySearchService;
 import mycrm.services.BrokerService;
+import mycrm.services.ContractService;
 import mycrm.services.CustomerSiteService;
 import mycrm.services.MerchantServicesService;
 import org.junit.Before;
@@ -15,7 +16,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.Matchers.instanceOf;
 import static org.mockito.Matchers.any;
@@ -43,9 +46,14 @@ public class MerchantServicesControllerTest {
     @Mock
     private CustomerSite mockCustomerSite;
 
+    @Mock
+    private MerchantServicesContractSearchService merchantServicesContractSearchService;
+
     @InjectMocks
     private MerchantServicesController merchantServicesController;
 
+    @Mock
+    private ContractService mockContractService;
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -80,5 +88,73 @@ public class MerchantServicesControllerTest {
         mockMvc.perform(post("/merchantServicesContract"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/customer/viewsite/0"));
+    }
+
+    @Test
+    public void shouldReturnAdminMerchantServiceLeadsPage() throws Exception {
+
+        MerchantServicesSearchResult merchantServicesSearchResult = MerchantServicesSearchResult.builder().build();
+        Set<String> leads = new HashSet<>();
+
+        when(merchantServicesContractSearchService.searchMerchantServicesContract(
+                any(MerchantServicesContractSearch.class), any(Integer.class)))
+                .thenReturn(merchantServicesSearchResult);
+
+        when(mockContractService.getCampaigns()).thenReturn(leads);
+
+        mockMvc.perform(get("/admin/merchant-services/leads/1"))
+                .andExpect(view().name("admin/merchant-services/leads"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldReturnLostMerchantRenewalsIndexPage() throws Exception {
+
+        MerchantServicesSearchResult merchantServicesSearchResult = MerchantServicesSearchResult.builder().build();
+        Set<String> leads = new HashSet<>();
+
+        when(merchantServicesContractSearchService.searchMerchantServicesContract(
+                any(MerchantServicesContractSearch.class), any(Integer.class)))
+                .thenReturn(merchantServicesSearchResult);
+
+        when(mockContractService.getCampaigns()).thenReturn(leads);
+
+        mockMvc.perform(get("/admin/merchant-services/lost-renewals/1"))
+                .andExpect(view().name("admin/merchant-services/lost-renewals"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldReturnRenewalsMerchantRenewalsIndexPage() throws Exception {
+
+        MerchantServicesSearchResult merchantServicesSearchResult = MerchantServicesSearchResult.builder().build();
+        Set<String> leads = new HashSet<>();
+
+        when(merchantServicesContractSearchService.searchMerchantServicesContract(
+                any(MerchantServicesContractSearch.class), any(Integer.class)))
+                .thenReturn(merchantServicesSearchResult);
+
+        when(mockContractService.getCampaigns()).thenReturn(leads);
+
+        mockMvc.perform(get("/admin/merchant-services/renewals/1"))
+                .andExpect(view().name("admin/merchant-services/renewals"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldReturnCallbacksMerchantRenewalsIndexPage() throws Exception {
+
+        MerchantServicesSearchResult merchantServicesSearchResult = MerchantServicesSearchResult.builder().build();
+        Set<String> leads = new HashSet<>();
+
+        when(merchantServicesContractSearchService.searchMerchantServicesContract(
+                any(MerchantServicesContractSearch.class), any(Integer.class)))
+                .thenReturn(merchantServicesSearchResult);
+
+        when(mockContractService.getCampaigns()).thenReturn(leads);
+
+        mockMvc.perform(get("/admin/merchant-services/callbacks/1"))
+                .andExpect(view().name("admin/merchant-services/callbacks"))
+                .andExpect(status().isOk());
     }
 }

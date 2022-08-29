@@ -171,6 +171,18 @@ public class MerchantServicesContract extends Auditable<User> {
     @Column(length = 5000)
     private String notes;
 
+    @Field
+    @Column(nullable = false, length = 1)
+    private boolean lostRenewal;
+
+    public boolean isLostRenewal() {
+        return lostRenewal;
+    }
+
+    public void setLostRenewal(boolean lostRenewal) {
+        this.lostRenewal = lostRenewal;
+    }
+
     public String getSupplyType() {
         return "MERCHANT_SERVICES";
     }

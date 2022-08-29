@@ -38,8 +38,8 @@
     <li sec:authorize="hasAnyAuthority('SUPERADMIN','ADMIN')"><a data-toggle="tab" href="#objections">Objections
       <span class="badge" th:text="${#lists.size(findAllObjectedContracts)}">5</span></a>
     </li>
-    <li sec:authorize="hasAnyAuthority('SUPERADMIN','ADMIN')"><a data-toggle="tab" href="#verbals">Verbal
-      <span class="badge" th:text="${#lists.size(findAllVerbalContracts)}">5</span></a></li>
+    <!--<li sec:authorize="hasAnyAuthority('SUPERADMIN','ADMIN')"><a data-toggle="tab" href="#verbals">Verbal
+      <span class="badge" th:text="${#lists.size(findAllVerbalContracts)}">5</span></a></li>-->
     <li><a data-toggle="tab" href="#expiring-documents">Expiring Documents
       <span class="badge" th:text="${#lists.size(expiringDocuments)}">5</span></a></li>
   </ul>

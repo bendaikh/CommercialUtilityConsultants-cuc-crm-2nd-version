@@ -100,8 +100,6 @@ public class TaskController {
         model.addAttribute("findAllContractsToProcess", adminContractTaskService.findAllContractsToProcess());
         model.addAttribute("findAllVerbalContracts", workflowTaskService.findAllVerbalContracts());
         model.addAttribute("expiringDocuments", documentService.findDocumentsExpiringWithinAMonth());
-        System.out.println("******************");
-        System.out.println(workflowTaskService.findAllVerbalContracts());
         return "admin/tasks/index";
     }
 

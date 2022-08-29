@@ -101,9 +101,10 @@ public class MerchantServicesController {
 
     @RequestMapping(value = "/merchantServicesContract", method = RequestMethod.POST)
     public String saveMerchantServicesContract(MerchantServicesContract merchantServicesContract) {
-        merchantServicesService.save(merchantServicesContract);
-
-        return "redirect:/admin/customer/viewsite/" + merchantServicesContract.getCustomerSite().getId();
+        System.out.println("7777777777777777777");
+        System.out.println(merchantServicesContract.isLostRenewal());
+        MerchantServicesContract contract = merchantServicesService.save(merchantServicesContract);
+        return "redirect:/admin/customer/viewsite/" + contract.getCustomerSite().getId();
     }
 
     @RequestMapping("/admin/merchant-services/index/{pageNumber}")
@@ -205,6 +206,7 @@ public class MerchantServicesController {
     public String viewLostMerchantServiceRenewals(MerchantServicesContractSearch merchantServicesContractSearch, Model model, @PathVariable("page") int page) {
 
         merchantServicesContractSearch.setLeadSearch(true);
+        merchantServicesContractSearch.setLostRenewal(true);
         long startTime = System.currentTimeMillis();
         MerchantServicesSearchResult merchantServicesSearchResult =
                 merchantServicesContractSearchService.searchMerchantServicesContract(merchantServicesContractSearch, page);

@@ -28,6 +28,8 @@
 
   <div class="well">
     <form class="form-inline" method="get" th:action="@{1}" th:object="${contractSearch}">
+
+      <p>${contractSearch}</p>
       <div class="form-group">
         <label for="q">Search
           <a data-placement="right"
@@ -158,6 +160,7 @@
     </tr>
     </thead>
     <tbody>
+
     <tr class="text-success" th:classappend="${contract.contractStatus == 'ENDED'} ? text-danger : text-success" th:each="contract, row : ${lostRenewals}">
       <td th:text="${row.count}"></td>
       <td><span class="label label-danger" th:if="${contract.contractStatus == 'ENDED'}">ENDED</span></td>
