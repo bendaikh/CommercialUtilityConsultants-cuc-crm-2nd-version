@@ -75,10 +75,6 @@ public class CustomerNoteController {
         model.addAttribute("linkedAccountsSize", linkedAccountService.findByCustomer(customer).size());
         List<MerchantServicesContract> merchant = merchantServicesService.findByCustomerOrderByEndDateDesc(customer);
         List<UtilityContract> utility = utilityContractService.findByCustomerOrderByEndDateDesc(customer);
-        System.out.println("#######################################");
-        System.out.println(merchant);
-        System.out.println("#######################################");
-        System.out.println(utility);
         return "admin/customer/customernotes";
     }
 
@@ -186,8 +182,9 @@ public class CustomerNoteController {
     //edit customer note
     @RequestMapping(value = "/admin/customer/editcustomernote/{id}")
     public String editCustomerNote(@PathVariable("id") Long id, Model model) {
+        Customer customer = customerService.findById(id);
         CustomerNote customerNote = customerNoteService.findById(id);
-
+        model.addAttribute("merchantServiceContract", merchantServicesService.findByCustomerOrderByEndDateDesc(customerNote.getCustomer()));
         model.addAttribute("customerNote", customerNote);
         model.addAttribute("users", userService.findAll());
         model.addAttribute("gasCustomerContracts", gasContractService.findByCustomerOrderByEndDateDesc(customerNote.getCustomer()));

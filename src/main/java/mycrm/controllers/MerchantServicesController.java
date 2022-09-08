@@ -2,11 +2,7 @@ package mycrm.controllers;
 
 import mycrm.models.*;
 import mycrm.search.MerchantServicesContractSearchService;
-import mycrm.services.BrokerService;
-import mycrm.services.BrokerTransferHistoryService;
-import mycrm.services.CustomerSiteService;
-import mycrm.services.MerchantServicesService;
-import mycrm.services.UserService;
+import mycrm.services.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +19,8 @@ import java.util.List;
 @Controller
 public class MerchantServicesController {
 
+    @Autowired
+    private DoNotRenewReasonService doNotRenewReasonService;
     private static final Logger logger = LogManager.getLogger();
 
     private final CustomerSiteService customerSiteService;
@@ -30,6 +28,9 @@ public class MerchantServicesController {
     private final MerchantServicesService merchantServicesService;
     private final MerchantServicesContractSearchService merchantServicesContractSearchService;
     private final UserService userService;
+
+    private final ContractReasonService contractReasonService;
+
     private final BrokerTransferHistoryService brokerTransferHistoryService;
 
     @Autowired
@@ -38,13 +39,15 @@ public class MerchantServicesController {
                                       MerchantServicesService merchantServicesService,
                                       MerchantServicesContractSearchService merchantServicesContractSearchService,
                                       UserService userService,
-                                      BrokerTransferHistoryService brokerTransferHistoryService) {
+                                      BrokerTransferHistoryService brokerTransferHistoryService,
+                                      ContractReasonService contractReasonService) {
         this.customerSiteService = customerSiteService;
         this.brokerService = brokerService;
         this.merchantServicesService = merchantServicesService;
         this.merchantServicesContractSearchService = merchantServicesContractSearchService;
         this.userService = userService;
         this.brokerTransferHistoryService = brokerTransferHistoryService;
+        this.contractReasonService = contractReasonService;
     }
 
     @RequestMapping("/admin/customer/manage-merchant-services/{customerSiteID}")
@@ -54,6 +57,8 @@ public class MerchantServicesController {
         MerchantServicesContract merchantServicesContract = new MerchantServicesContract();
 
         model.addAttribute("brokers", brokers);
+        model.addAttribute("doNotRenewReasons",doNotRenewReasonService.findAll());
+        model.addAttribute("lostRenewalReasons",contractReasonService.findAll());
         model.addAttribute("customerSite", customerSiteService.findById(Long.valueOf(customerSiteID)));
         model.addAttribute("merchantServicesContract", merchantServicesContract);
         return "admin/customer/manage-merchant-services";
@@ -95,14 +100,12 @@ public class MerchantServicesController {
         model.addAttribute("customerSite", customerSiteService.findById(merchantServicesContract.getCustomerSite().getId()));
         model.addAttribute("merchantServicesContract", merchantServicesContract);
         model.addAttribute("users", userService.findAll());
-
+        model.addAttribute("contractReasons", contractReasonService.findAll());
         return "admin/customer/manage-merchant-services";
     }
 
     @RequestMapping(value = "/merchantServicesContract", method = RequestMethod.POST)
     public String saveMerchantServicesContract(MerchantServicesContract merchantServicesContract) {
-        System.out.println("7777777777777777777");
-        System.out.println(merchantServicesContract.isLostRenewal());
         MerchantServicesContract contract = merchantServicesService.save(merchantServicesContract);
         return "redirect:/admin/customer/viewsite/" + contract.getCustomerSite().getId();
     }
@@ -210,6 +213,7 @@ public class MerchantServicesController {
         long startTime = System.currentTimeMillis();
         MerchantServicesSearchResult merchantServicesSearchResult =
                 merchantServicesContractSearchService.searchMerchantServicesContract(merchantServicesContractSearch, page);
+
         long endTime = System.currentTimeMillis();
         long timeTaken = (endTime - startTime);
         model.addAttribute("brokers", brokerService.findAll());

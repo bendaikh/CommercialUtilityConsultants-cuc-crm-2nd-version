@@ -22,6 +22,7 @@ public class ContractReasonController {
     //new form, list contract reasons
     @RequestMapping("/admin/contractreason/index")
     public String contractReasonIndex(Model model) {
+        System.out.println("entered here in contract reason");
         ContractReason contractReason = new ContractReason();
 
         model.addAttribute("contractReason", contractReason);
@@ -29,6 +30,7 @@ public class ContractReasonController {
 
         return "admin/contractreason/index";
     }
+
 
     //create/edit contract reason
     @RequestMapping(value = "/contractReason", method = RequestMethod.POST)

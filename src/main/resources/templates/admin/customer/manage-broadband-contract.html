@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+    <title>Customer Management</title>
+</head>
+<body>
+<header th:replace="../static/fragments/layout :: header"/>
+<!--<script th:if="${utilityContract.id}" th:inline="javascript">
+    /*<![CDATA[*/
+    showUtilityContractNotes(/*[[${utilityContract.id}]]*/);
+    showTpsContactsList(/*[[${customerSite.customer.id}]]*/);
+    /*]]>*/
+</script>-->
+<div class="container-fluid">
+    <h1 th:text="${customerSite.fullSiteNameAndAddress}">Site</h1>
+    <h2>Manage Broadband Contract</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Customer details</div>
+                <div class="panel-body">
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th>Customer Reference</th>
+                            <th>Company Registration No</th>
+                            <th>Business Name</th>
+                            <th>Site Name</th>
+                            <th>Site Post Code</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><a th:href="@{/admin/customer/view/{id}/(id=${customerSite.customer.id})}" th:inline="text">[[${customerSite.customer.customerReference}]]</a>
+                            </td>
+                            <td th:text="${customerSite.registrationNo}">Registration Number</td>
+                            <td><a th:href="@{/admin/customer/view/{id}/(id=${customerSite.customer.id})}" th:inline="text">[[${customerSite.customer.businessName}]]</a>
+                            </td>
+                            <td th:text="${customerSite.siteName}">Customer Site Name</td>
+                            <td th:text="${customerSite.sitePostcodeOut} + ' ' +${customerSite.sitePostcodeIn}">Customer
+                                Site Post Code Out and In
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" id="contactDetails">
+            <!--				TPS Contact Details go here -->
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="well well-sm">
+            <form class="form-horizontal" id="form" method="post" th:action="@{/broadbandContract}" th:object="${broadbandContract}">
+                <input th:field="*{id}" type="hidden"/>
+                <input id="customerSite" name="customerSite" th:value="${customerSite.id}" type="hidden"/>
+                <div class="form-group" sec:authorize="!hasAnyAuthority('BROKER','EXTERNAL_BROKER')">
+                    <div class="col-md-12">
+                        <div class="panel panel-warning">
+                            <div class="panel-heading">Checklist</div>
+                            <div class="panel-body">
+                                <label class="checkbox-inline"><input th:field="*{contractSentToCustomer}" type="checkbox"/>Contract Sent To Customer</label>
+                                <label class="checkbox-inline"><input th:field="*{contractReceived}" type="checkbox"/>Contract Received</label>
+                                <label class="checkbox-inline"><input th:field="*{welcomePackSentToCustomer}" type="checkbox"/>Welcome Pack Sent To Customer</label>
+                                <label class="checkbox-inline"><input th:field="*{previousSupplyTerminated}" type="checkbox"/>Previous Supply Terminated</label>
+                                <label class="checkbox-inline"><input th:field="*{currentSupplyTerminated}" type="checkbox"/>Current Supply Terminated</label>
+                                <label class="checkbox-inline"><input th:field="*{courtesyCall}" type="checkbox"/>Courtesy Call Made</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4" for="phoneNumber">phone number</label>
+                    <div class="col-md-8">
+                        <input class="form-control input-sm"
+                               placeholder="phone number"
+                               th:field="*{phoneNumber}"
+                               type="text"/>
+                    </div>
+                </div>
+                <div class="form-group" sec:authorize="!hasAnyAuthority('BROKER','EXTERNAL_BROKER')">
+                    <label class="control-label col-md-4" for="brokerId">Broker</label>
+                    <div class="col-md-8">
+                        <select class="form-control input-sm" id="broker" name="broker">
+                            <option th:each="b:${brokers}" th:text="${b.businessName}" th:value="${b.id}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" sec:authorize="hasAnyAuthority('BROKER','EXTERNAL_BROKER')">
+                    <label class="control-label col-md-4" for="brokerId">Broker</label>
+                    <a data-placement="right"
+                       data-toggle="tooltip"
+                       href="#"
+                       title="As a broker you are have been selected by default!">
+                <span
+                        class="glyphicon glyphicon-info-sign"></span></a>
+                    <div class="col-md-8">
+                        <select class="form-control input-sm" id="broker" name="broker">
+                            <option th:each="b:${brokers}" th:if="${b.id == #authentication.principal.broker?.id}" th:text="${b.businessName}" th:value="${b.id}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">monthly charge</label>
+                    <div class="col-md-8">
+                        <input class="form-control input-sm" th:field="*{monthlyCharge}" type="text"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">current supplier</label>
+                    <div class="col-md-8">
+                        <select class="form-control input-sm" id="supplier" name="supplier" th:field="*{supplier}">
+                            <option th:each="s:${suppliers}" th:text="${s.businessName}" th:value="${s.id}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4" for="startDate">Start Date</label>
+                    <div class="col-md-8">
+                        <input class="form-control input-sm" id="altStartDate" name="altStartDate" placeholder="Start Date" readonly="readonly"
+                               th:value="*{startDate != null} ? *{#dates.format(startDate, 'dd/MM/yyyy')}" type="text"/>
+                        <input id="startDate" name="startDate" th:value="*{startDate}" type="hidden"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4" for="endDate">End Date</label>
+                    <div class="col-md-8">
+                        <input class="form-control input-sm" id="altEndDate" name="altEndDate" placeholder="End Date" readonly="readonly"
+                               th:value="*{endDate != null} ? *{#dates.format(endDate, 'dd/MM/yyyy')}" type="text"/>
+                        <input id="endDate" name="endDate" th:value="*{endDate}" type="hidden"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Termination Fee</label>
+                    <div class="col-md-8">
+                        <input class="form-control input-sm" th:field="*{terminationFee}" type="text"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">keep Existing L/line number</label>
+                    <div class="col-sm-4">
+                        <select class="form-control input-sm" th:field="*{keepExistingLineNumber}">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">No.oflines/users</label>
+                    <div class="col-md-8">
+                        <input class="form-control input-sm"
+                               placeholder="No.oflines/users"
+                               th:field="*{noOflines}"
+                               type="text"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Call recording</label>
+                    <div class="col-sm-4">
+                        <select class="form-control input-sm" th:field="*{callRecording}">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Auto Attendant</label>
+                    <div class="col-sm-4">
+                        <select class="form-control input-sm" th:field="*{autoAttendant}">
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">additional questions</label>
+                    <div class="col-md-8">
+                        <input class="form-control input-sm"
+                               placeholder="additional questions"
+                               th:field="*{additionalQuestions}"
+                               type="text"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4" for="logType">Log Type</label>
+                    <div class="col-md-8">
+                        <select class="form-control input-sm" required="required" th:field="*{logType}">
+                            <option th:each="logType : ${T(mycrm.configuration.LogType).values()}"
+                                    th:text="${logType}" th:value="${logType}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4" for="contractPriority">Priority</label>
+                    <div class="col-md-4">
+                        <select class="form-control input-sm" required="required" th:field="*{contractPriority}">
+                            <option value="">Please select</option>
+                            <option th:each="contractPriority : ${T(mycrm.configuration.ContractPriority).values()}"
+                                    th:text="${contractPriority}" th:value="${contractPriority}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Contract Renewal</label>
+                    <div class="col-md-8">
+                        <input class="form-control input-sm"
+                               placeholder="Contract Renewal"
+                               th:field="*{contractRenewal}"
+                               type="text"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Do not renew</label>
+                    <div class="col-md-2">
+                        <input th:field="*{doNotRenew}" type="checkbox"/>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-4">
+                            <label class="control-label">Reason</label>
+                        </div>
+                        <div class="col-md-8">
+                            <select class="form-control input-sm" id="contractReason" name="contractReason">
+                                <option value="">Not Applicable</option>
+                                <option th:each="c:${contractReasons}" th:text="${c.description}" th:value="${c.id}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4" for="callbackDateTime">Call Back Date and Time</label>
+                    <div class="col-md-6">
+                        <input autocomplete="off" class="form-control input-sm" placeholder="Call Back Date" th:field="*{callbackDateTime}" type="text"/>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary btn-sm"
+                                data-target="#callback-diary"
+                                data-toggle="modal"
+                                type="button">Diary
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-10">
+                        <a class="btn btn-danger btn-sm" data-target="#myModal" data-toggle="modal" id="delButton" sec:authorize="hasAuthority('SUPERADMIN')">Delete</a>
+                        <button class="btn btn-success btn-sm" type="submit">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<div th:replace="../static/fragments/layout :: callbackDateTime"/>
+</html>

@@ -1,9 +1,9 @@
 package mycrm.search;
 
 import mycrm.functions.UserHelper;
-import mycrm.models.MerchantServicesContract;
-import mycrm.models.MerchantServicesContractSearch;
-import mycrm.models.MerchantServicesSearchResult;
+import mycrm.models.*;
+import mycrm.repositories.MerchantServicesSearchRepository;
+import mycrm.repositories.UtilityContractSearchRepository;
 import mycrm.services.MerchantServicesService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,11 +21,13 @@ public class MerchantServicesContractSearchServiceImpl implements MerchantServic
     private static final Logger logger = LogManager.getLogger();
     private final MerchantServicesService merchantServicesService;
     private final UserHelper userHelper;
+    private final MerchantServicesSearchRepository repository;
 
     @Autowired
-    public MerchantServicesContractSearchServiceImpl(MerchantServicesService merchantServicesService, UserHelper userHelper) {
+    public MerchantServicesContractSearchServiceImpl(MerchantServicesSearchRepository repository,MerchantServicesService merchantServicesService, UserHelper userHelper) {
         this.merchantServicesService = merchantServicesService;
         this.userHelper = userHelper;
+        this.repository = repository;
     }
 
     @Override
@@ -35,7 +37,6 @@ public class MerchantServicesContractSearchServiceImpl implements MerchantServic
                 pageNumber);
 
         List<MerchantServicesContract> contracts = fulltextSearchResult.getReturnedContracts();
-
         return MerchantServicesSearchResult
                 .builder()
                 .returnedContracts(contracts)
@@ -43,6 +44,21 @@ public class MerchantServicesContractSearchServiceImpl implements MerchantServic
                 .totalContractCount(fulltextSearchResult.getTotalContractCount())
                 .totalPages(fulltextSearchResult.getTotalPages())
                 .build();
+    }
+    @Override
+    public MerchantServicesSearchResult searchMerchantServiceContract(MerchantServicesContractSearch contractSearch, int pageNumber) {
+        logger.info("Starting Utility Contract search {} ", contractSearch.toString());
+
+        MerchantServicesSearchResult merchantServicesContract = this.repository.search(adaptMerchantContractSearch(contractSearch), pageNumber);
+
+        List<MerchantServicesContract> contracts = merchantServicesContract.getReturnedContracts();
+
+        MerchantServicesSearchResult merchantServicesSearchResult = MerchantServicesSearchResult.builder().build();
+        merchantServicesSearchResult.setReturnedContracts(contracts);
+        merchantServicesSearchResult.setReturnedContractCount(merchantServicesContract.getReturnedContractCount());
+        merchantServicesSearchResult.setTotalContractCount(merchantServicesContract.getTotalContractCount());
+        merchantServicesSearchResult.setTotalPages(merchantServicesContract.getTotalPages());
+        return merchantServicesSearchResult;
     }
 
     private MerchantServicesContractSearch adaptMerchantContractSearch(MerchantServicesContractSearch merchantServicesContractSearch) {

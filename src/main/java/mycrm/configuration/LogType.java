@@ -14,6 +14,5 @@ public enum LogType {
     PROJECT,
     CHANGE_OF_TENANCY,
     COMPLAINT,
-    DOMESTIC,
-    VERBAL
+    DOMESTIC
 }

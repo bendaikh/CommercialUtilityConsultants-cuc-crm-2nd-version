@@ -38,11 +38,36 @@
 				 title="Electricity Contract">
 				<span class="glyphicon glyphicon-flash"></span> Create Electricity Contract
 			</a>
-			<a class="btn btn-default"
+			<!--<a class="btn btn-default"
 				 th:href="@{/admin/customer/manage-utility-contract/{id}/(id=${customerSite.id})}"
 				 title="Utility Contract">
 				<span class="glyphicon glyphicon-plus"></span> Create Utility Contract
+			</a>-->
+			<a class="btn btn-default"
+			   th:href="@{/admin/customer/landline/{id}/(id=${customerSite.id})}"
+			   title="landline">
+				<span class="glyphicon glyphicon-plus"></span> Landline
 			</a>
+			<a class="btn btn-default"
+			   th:href="@{/admin/customer/broadband/{id}/(id=${customerSite.id})}"
+			   title="broadband">
+				<span class="glyphicon glyphicon-plus"></span> Broadband
+			</a>
+			<a class="btn btn-default"
+			   th:href="@{/admin/customer/voip/{id}/(id=${customerSite.id})}"
+			   title="VOiP">
+				<span class="glyphicon glyphicon-plus"></span> VOiP
+			</a>
+			<a class="btn btn-default"
+			   th:href="@{/admin/customer/water/{id}/(id=${customerSite.id})}"
+			   title="Water">
+				<span class="glyphicon glyphicon-plus"></span> Water
+			</a>
+			<!--<a class="btn btn-default"
+			   th:href="@{/admin/customer/solar/{id}/(id=${customerSite.id})}"
+			   title="Solar">
+				<span class="glyphicon glyphicon-plus"></span> Solar
+			</a>-->
 			<a class="btn btn-default"
          th:href="@{/admin/customer/manage-merchant-services/{id}/(id=${customerSite.id})}"
          title="Merchant Services Contract">

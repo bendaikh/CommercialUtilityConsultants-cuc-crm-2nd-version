@@ -60,6 +60,9 @@ public class MerchantServicesContract extends Auditable<User> {
     @Column(nullable = false, length = 1)
     private boolean courtesyCall;
 
+    @Column(nullable = false, length = 1)
+    private boolean verbal;
+
     // below are from merchant form
 
     @Field

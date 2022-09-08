@@ -29,7 +29,8 @@
                 <div class="panel-heading">System Settings</div>
                 <div class="panel-body">
                     <ul>
-                        <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/contractreason/index">Contract Reasons</a></li>
+                        <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/contractreason/index">Lost Renewal Reasons</a></li>
+                        <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/doNotRenewReason/index">Do Not Renew Reasons</a></li>
                         <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/system-setting/plugins">Plugins</a></li>
                         <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/data/edit-dialler-config">Edit Dialler Config</a></li>
                         <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/system-setting/email-settings/index">Email Settings</a></li>

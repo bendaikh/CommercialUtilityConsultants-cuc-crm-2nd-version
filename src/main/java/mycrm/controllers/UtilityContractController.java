@@ -1,20 +1,8 @@
 package mycrm.controllers;
 
-import mycrm.models.Broker;
-import mycrm.models.ContractSearch;
-import mycrm.models.Supplier;
-import mycrm.models.User;
-import mycrm.models.UtilityCallbackSearchResult;
-import mycrm.models.UtilityContract;
-import mycrm.models.UtilitySearchResult;
+import mycrm.models.*;
 import mycrm.search.UtilitySearchService;
-import mycrm.services.BrokerService;
-import mycrm.services.BrokerTransferHistoryService;
-import mycrm.services.ContractService;
-import mycrm.services.CustomerSiteService;
-import mycrm.services.SupplierService;
-import mycrm.services.UserService;
-import mycrm.services.UtilityContractService;
+import mycrm.services.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +27,9 @@ public class UtilityContractController {
     private final ContractService contractService;
     private final UtilitySearchService utilitySearchService;
     private final UserService userService;
+
+    private final ContractReasonService contractReasonService;
+
     private final BrokerTransferHistoryService brokerTransferHistoryService;
 
     @Autowired
@@ -49,7 +40,8 @@ public class UtilityContractController {
                                      ContractService contractService,
                                      UtilitySearchService utilitySearchService,
                                      UserService userService,
-                                     BrokerTransferHistoryService brokerTransferHistoryService) {
+                                     BrokerTransferHistoryService brokerTransferHistoryService,
+                                     ContractReasonService contractReasonService) {
         this.customerSiteService = customerSiteService;
         this.utilityContractService = utilityContractService;
         this.supplierService = supplierService;
@@ -57,9 +49,10 @@ public class UtilityContractController {
         this.contractService = contractService;
         this.utilitySearchService = utilitySearchService;
         this.userService = userService;
+        this.contractReasonService = contractReasonService;
         this.brokerTransferHistoryService = brokerTransferHistoryService;
     }
-
+    // comment this after finish the code
     @RequestMapping("/admin/customer/manage-utility-contract/{customerSiteID}")
     public String newUtilityContract(@PathVariable String customerSiteID, Model model) {
 
@@ -71,14 +64,29 @@ public class UtilityContractController {
         model.addAttribute("brokers", brokers);
         model.addAttribute("suppliers", suppliers);
         model.addAttribute("customerSite", customerSiteService.findById(Long.valueOf(customerSiteID)));
+        model.addAttribute("contractReasons", contractReasonService.findAll());
         model.addAttribute("utilityContract", utilityContract);
         return "admin/customer/manage-utility-contract";
     }
 
+    //TODO in solar
+    @RequestMapping("/admin/customer/solar/{customerSiteID}")
+    public String newSolarContract(@PathVariable String customerSiteID, Model model) {
+
+        List<Broker> brokers = brokerService.findAll();
+        List<Supplier> suppliers = supplierService.findAllOrderByBusinessName();
+
+        UtilityContract utilityContract = new UtilityContract();
+
+        model.addAttribute("brokers", brokers);
+        model.addAttribute("suppliers", suppliers);
+        model.addAttribute("customerSite", customerSiteService.findById(Long.valueOf(customerSiteID)));
+        model.addAttribute("utilityContract", utilityContract);
+        return "admin/customer/solar";
+    }
+
     @RequestMapping(value = "/utilityContract", method = RequestMethod.POST)
     public String saveUtilityContract(UtilityContract utilityContract) {
-        System.out.println("7777777777777777777");
-        System.out.println(utilityContract.isLostRenewal());
         UtilityContract contract = utilityContractService.save(utilityContract);
 
         return "redirect:/admin/customer/viewsite/" + contract.getCustomerSite().getId();
@@ -119,6 +127,7 @@ public class UtilityContractController {
         model.addAttribute("customerSite", customerSiteService.findById(utilityContract.getCustomerSite().getId()));
         model.addAttribute("utilityContract", utilityContract);
         model.addAttribute("users", userService.findAll());
+        model.addAttribute("contractReasons", contractReasonService.findAll());
 
         return "admin/customer/manage-utility-contract";
     }

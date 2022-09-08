@@ -102,6 +102,7 @@ public class UtilityContract extends Auditable<User> {
     @SortableField
     private Date callbackDateTime;
 
+
     @Column(nullable = false, length = 1)
     private boolean welcomePackSentToCustomer;
 
@@ -113,7 +114,6 @@ public class UtilityContract extends Auditable<User> {
 
     @Column(nullable = false, length = 1)
     private boolean currentSupplyTerminated;
-
     @Column(nullable = false, length = 1)
     private boolean contractReceived;
 

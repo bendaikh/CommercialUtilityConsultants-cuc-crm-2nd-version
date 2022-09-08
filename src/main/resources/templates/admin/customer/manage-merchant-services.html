@@ -387,25 +387,42 @@
         </div>
         <div class="form-group">
           <label class="control-label col-md-4">Do not renew</label>
-          <div class="col-md-8">
+          <div class="col-md-2">
+            <input th:field="*{doNotRenew}" type="checkbox"/>
+          </div>
+          <div class="col-md-6">
+            <div class="col-md-4">
+              <label class="control-label">Reason</label>
+            </div>
             <div class="col-md-8">
-              <input th:field="*{doNotRenew}" type="checkbox"/>
+              <select class="form-control input-sm" id="doNotRenewReason" name="doNotRenewReason">
+                <option value="">Not Applicable</option>
+                <option th:each="c:${doNotRenewReasons}" th:text="${c.description}" th:value="${c.id}"></option>
+              </select>
             </div>
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label col-md-4" for="lostRenewal">Lost Renewal</label>
-          <div class="col-md-8">
+          <label class="control-label col-md-4">Lost Renewal</label>
+          <div class="col-md-2">
             <input th:field="*{lostRenewal}" type="checkbox"/>
+          </div>
+          <div class="col-md-6">
+            <div class="col-md-4">
+              <label class="control-label">Reason</label>
+            </div>
+            <div class="col-md-8">
+              <select class="form-control input-sm" id="lostRenewalReason" name="lostRenewalReason">
+                <option value="">Not Applicable</option>
+                <option th:each="c:${lostRenewalReasons}" th:text="${c.description}" th:value="${c.id}"></option>
+              </select>
+            </div>
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label col-md-4">Reason</label>
-          <div class="col-md-8">
-            <select class="form-control input-sm" id="contractReason" name="contractReason">
-              <option value="">Not Applicable</option>
-              <option th:each="c:${contractReasons}" th:text="${c.description}" th:value="${c.id}"></option>
-            </select>
+          <label class="control-label col-md-4">verbal</label>
+          <div class="col-md-2">
+            <input th:field="*{verbal}" type="checkbox"/>
           </div>
         </div>
         <div class="form-group">
