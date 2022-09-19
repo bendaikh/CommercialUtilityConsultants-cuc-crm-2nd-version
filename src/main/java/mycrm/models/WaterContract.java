@@ -2,6 +2,7 @@ package mycrm.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import mycrm.audit.Auditable;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
@@ -9,6 +10,7 @@ import org.hibernate.search.annotations.SortableField;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.util.Calendar;
 import java.util.Date;
 
 @Indexed
@@ -16,7 +18,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "water_contract")
-public class WaterContract {
+public class WaterContract extends Auditable<User>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -106,5 +108,25 @@ public class WaterContract {
 
     public String getSupplyType() {
         return "water";
+    }
+    public boolean isCurrent() {
+        //if any dates are missing then return null
+        if (getStartDate() == null || getEndDate() == null) {
+            return false;
+        }
+        // otherwise return the truth
+        return getToday().after(getStartDate()) && getToday().before(getEndDate());
+    }
+    public Date getToday() {
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY, 0);
+
+        return today.getTime();
+    }
+    public String getContractStatus() {
+        if (getEndDate() != null && getEndDate().before(getToday())) {
+            return "ENDED";
+        }
+        return "UNKNOWN";
     }
 }

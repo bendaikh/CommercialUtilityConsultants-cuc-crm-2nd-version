@@ -37,19 +37,18 @@ public class BrokerServiceJpaImpl implements BrokerService {
 
     private final GasContractService gasContractService;
     private final ElecContractService electricContractService;
-    private final BrokerRepository brokerRepo;
+    @Autowired
+    private BrokerRepository brokerRepo;
     private final UtilityContractService utilityContractService;
     private final MerchantServicesService merchantServicesService;
 
     @Autowired
     public BrokerServiceJpaImpl(GasContractService gasContractService,
                                 ElecContractService electricContractService,
-                                BrokerRepository brokerRepo,
                                 UtilityContractService utilityContractService,
                                 MerchantServicesService merchantServicesService) {
         this.gasContractService = gasContractService;
         this.electricContractService = electricContractService;
-        this.brokerRepo = brokerRepo;
         this.utilityContractService = utilityContractService;
         this.merchantServicesService = merchantServicesService;
     }

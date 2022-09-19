@@ -45,21 +45,6 @@ public class MerchantServicesContractSearchServiceImpl implements MerchantServic
                 .totalPages(fulltextSearchResult.getTotalPages())
                 .build();
     }
-    @Override
-    public MerchantServicesSearchResult searchMerchantServiceContract(MerchantServicesContractSearch contractSearch, int pageNumber) {
-        logger.info("Starting Utility Contract search {} ", contractSearch.toString());
-
-        MerchantServicesSearchResult merchantServicesContract = this.repository.search(adaptMerchantContractSearch(contractSearch), pageNumber);
-
-        List<MerchantServicesContract> contracts = merchantServicesContract.getReturnedContracts();
-
-        MerchantServicesSearchResult merchantServicesSearchResult = MerchantServicesSearchResult.builder().build();
-        merchantServicesSearchResult.setReturnedContracts(contracts);
-        merchantServicesSearchResult.setReturnedContractCount(merchantServicesContract.getReturnedContractCount());
-        merchantServicesSearchResult.setTotalContractCount(merchantServicesContract.getTotalContractCount());
-        merchantServicesSearchResult.setTotalPages(merchantServicesContract.getTotalPages());
-        return merchantServicesSearchResult;
-    }
 
     private MerchantServicesContractSearch adaptMerchantContractSearch(MerchantServicesContractSearch merchantServicesContractSearch) {
         MerchantServicesContractSearch adaptedContractSearch = new MerchantServicesContractSearch();

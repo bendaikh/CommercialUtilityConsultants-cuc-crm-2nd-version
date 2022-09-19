@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="../static/fragments/layout :: site-head">
+  <title>CEC Consultants - Broker Management System</title>
+</head>
+<body>
+<div th:replace="../static/fragments/layout :: header">
+  <!-- ============================================================================ -->
+  <!-- This content is only used for static prototyping purposes (natural templates)-->
+  <!-- and is therefore entirely optional, as this markup fragment will be included -->
+  <!-- from "fragments/header.html" at runtime.                                     -->
+  <!-- ============================================================================ -->
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">CEC Consultants - Broker Management System</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/logout" th:href="@{/logout}">Logout</a></li>
+        </ul>
+      </ul>
+    </div>
+  </nav>
+</div>
+<div class="container-fluid">
+  <h2>landline Leads</h2>
+
+  <div class="well">
+    <form class="form-inline" method="get" th:action="@{1}" th:object="${landlineContractSearch}">
+      <div class="form-group">
+        <label for="q">Search
+          <a data-placement="right"
+             data-toggle="tooltip"
+             href="#"
+             title="Search by Customer Reference, Business Name, Site Name, Site Address,
+                       Site City, Customer First Name &amp; Last Name, Site Registration No,
+                       Site Postcode, MPAN Bottom Line, MPR">
+            <span class="glyphicon glyphicon-info-sign"></span>
+          </a>
+        </label>
+        <input class="form-control input-sm"
+               th:field="*{q}"
+               type="text"/>
+      </div>
+      <div class="form-group">
+        <label>Start Date</label> <input class="form-control" th:field="*{fromDate}" type="text"/>
+      </div>
+      <div class="form-group">
+        <label>End Date</label> <input class="form-control" th:field="*{toDate}" type="text"/>
+      </div>
+      <div class="form-group">
+        <label for="broker">Broker</label> <select class="form-control input-sm" th:field="*{broker}">
+        <option value="">All</option>
+        <option th:each="brokers : ${brokers}" th:selected="(${brokers.id} == ${broker})" th:text="${brokers.firstName}+ ' '+${brokers.lastName}"
+                th:value="${brokers.id}"></option>
+      </select>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-sm btn-info" type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="pager" th:if="${ totalPages > 1 }">
+        <li class="previous"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber - 1},
+                                        q = ${landlineContractSearch.q},
+                                        fromDate = ${landlineContractSearch.fromDate},
+                                        toDate = ${landlineContractSearch.toDate},
+                                        broker = ${landlineContractSearch.broker?.id}"
+                                th:if="${ pageNumber &gt; 1 }">Previous</a></li>
+
+        <li class="next"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber + 1},
+                                        q = ${landlineContractSearch.q},
+                                        fromDate = ${landlineContractSearch.fromDate},
+                                        toDate = ${landlineContractSearch.toDate},
+                                        broker = ${landlineContractSearch.broker?.id}"
+                            th:if="${ pageNumber &lt; totalPages }">Next</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+
+      <div th:inline="text">
+        Showing [[${totalResults}]] leads.
+        Page [[${pageNumber}]] of [[${totalPages}]] pages - time taken [[${timeTaken}]] ms.
+        [[${totalContracts}]] contracts in the database.
+      </div>
+
+    </div>
+  </div>
+
+  <table class="table table-striped table-hover table-condensed">
+    <thead>
+    <tr>
+      <th>Supply</th>
+      <th>Customer Reference</th>
+      <th>Business Name</th>
+      <th>Site Name</th>
+      <th>Site Post Code</th>
+      <th>Log Type</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Supplier</th>
+      <th>Date Created</th>
+      <th>Broker</th>
+      <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="text-success" th:classappend="${lead.contractStatus == 'ENDED'} ? text-danger : text-success" th:each="lead, row : ${leads}">
+      <td th:text="${lead.supplyType}"></td>
+      <td><a th:href="@{/admin/customer/view/{id}/(id=${lead.customerSite.customer.id})}" th:inline="text">[[${lead.customerSite.customer.businessName}]]</a></td>
+      <td th:text="${lead.customerSite.customer.businessName}"></td>
+      <td th:text="${lead.customerSite.siteName}"></td>
+      <td th:text="${lead.customerSite.sitePostcodeOut}+ ' '+ ${lead.customerSite.sitePostcodeIn}"></td>
+      <td th:text="${lead.logType}"></td>
+      <td th:text="${lead.startDate != null} ? ${#dates.format(lead.startDate, 'dd/MM/yyyy')}">Start Date</td>
+      <td th:text="${lead.endDate != null} ? ${#dates.format(lead.endDate, 'dd/MM/yyyy')}">End Date</td>
+      <td th:text="${lead.supplier.businessName}">Supplier</td>
+      <td th:text="${#dates.format(lead.dateCreated, 'dd/MM/yyyy')}">Date Created</td>
+      <td th:text="${lead.broker.firstName}+' '+${lead.broker.lastName}">Broker</td>
+      <td><a class="btn btn-primary btn-xs" th:href="@{/admin/customer/viewsite/{id}/(id=${lead.customerSite.id})}">View</a></td>
+    </tr>
+
+    </tbody>
+  </table>
+
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="pager" th:if="${ totalPages > 1 }">
+        <li class="previous"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber - 1},
+                                        q = ${landlineContractSearch.q},
+                                        fromDate = ${landlineContractSearch.fromDate},
+                                        toDate = ${landlineContractSearch.toDate},
+                                        broker = ${landlineContractSearch.broker?.id}"
+                                th:if="${ pageNumber &gt; 1 }">Previous</a></li>
+
+        <li class="next"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber + 1},
+                                        q = ${landlineContractSearch.q},
+                                        fromDate = ${landlineContractSearch.fromDate},
+                                        toDate = ${landlineContractSearch.toDate},
+                                        broker = ${landlineContractSearch.broker?.id}"
+                            th:if="${ pageNumber &lt; totalPages }">Next</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <ul class="pager" th:if="${ totalPages > 1 }">
+        <li class="previous"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber - 1},
+                                        q = ${landlineContractSearch.q},
+                                        fromDate = ${landlineContractSearch.fromDate},
+                                        toDate = ${landlineContractSearch.toDate},
+                                        broker = ${landlineContractSearch.broker?.id}"
+                                th:if="${ pageNumber &gt; 1 }">Previous</a></li>
+
+        <li class="next"><a th:href="@{{pageNumber}(pageNumber = ${pageNumber + 1},
+                                        q = ${landlineContractSearch.q},
+                                        fromDate = ${landlineContractSearch.fromDate},
+                                        toDate = ${landlineContractSearch.toDate},
+                                        broker = ${landlineContractSearch.broker?.id}"
+                            th:if="${ pageNumber &lt; totalPages }">Next</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div th:replace="../static/fragments/layout :: footer">&copy; Broker Management System</div>
+</body>
+</html>

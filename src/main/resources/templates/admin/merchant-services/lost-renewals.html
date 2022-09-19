@@ -129,7 +129,7 @@
             <td th:text="${contract.currentSupplier}">Supplier</td>
             <td th:text="${#dates.format(contract.dateCreated, 'dd/MM/yyyy')}">Date Created</td>
             <td th:text="${contract.broker.firstName}+' '+${contract.broker.lastName}">Broker</td>
-            <td th:text="${contract.lostRenewal}">Lost Renewal</td>
+            <td th:text="${contract.doNotRenew}">Lost Renewal</td>
             <td><a class="btn btn-primary btn-xs" th:href="@{/admin/customer/viewsite/{id}/(id=${contract.customerSite.id})}">View</a></td>
         </tr>
 

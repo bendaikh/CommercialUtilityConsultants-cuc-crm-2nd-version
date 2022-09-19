@@ -9,13 +9,7 @@ import mycrm.models.UtilityCallbackSearchResult;
 import mycrm.models.UtilityContract;
 import mycrm.models.UtilitySearchResult;
 import mycrm.search.UtilitySearchService;
-import mycrm.services.BrokerService;
-import mycrm.services.BrokerTransferHistoryService;
-import mycrm.services.ContractService;
-import mycrm.services.CustomerSiteService;
-import mycrm.services.SupplierService;
-import mycrm.services.UserService;
-import mycrm.services.UtilityContractService;
+import mycrm.services.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -46,6 +40,9 @@ public class UtilityContractControllerTest {
 
     @InjectMocks
     private UtilityContractController utilityContractController;
+
+    @Mock
+    private ContractReasonService contractReasonService;
 
     @Mock
     private CustomerSiteService mockCustomerSiteService;
@@ -85,6 +82,7 @@ public class UtilityContractControllerTest {
         MockitoAnnotations.initMocks(this);
 
         mockMvc = MockMvcBuilders.standaloneSetup(utilityContractController).build();
+        contractReasonService.findAll();
     }
 
     @Test

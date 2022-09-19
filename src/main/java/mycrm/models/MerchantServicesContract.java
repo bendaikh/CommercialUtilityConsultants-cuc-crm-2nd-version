@@ -1,5 +1,6 @@
 package mycrm.models;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import mycrm.audit.Auditable;

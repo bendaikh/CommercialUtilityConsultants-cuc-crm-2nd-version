@@ -11,6 +11,7 @@ import org.hibernate.search.annotations.SortableField;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.util.Calendar;
 import java.util.Date;
 
 @Indexed
@@ -18,7 +19,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "landline_contract")
-public class LandlineContract {
+public class LandlineContract extends Auditable<User>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -170,4 +171,25 @@ public class LandlineContract {
     public void setCourtesyCall(boolean courtesyCall) {
         this.courtesyCall = courtesyCall;
     }
+
+    public boolean isCurrent() {
+     //if any dates are missing then return null
+     if (getStartDate() == null || getEndDate() == null) {
+      return false;
+     }
+     // otherwise return the truth
+     return getToday().after(getStartDate()) && getToday().before(getEndDate());
+    }
+    public Date getToday() {
+     Calendar today = Calendar.getInstance();
+     today.set(Calendar.HOUR_OF_DAY, 0);
+
+     return today.getTime();
+    }
+   public String getContractStatus() {
+    if (getEndDate() != null && getEndDate().before(getToday())) {
+     return "ENDED";
+    }
+    return "UNKNOWN";
+   }
 }

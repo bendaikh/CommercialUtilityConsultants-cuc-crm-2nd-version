@@ -1,10 +1,6 @@
 package mycrm.services;
 
-import mycrm.models.BrokerTransferHistory;
-import mycrm.models.ElecCustomerContract;
-import mycrm.models.GasCustomerContract;
-import mycrm.models.MerchantServicesContract;
-import mycrm.models.UtilityContract;
+import mycrm.models.*;
 
 import java.util.List;
 
@@ -18,4 +14,12 @@ public interface BrokerTransferHistoryService {
     List<String> findLatestUtilityBrokerTransferHistory(UtilityContract utilityContract);
 
     List<String> findLatestMerchantServicesBrokerTransferHistory(MerchantServicesContract merchantServicesContract);
+
+    List<String> findLatestBroadbandBrokerTransferHistory(BroadbandContract broadbandContract);
+
+    List<String> findLatestLandlineBrokerTransferHistory(LandlineContract landlineContract);
+    List<String> findLatestVoipBrokerTransferHistory(VoipContract voipContract);
+    List<String> findLatestWaterBrokerTransferHistory(WaterContract waterContract);
+
+
 }

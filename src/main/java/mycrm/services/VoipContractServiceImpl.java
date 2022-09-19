@@ -1,12 +1,14 @@
 package mycrm.services;
 
 
-import mycrm.models.LandlineContract;
-import mycrm.models.LogTypeHistory;
-import mycrm.models.VoipContract;
+import mycrm.models.*;
 import mycrm.repositories.VoipContractRepository;
+import mycrm.repositories.VoipContractSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Comparator;
+import java.util.List;
 
 @Service
 public class VoipContractServiceImpl implements VoipContractService{
@@ -15,6 +17,9 @@ public class VoipContractServiceImpl implements VoipContractService{
     private VoipContractRepository voipContractRepository;
     @Autowired
     private LogTypeHistoryService logTypeHistoryService;
+    @Autowired
+    private VoipContractSearchRepository voipContractSearchRepository;
+
     @Override
     public VoipContract save(VoipContract voipContract) {
         String logType = voipContract.getLogType();
@@ -42,6 +47,23 @@ public class VoipContractServiceImpl implements VoipContractService{
     @Override
     public VoipContract findById(Long id) {
         return this.voipContractRepository.findOne(id);
+    }
+
+    @Override
+    public List<VoipContract> findVoipContractByCustomerSite(CustomerSite customerSite) {
+        List<VoipContract> contracts = this.findByCustomerSite(customerSite);
+        contracts.sort(Comparator.comparing(VoipContract::isCurrent).reversed());
+        return contracts;
+    }
+
+    @Override
+    public List<VoipContract> findByCustomerSite(CustomerSite customerSite) {
+        return this.voipContractRepository.findLatestVoipContractByCustomerSite(customerSite.getId());
+    }
+
+    @Override
+    public VoipSearchResult getVoipContracts(VoipContractSearch voipContractSearch, int pageNumber) {
+        return this.voipContractSearchRepository.search(voipContractSearch, pageNumber);
     }
 
     private boolean hasLogTypeChanged(String logType, String previousLogType) {

@@ -1,5 +1,7 @@
 package mycrm.models;
 
+import mycrm.audit.Auditable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Version;
 
 @Entity
-public class ContractReason {
+public class ContractReason{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

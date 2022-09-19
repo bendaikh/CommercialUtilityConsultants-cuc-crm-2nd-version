@@ -1,19 +1,26 @@
 package mycrm.services;
 
-import mycrm.models.BroadbandContract;
-import mycrm.models.LandlineContract;
-import mycrm.models.LogTypeHistory;
+import mycrm.models.*;
 import mycrm.repositories.BroadbandContractRepository;
+import mycrm.repositories.BroadbandContractSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
+import java.util.List;
 @Service
 public class BroadbandContractServiceImpl implements BroadbandContractService{
-    @Autowired
-    private LogTypeHistoryService logTypeHistoryService;
-    @Autowired
-    BroadbandContractRepository broadbandContractRepository;
 
+    private final LogTypeHistoryService logTypeHistoryService;
+
+    private final BroadbandContractRepository broadbandContractRepository;
+    private final BroadbandContractSearchRepository broadbandContractSearchRepository;
+    @Autowired
+    public BroadbandContractServiceImpl(BroadbandContractSearchRepository broadbandContractSearchRepository,BroadbandContractRepository broadbandContractRepository,LogTypeHistoryService logTypeHistoryService){
+        this.broadbandContractRepository = broadbandContractRepository;
+        this.logTypeHistoryService = logTypeHistoryService;
+        this.broadbandContractSearchRepository = broadbandContractSearchRepository;
+    }
     @Override
     public BroadbandContract save(BroadbandContract broadbandContract) {
         String logType = broadbandContract.getLogType();
@@ -40,6 +47,23 @@ public class BroadbandContractServiceImpl implements BroadbandContractService{
     @Override
     public BroadbandContract findById(Long id) {
         return this.broadbandContractRepository.findOne(id);
+    }
+
+    @Override
+    public List<BroadbandContract> findBroadbandContractByCustomerSite(CustomerSite customerSite) {
+        List<BroadbandContract> contracts = this.findByCustomerSite(customerSite);
+        contracts.sort(Comparator.comparing(BroadbandContract::isCurrent).reversed());
+        return contracts;
+    }
+
+    @Override
+    public List<BroadbandContract> findByCustomerSite(CustomerSite customerSite) {
+        return this.broadbandContractRepository.findLatestBroadbandContractByCustomerSite(customerSite.getId());
+    }
+
+    @Override
+    public BroadbandSearchResult getBroadbandContracts(BroadbandContractSearch broadbandContractSearch, int pageNumber) {
+        return this.broadbandContractSearchRepository.search(broadbandContractSearch, pageNumber);
     }
 
     private boolean hasLogTypeChanged(String logType, String previousLogType) {

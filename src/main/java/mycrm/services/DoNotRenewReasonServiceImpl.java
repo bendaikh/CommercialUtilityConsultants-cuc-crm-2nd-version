@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@Primary
 public class DoNotRenewReasonServiceImpl implements DoNotRenewReasonService{
-    @Autowired
     private final DoNotRenewReasonRepository doNotRenewReasonRepository;
 
     @Autowired
@@ -22,16 +20,16 @@ public class DoNotRenewReasonServiceImpl implements DoNotRenewReasonService{
 
     @Override
     public DoNotRenewReason findById(Long id) {
-        return this.doNotRenewReasonRepository.findOne(id);
+        return doNotRenewReasonRepository.findOne(id);
     }
 
     @Override
     public List<DoNotRenewReason> findAll() {
-        return this.doNotRenewReasonRepository.findAll();
+        return doNotRenewReasonRepository.findAll();
     }
 
     @Override
     public DoNotRenewReason save(DoNotRenewReason doNotRenewReason) {
-        return this.doNotRenewReasonRepository.save(doNotRenewReason);
+        return doNotRenewReasonRepository.save(doNotRenewReason);
     }
 }

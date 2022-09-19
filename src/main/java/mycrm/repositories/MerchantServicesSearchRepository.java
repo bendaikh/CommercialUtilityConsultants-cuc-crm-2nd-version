@@ -278,17 +278,16 @@ public class MerchantServicesSearchRepository {
 
         }
 
-        //            not in the merchant services contract
-//        if (merchantServicesContractSearch.isLostRenewalSearch()) {
-//            logger.info("Filtering lost utility renewals");
-//
-//            booleanQuery.add(queryBuilder
-//                            .keyword()
-//                            .onField("lostRenewal")
-//                            .matching(true)
-//                            .createQuery(),
-//                    BooleanClause.Occur.MUST);
-//        }
+        if (merchantServicesContractSearch.isLostRenewalSearch()) {
+            logger.info("Filtering lost merchant renewals");
+
+            booleanQuery.add(queryBuilder
+                            .keyword()
+                            .onField("doNotRenew")
+                            .matching(true)
+                            .createQuery(),
+                    BooleanClause.Occur.MUST);
+        }
 
         if (merchantServicesContractSearch.getMonthsRemaining() > 0) {
             logger.info("Filtering contracts by {} months remaining to date {}",

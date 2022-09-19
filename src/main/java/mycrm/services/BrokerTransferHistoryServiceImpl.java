@@ -1,11 +1,6 @@
 package mycrm.services;
 
-import mycrm.models.Broker;
-import mycrm.models.BrokerTransferHistory;
-import mycrm.models.ElecCustomerContract;
-import mycrm.models.GasCustomerContract;
-import mycrm.models.MerchantServicesContract;
-import mycrm.models.UtilityContract;
+import mycrm.models.*;
 import mycrm.repositories.BrokerRepository;
 import mycrm.repositories.BrokerTransferHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,6 +90,74 @@ public class BrokerTransferHistoryServiceImpl implements BrokerTransferHistorySe
                 this.brokerTransferHistoryRepository.findBrokerTransferHistoryOrderByDateCreatedDesc(
                         merchantServicesContract.getId(),
                         merchantServicesContract.getSupplyType()
+                );
+
+        brokerTransferHistoryList.forEach(brokerTransferHistory -> {
+            Broker previousBroker = brokerRepository.findOne(brokerTransferHistory.getPreviousBroker());
+            transferMessageList.add(transferMessage(brokerTransferHistory, previousBroker));
+        });
+        return transferMessageList;
+    }
+
+    @Override
+    public List<String> findLatestBroadbandBrokerTransferHistory(BroadbandContract broadbandContract) {
+        List<String> transferMessageList = new ArrayList<>();
+
+        List<BrokerTransferHistory> brokerTransferHistoryList =
+                this.brokerTransferHistoryRepository.findBrokerTransferHistoryOrderByDateCreatedDesc(
+                        broadbandContract.getId(),
+                        broadbandContract.getSupplyType()
+                );
+
+        brokerTransferHistoryList.forEach(brokerTransferHistory -> {
+            Broker previousBroker = brokerRepository.findOne(brokerTransferHistory.getPreviousBroker());
+            transferMessageList.add(transferMessage(brokerTransferHistory, previousBroker));
+        });
+        return transferMessageList;
+    }
+
+    @Override
+    public List<String> findLatestLandlineBrokerTransferHistory(LandlineContract landlineContract) {
+        List<String> transferMessageList = new ArrayList<>();
+
+        List<BrokerTransferHistory> brokerTransferHistoryList =
+                this.brokerTransferHistoryRepository.findBrokerTransferHistoryOrderByDateCreatedDesc(
+                        landlineContract.getId(),
+                        landlineContract.getSupplyType()
+                );
+
+        brokerTransferHistoryList.forEach(brokerTransferHistory -> {
+            Broker previousBroker = brokerRepository.findOne(brokerTransferHistory.getPreviousBroker());
+            transferMessageList.add(transferMessage(brokerTransferHistory, previousBroker));
+        });
+        return transferMessageList;
+    }
+
+    @Override
+    public List<String> findLatestVoipBrokerTransferHistory(VoipContract voipContract) {
+        List<String> transferMessageList = new ArrayList<>();
+
+        List<BrokerTransferHistory> brokerTransferHistoryList =
+                this.brokerTransferHistoryRepository.findBrokerTransferHistoryOrderByDateCreatedDesc(
+                        voipContract.getId(),
+                        voipContract.getSupplyType()
+                );
+
+        brokerTransferHistoryList.forEach(brokerTransferHistory -> {
+            Broker previousBroker = brokerRepository.findOne(brokerTransferHistory.getPreviousBroker());
+            transferMessageList.add(transferMessage(brokerTransferHistory, previousBroker));
+        });
+        return transferMessageList;
+    }
+
+    @Override
+    public List<String> findLatestWaterBrokerTransferHistory(WaterContract waterContract) {
+        List<String> transferMessageList = new ArrayList<>();
+
+        List<BrokerTransferHistory> brokerTransferHistoryList =
+                this.brokerTransferHistoryRepository.findBrokerTransferHistoryOrderByDateCreatedDesc(
+                        waterContract.getId(),
+                        waterContract.getSupplyType()
                 );
 
         brokerTransferHistoryList.forEach(brokerTransferHistory -> {

@@ -1,23 +1,7 @@
 package mycrm.controllers;
 
-import mycrm.models.Contact;
-import mycrm.models.Customer;
-import mycrm.models.CustomerSite;
-import mycrm.models.CustomerSiteWithContracts;
-import mycrm.models.ElecCustomerContract;
-import mycrm.models.GasCustomerContract;
-import mycrm.models.MerchantServicesContract;
-import mycrm.models.UtilityContract;
-import mycrm.services.ContactService;
-import mycrm.services.CustomerDataService;
-import mycrm.services.CustomerService;
-import mycrm.services.CustomerSiteService;
-import mycrm.services.CustomerSiteTransferHistoryService;
-import mycrm.services.ElecContractService;
-import mycrm.services.GasContractService;
-import mycrm.services.LinkedAccountService;
-import mycrm.services.MerchantServicesService;
-import mycrm.services.UtilityContractService;
+import mycrm.models.*;
+import mycrm.services.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +28,14 @@ public class SiteController {
     private final ContactService contactService;
     private final CustomerDataService customerDataService;
     private final UtilityContractService utilityContractService;
+    private final VoipContractService voipContractService;
+    private final WaterContractService waterContractService;
     private final LinkedAccountService linkedAccountService;
     private final CustomerSiteTransferHistoryService customerSiteTransferHistoryService;
     private final MerchantServicesService merchantServicesService;
+
+    private final LandlineContractService landlineContractService;
+    private final BroadbandContractService broadbandContractService;
 
     @Autowired
     public SiteController(CustomerService customerService, CustomerSiteService customerSiteService,
@@ -54,7 +43,9 @@ public class SiteController {
                           ContactService contactService, CustomerDataService customerDataService,
                           UtilityContractService utilityContractService, LinkedAccountService linkedAccountService,
                           CustomerSiteTransferHistoryService customerSiteTransferHistoryService,
-                          MerchantServicesService merchantServicesService) {
+                          MerchantServicesService merchantServicesService,LandlineContractService landlineContractService,
+                          BroadbandContractService broadbandContractService,VoipContractService voipContractService
+                            ,WaterContractService waterContractService) {
         this.customerService = customerService;
         this.customerSiteService = customerSiteService;
         this.gasContractService = gasContractService;
@@ -65,6 +56,10 @@ public class SiteController {
         this.linkedAccountService = linkedAccountService;
         this.customerSiteTransferHistoryService = customerSiteTransferHistoryService;
         this.merchantServicesService = merchantServicesService;
+        this.landlineContractService = landlineContractService;
+        this.broadbandContractService = broadbandContractService;
+        this.voipContractService = voipContractService;
+        this.waterContractService = waterContractService;
     }
 
     //view customer sites
@@ -96,11 +91,11 @@ public class SiteController {
         List<GasCustomerContract> gasCustomerContracts = gasContractService.findByCustomerSite(customerSite);
         List<ElecCustomerContract> elecCustomerContracts = elecContractService.findByCustomerSite(customerSite);
         List<UtilityContract> solarContracts = utilityContractService.findSolarContractByCustomerSite(customerSite);
-        List<UtilityContract> waterContracts = utilityContractService.findWaterContractByCustomerSite(customerSite);
-        List<UtilityContract> voipContracts = utilityContractService.findVoipContractByCustomerSite(customerSite);
-        List<UtilityContract> landlineContracts = utilityContractService.findLandlineContractByCustomerSite(customerSite);
+        List<WaterContract> waterContracts = waterContractService.findWaterContractByCustomerSite(customerSite);
+        List<VoipContract> voipContracts = voipContractService.findVoipContractByCustomerSite(customerSite);
+        List<LandlineContract> landlineContracts = landlineContractService.findLandlineContractByCustomerSite(customerSite);
         List<UtilityContract> mobileContracts = utilityContractService.findMobileContractByCustomerSite(customerSite);
-        List<UtilityContract> broadbandContracts = utilityContractService.findBroadbandContractByCustomerSite(customerSite);
+        List<BroadbandContract> broadbandContracts = broadbandContractService.findBroadbandContractByCustomerSite(customerSite);
         List<MerchantServicesContract> merchantServicesContracts = merchantServicesService.findMerchantServicesContractByCustomerSite(customerSite);
         List<String> siteTransferMessage = customerSiteTransferHistoryService.findCustomerSiteTransferHistoryByCustomerSite(customerSite);
 

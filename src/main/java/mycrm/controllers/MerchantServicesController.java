@@ -100,7 +100,8 @@ public class MerchantServicesController {
         model.addAttribute("customerSite", customerSiteService.findById(merchantServicesContract.getCustomerSite().getId()));
         model.addAttribute("merchantServicesContract", merchantServicesContract);
         model.addAttribute("users", userService.findAll());
-        model.addAttribute("contractReasons", contractReasonService.findAll());
+        model.addAttribute("doNotRenewReasons",doNotRenewReasonService.findAll());
+        model.addAttribute("lostRenewalReasons",contractReasonService.findAll());
         return "admin/customer/manage-merchant-services";
     }
 
@@ -208,7 +209,7 @@ public class MerchantServicesController {
     @RequestMapping("/admin/merchant-services/lost-renewals/{page}")
     public String viewLostMerchantServiceRenewals(MerchantServicesContractSearch merchantServicesContractSearch, Model model, @PathVariable("page") int page) {
 
-        merchantServicesContractSearch.setLeadSearch(true);
+        merchantServicesContractSearch.setLostRenewalSearch(true);
         merchantServicesContractSearch.setLostRenewal(true);
         long startTime = System.currentTimeMillis();
         MerchantServicesSearchResult merchantServicesSearchResult =
