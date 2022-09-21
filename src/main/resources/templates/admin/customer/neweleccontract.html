@@ -178,7 +178,7 @@
         </select>
       </div>
     </div>
-    <div class="form-group">
+    <!--<div class="form-group">
       <label class="control-label col-md-3" for="contractPriority">Priority</label>
       <div class="col-md-2">
         <select class="form-control input-sm" required="required" th:field="*{contractPriority}">
@@ -187,7 +187,7 @@
                   th:text="${contractPriority}" th:value="${contractPriority}"></option>
         </select>
       </div>
-    </div>
+    </div>-->
     <div class="form-group">
       <label class="control-label col-sm-3" for="contractRenewed">Contract Renewed</label>
       <div class="col-sm-4">
@@ -195,15 +195,37 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label col-sm-3" for="doNotRenew">Do Not Renew</label>
-      <div class="col-sm-4">
+      <label class="control-label col-sm-3">Do not renew</label>
+      <div class="col-sm-1">
         <input th:field="*{doNotRenew}" type="checkbox"/>
+      </div>
+      <div class="col-sm-8">
+        <div class="col-sm-1">
+          <label class="control-label">Reason</label>
+        </div>
+        <div class="col-sm-4">
+          <select class="form-control input-sm" id="contractReason" name="contractReason">
+            <option value="">Not Applicable</option>
+            <option th:each="c:${doNotRenewReasons}" th:text="${c.description}" th:value="${c.id}"></option>
+          </select>
+        </div>
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label col-sm-3" for="lostRenewal">Lost Renewal</label>
-      <div class="col-sm-4">
+      <label class="control-label col-sm-3">Lost Renewal</label>
+      <div class="col-sm-1">
         <input th:field="*{lostRenewal}" type="checkbox"/>
+      </div>
+      <div class="col-sm-8">
+        <div class="col-sm-1">
+          <label class="control-label">Reason</label>
+        </div>
+        <div class="col-sm-4">
+          <select class="form-control input-sm" id="lostRenewalReason" name="lostRenewalReason">
+            <option value="">Not Applicable</option>
+            <option th:each="c:${lostRenewalReasons}" th:text="${c.description}" th:value="${c.id}"></option>
+          </select>
+        </div>
       </div>
     </div>
     <div class="form-group">

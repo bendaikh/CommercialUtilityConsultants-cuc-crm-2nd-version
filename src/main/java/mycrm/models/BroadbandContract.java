@@ -104,6 +104,17 @@ public class BroadbandContract extends Auditable<User>{
 
     @Column(length = 10)
     private double monthlyCharge;
+    @Field
+    @Column(nullable = false, length = 1)
+    private boolean lostRenewal;
+
+    public boolean isLostRenewal() {
+        return lostRenewal;
+    }
+
+    public void setLostRenewal(boolean lostRenewal) {
+        this.lostRenewal = lostRenewal;
+    }
 
     public CustomerSite getCustomerSite() {
         return customerSite;

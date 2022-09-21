@@ -69,22 +69,6 @@ public class UtilityContractController {
         return "admin/customer/manage-utility-contract";
     }
 
-    //TODO in solar
-    @RequestMapping("/admin/customer/solar/{customerSiteID}")
-    public String newSolarContract(@PathVariable String customerSiteID, Model model) {
-
-        List<Broker> brokers = brokerService.findAll();
-        List<Supplier> suppliers = supplierService.findAllOrderByBusinessName();
-
-        UtilityContract utilityContract = new UtilityContract();
-
-        model.addAttribute("brokers", brokers);
-        model.addAttribute("suppliers", suppliers);
-        model.addAttribute("customerSite", customerSiteService.findById(Long.valueOf(customerSiteID)));
-        model.addAttribute("utilityContract", utilityContract);
-        return "admin/customer/solar";
-    }
-
     @RequestMapping(value = "/utilityContract", method = RequestMethod.POST)
     public String saveUtilityContract(UtilityContract utilityContract) {
         UtilityContract contract = utilityContractService.save(utilityContract);

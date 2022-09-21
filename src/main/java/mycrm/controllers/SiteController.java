@@ -30,12 +30,16 @@ public class SiteController {
     private final UtilityContractService utilityContractService;
     private final VoipContractService voipContractService;
     private final WaterContractService waterContractService;
+
+    private final SolarContractService solarContractService;
     private final LinkedAccountService linkedAccountService;
     private final CustomerSiteTransferHistoryService customerSiteTransferHistoryService;
     private final MerchantServicesService merchantServicesService;
 
     private final LandlineContractService landlineContractService;
     private final BroadbandContractService broadbandContractService;
+
+    private final MobileContractService mobileContractService;
 
     @Autowired
     public SiteController(CustomerService customerService, CustomerSiteService customerSiteService,
@@ -45,7 +49,7 @@ public class SiteController {
                           CustomerSiteTransferHistoryService customerSiteTransferHistoryService,
                           MerchantServicesService merchantServicesService,LandlineContractService landlineContractService,
                           BroadbandContractService broadbandContractService,VoipContractService voipContractService
-                            ,WaterContractService waterContractService) {
+                            ,WaterContractService waterContractService,SolarContractService solarContractService,MobileContractService mobileContractService) {
         this.customerService = customerService;
         this.customerSiteService = customerSiteService;
         this.gasContractService = gasContractService;
@@ -60,6 +64,8 @@ public class SiteController {
         this.broadbandContractService = broadbandContractService;
         this.voipContractService = voipContractService;
         this.waterContractService = waterContractService;
+        this.solarContractService = solarContractService;
+        this.mobileContractService = mobileContractService;
     }
 
     //view customer sites
@@ -90,11 +96,11 @@ public class SiteController {
         CustomerSite customerSite = customerSiteService.findById(id);
         List<GasCustomerContract> gasCustomerContracts = gasContractService.findByCustomerSite(customerSite);
         List<ElecCustomerContract> elecCustomerContracts = elecContractService.findByCustomerSite(customerSite);
-        List<UtilityContract> solarContracts = utilityContractService.findSolarContractByCustomerSite(customerSite);
+        List<SolarContract> solarContracts = solarContractService.findSolarContractByCustomerSite(customerSite);
         List<WaterContract> waterContracts = waterContractService.findWaterContractByCustomerSite(customerSite);
         List<VoipContract> voipContracts = voipContractService.findVoipContractByCustomerSite(customerSite);
         List<LandlineContract> landlineContracts = landlineContractService.findLandlineContractByCustomerSite(customerSite);
-        List<UtilityContract> mobileContracts = utilityContractService.findMobileContractByCustomerSite(customerSite);
+        List<MobileContract> mobileContracts = mobileContractService.findMobileContractByCustomerSite(customerSite);
         List<BroadbandContract> broadbandContracts = broadbandContractService.findBroadbandContractByCustomerSite(customerSite);
         List<MerchantServicesContract> merchantServicesContracts = merchantServicesService.findMerchantServicesContractByCustomerSite(customerSite);
         List<String> siteTransferMessage = customerSiteTransferHistoryService.findCustomerSiteTransferHistoryByCustomerSite(customerSite);

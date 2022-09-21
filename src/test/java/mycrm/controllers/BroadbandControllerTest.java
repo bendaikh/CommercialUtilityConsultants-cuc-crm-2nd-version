@@ -41,6 +41,8 @@ public class BroadbandControllerTest {
     @Mock
     private CustomerSiteService customerSiteService;
     @Mock
+    private ContractReasonService contractReasonService;
+    @Mock
     private SecurityContext securityContext;
     @Mock
     private BrokerService brokerService;

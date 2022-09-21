@@ -8,17 +8,7 @@ import mycrm.models.GasCustomerContract;
 import mycrm.models.Role;
 import mycrm.models.Supplier;
 import mycrm.models.User;
-import mycrm.services.BrokerService;
-import mycrm.services.BrokerTransferHistoryService;
-import mycrm.services.ContactService;
-import mycrm.services.ContractReasonService;
-import mycrm.services.ContractService;
-import mycrm.services.CustomerNoteService;
-import mycrm.services.CustomerSiteService;
-import mycrm.services.ElecContractService;
-import mycrm.services.GasContractService;
-import mycrm.services.SupplierService;
-import mycrm.services.UserService;
+import mycrm.services.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -62,8 +52,15 @@ public class EnergyContractControllerTest {
 
     @Mock
     private GasContractService gasContractService;
+
+    @Mock
+    private CustomerSiteService customerSiteService;
     @Mock
     private ElecContractService elecContractService;
+
+    @Mock
+    private DoNotRenewReasonService doNotRenewReasonService;
+
     @Mock
     private SupplierService supplierService;
     @Mock
@@ -72,8 +69,7 @@ public class EnergyContractControllerTest {
     private UserService userService;
     @Mock
     private ContractReasonService contractReasonService;
-    @Mock
-    private CustomerSiteService customerSiteService;
+
     @Mock
     private CustomerNoteService customerNoteService;
     @Mock

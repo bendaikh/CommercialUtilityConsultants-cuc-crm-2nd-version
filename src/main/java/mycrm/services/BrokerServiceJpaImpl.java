@@ -37,8 +37,8 @@ public class BrokerServiceJpaImpl implements BrokerService {
 
     private final GasContractService gasContractService;
     private final ElecContractService electricContractService;
-    @Autowired
-    private BrokerRepository brokerRepo;
+
+    private final BrokerRepository brokerRepo;
     private final UtilityContractService utilityContractService;
     private final MerchantServicesService merchantServicesService;
 
@@ -46,11 +46,12 @@ public class BrokerServiceJpaImpl implements BrokerService {
     public BrokerServiceJpaImpl(GasContractService gasContractService,
                                 ElecContractService electricContractService,
                                 UtilityContractService utilityContractService,
-                                MerchantServicesService merchantServicesService) {
+                                MerchantServicesService merchantServicesService,BrokerRepository brokerRepo) {
         this.gasContractService = gasContractService;
         this.electricContractService = electricContractService;
         this.utilityContractService = utilityContractService;
         this.merchantServicesService = merchantServicesService;
+        this.brokerRepo = brokerRepo;
     }
 
     @Override

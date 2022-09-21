@@ -193,14 +193,14 @@ public class BrokerServiceJpaImplTest {
 
         BrokerContractPackage contracts = service.findBrokerContracts(broker);
 
-        assertEquals(15, contracts.getGasContracts().size());
-        assertEquals(15, contracts.getElectricityContracts().size());
-        assertEquals(15, contracts.getSolarContracts().size());
-        assertEquals(15, contracts.getWaterContracts().size());
-        assertEquals(15, contracts.getVoipContracts().size());
-        assertEquals(15, contracts.getLandlineContracts().size());
-        assertEquals(15, contracts.getMobileContracts().size());
-        assertEquals(15, contracts.getBroadbandContracts().size());
+        assertEquals(14, contracts.getGasContracts().size());
+        assertEquals(14, contracts.getElectricityContracts().size());
+        assertEquals(14, contracts.getSolarContracts().size());
+        assertEquals(14, contracts.getWaterContracts().size());
+        assertEquals(14, contracts.getVoipContracts().size());
+        assertEquals(14, contracts.getLandlineContracts().size());
+        assertEquals(14, contracts.getMobileContracts().size());
+        assertEquals(14, contracts.getBroadbandContracts().size());
     }
 
     @Test
@@ -214,14 +214,14 @@ public class BrokerServiceJpaImplTest {
 
         BrokerContractPackage contracts = service.findBrokerContractStats(broker);
 
-        assertEquals(15, contracts.getGasContracts().size());
-        assertEquals(15, contracts.getElectricityContracts().size());
-        assertEquals(15, contracts.getSolarContracts().size());
-        assertEquals(15, contracts.getWaterContracts().size());
-        assertEquals(15, contracts.getVoipContracts().size());
-        assertEquals(15, contracts.getLandlineContracts().size());
-        assertEquals(15, contracts.getMobileContracts().size());
-        assertEquals(15, contracts.getBroadbandContracts().size());
+        assertEquals(14, contracts.getGasContracts().size());
+        assertEquals(14, contracts.getElectricityContracts().size());
+        assertEquals(14, contracts.getSolarContracts().size());
+        assertEquals(14, contracts.getWaterContracts().size());
+        assertEquals(14, contracts.getVoipContracts().size());
+        assertEquals(14, contracts.getLandlineContracts().size());
+        assertEquals(14, contracts.getMobileContracts().size());
+        assertEquals(14, contracts.getBroadbandContracts().size());
     }
 
     @Test

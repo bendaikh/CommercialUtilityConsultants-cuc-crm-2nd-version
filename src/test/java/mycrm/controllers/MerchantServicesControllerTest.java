@@ -3,10 +3,7 @@ package mycrm.controllers;
 import mycrm.models.*;
 import mycrm.search.MerchantServicesContractSearchService;
 import mycrm.search.UtilitySearchService;
-import mycrm.services.BrokerService;
-import mycrm.services.ContractService;
-import mycrm.services.CustomerSiteService;
-import mycrm.services.MerchantServicesService;
+import mycrm.services.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -38,6 +35,9 @@ public class MerchantServicesControllerTest {
     private CustomerSiteService mockCustomerSiteService;
 
     @Mock
+    private DoNotRenewReasonService doNotRenewReasonService;
+
+    @Mock
     private BrokerService mockBrokerService;
 
     @Mock
@@ -54,6 +54,9 @@ public class MerchantServicesControllerTest {
 
     @Mock
     private ContractService mockContractService;
+
+    @Mock
+    private ContractReasonService contractReasonService;
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);

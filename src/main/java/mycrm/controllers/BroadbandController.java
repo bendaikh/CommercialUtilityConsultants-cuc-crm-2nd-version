@@ -58,13 +58,14 @@ public class BroadbandController {
 
         model.addAttribute("brokers", brokers);
         model.addAttribute("suppliers", suppliers);
-        model.addAttribute("contractReasons", doNotRenewReasonService.findAll());
+        model.addAttribute("doNotRenewReasons",doNotRenewReasonService.findAll());
+        model.addAttribute("lostRenewalReasons",contractReasonService.findAll());
         model.addAttribute("customerSite", customerSiteService.findById(Long.valueOf(customerSiteID)));
         model.addAttribute("broadbandContract", broadbandContract);
         return "admin/customer/manage-broadband-contract";
     }
     @RequestMapping("/admin/customer/edit-broadband-contract/{id}")
-    public String editLandlineContract(@PathVariable("id") Long id, Model model) {
+    public String editBroadbandContract(@PathVariable("id") Long id, Model model) {
         List<Broker> brokers = brokerService.findAll();
         List<Supplier> suppliers = supplierService.findAllOrderByBusinessName();
 

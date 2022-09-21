@@ -105,6 +105,17 @@ public class LandlineContract extends Auditable<User>{
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @SortableField
     private Date callbackDateTime;
+    @Field
+    @Column(nullable = false, length = 1)
+    private boolean lostRenewal;
+
+    public boolean isLostRenewal() {
+     return lostRenewal;
+    }
+
+    public void setLostRenewal(boolean lostRenewal) {
+     this.lostRenewal = lostRenewal;
+    }
 
     public CustomerSite getCustomerSite() {
         return customerSite;

@@ -5,14 +5,7 @@ import mycrm.models.CustomerNote;
 import mycrm.models.ElecCustomerContract;
 import mycrm.models.GasCustomerContract;
 import mycrm.models.User;
-import mycrm.services.ContactService;
-import mycrm.services.CustomerNoteService;
-import mycrm.services.CustomerService;
-import mycrm.services.ElecContractService;
-import mycrm.services.GasContractService;
-import mycrm.services.LinkedAccountService;
-import mycrm.services.UserService;
-import mycrm.services.UtilityContractService;
+import mycrm.services.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -54,6 +47,9 @@ public class CustomerNoteControllerTest {
 
     @Mock
     private ElecContractService mockElecContractService;
+
+    @Mock
+    private MerchantServicesService merchantServicesService;
 
     @Mock
     private ContactService mockContactService;

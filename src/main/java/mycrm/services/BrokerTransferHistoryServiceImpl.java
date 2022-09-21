@@ -167,6 +167,41 @@ public class BrokerTransferHistoryServiceImpl implements BrokerTransferHistorySe
         return transferMessageList;
     }
 
+    @Override
+    public List<String> findLatestSolarBrokerTransferHistory(SolarContract solarContract) {
+        List<String> transferMessageList = new ArrayList<>();
+
+        List<BrokerTransferHistory> brokerTransferHistoryList =
+                this.brokerTransferHistoryRepository.findBrokerTransferHistoryOrderByDateCreatedDesc(
+                        solarContract.getId(),
+                        solarContract.getSupplyType()
+                );
+
+        brokerTransferHistoryList.forEach(brokerTransferHistory -> {
+            Broker previousBroker = brokerRepository.findOne(brokerTransferHistory.getPreviousBroker());
+            transferMessageList.add(transferMessage(brokerTransferHistory, previousBroker));
+        });
+        return transferMessageList;
+    }
+
+
+    @Override
+    public List<String> findLatestMobileBrokerTransferHistory(MobileContract mobileContract) {
+        List<String> transferMessageList = new ArrayList<>();
+
+        List<BrokerTransferHistory> brokerTransferHistoryList =
+                this.brokerTransferHistoryRepository.findBrokerTransferHistoryOrderByDateCreatedDesc(
+                        mobileContract.getId(),
+                        mobileContract.getSupplyType()
+                );
+
+        brokerTransferHistoryList.forEach(brokerTransferHistory -> {
+            Broker previousBroker = brokerRepository.findOne(brokerTransferHistory.getPreviousBroker());
+            transferMessageList.add(transferMessage(brokerTransferHistory, previousBroker));
+        });
+        return transferMessageList;
+    }
+
     private String transferMessage(BrokerTransferHistory brokerTransferHistory, Broker previousBroker) {
         String builder = "Contract transferred from " +
                 previousBroker.getFirstName() +

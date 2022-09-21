@@ -63,11 +63,16 @@
 			   title="Water">
 				<span class="glyphicon glyphicon-plus"></span> Water
 			</a>
-			<!--<a class="btn btn-default"
+			<a class="btn btn-default"
 			   th:href="@{/admin/customer/solar/{id}/(id=${customerSite.id})}"
 			   title="Solar">
 				<span class="glyphicon glyphicon-plus"></span> Solar
-			</a>-->
+			</a>
+			<a class="btn btn-default"
+			   th:href="@{/admin/customer/mobile/{id}/(id=${customerSite.id})}"
+			   title="Solar">
+				<span class="glyphicon glyphicon-plus"></span> Mobile
+			</a>
 			<a class="btn btn-default"
          th:href="@{/admin/customer/manage-merchant-services/{id}/(id=${customerSite.id})}"
          title="Merchant Services Contract">
@@ -238,7 +243,7 @@
 									<td th:text="${sc.dateCreated != null} ? ${#dates.format(sc.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
 									<td>
 										<a class="btn btn-success btn-xs"
-											 th:href="@{/admin/customer/edit-utility-contract/{id}(id=${sc.id})}">
+											 th:href="@{/admin/customer/edit-solar-contract/{id}(id=${sc.id})}">
 											<span class="glyphicon glyphicon-flash"></span>
 											Open
 										</a>
@@ -422,7 +427,7 @@
 									<td th:text="${mobile.dateCreated != null} ? ${#dates.format(mobile.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
 									<td>
 										<a class="btn btn-success btn-xs"
-											 th:href="@{/admin/customer/edit-utility-contract/{id}(id=${mobile.id})}">
+											 th:href="@{/admin/customer/edit-mobile-contract/{id}(id=${mobile.id})}">
 											<span class="glyphicon glyphicon-flash"></span>
 											Open
 										</a>

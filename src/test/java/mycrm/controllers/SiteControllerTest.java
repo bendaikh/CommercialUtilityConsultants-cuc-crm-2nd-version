@@ -5,16 +5,7 @@ import mycrm.models.CustomerSite;
 import mycrm.models.ElecCustomerContract;
 import mycrm.models.GasCustomerContract;
 import mycrm.models.UtilityContract;
-import mycrm.services.ContactService;
-import mycrm.services.CustomerDataService;
-import mycrm.services.CustomerService;
-import mycrm.services.CustomerSiteService;
-import mycrm.services.CustomerSiteTransferHistoryService;
-import mycrm.services.ElecContractService;
-import mycrm.services.GasContractService;
-import mycrm.services.LinkedAccountService;
-import mycrm.services.MerchantServicesService;
-import mycrm.services.UtilityContractService;
+import mycrm.services.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -75,6 +66,20 @@ public class SiteControllerTest {
 
     @Mock
     private MerchantServicesService mockMerchantServicesService;
+
+    @Mock
+    private VoipContractService voipContractService;
+    @Mock
+    private WaterContractService waterContractService;
+    @Mock
+    private SolarContractService solarContractService;
+    @Mock
+    private LandlineContractService landlineContractService;
+    @Mock
+    private BroadbandContractService broadbandContractService;
+
+    @Mock
+    private MobileContractService mobileContractService;
 
     @Before
     public void setUp() throws Exception {

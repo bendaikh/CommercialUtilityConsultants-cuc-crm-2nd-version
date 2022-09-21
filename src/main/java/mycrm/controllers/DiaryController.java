@@ -25,12 +25,8 @@ public class DiaryController {
     public String getDiaryHomePage(
             @RequestParam(value = "callbackSearchDate", required = false) String callbackSearchDate,
             Model model) {
-        System.out.println("+++++++++++++++++++ callbackSearchDate");
-        System.out.println(callbackSearchDate);
         if (StringUtils.hasText(callbackSearchDate)) {
-            System.out.println("------------------- has text is true");
             model.addAttribute("callbacksMap", myService.getCallbacksForDate(callbackSearchDate));
-            System.out.println(myService.getCallbacksForDate(callbackSearchDate));
             model.addAttribute("callbackSearchDate", getDateFromString(callbackSearchDate));
         }
         return "admin/customer/diary/index";

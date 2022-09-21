@@ -55,7 +55,8 @@ public class LandlineController {
 
         model.addAttribute("brokers", brokers);
         model.addAttribute("suppliers", suppliers);
-        model.addAttribute("contractReasons", doNotRenewReasonService.findAll());
+        model.addAttribute("doNotRenewReasons",doNotRenewReasonService.findAll());
+        model.addAttribute("lostRenewalReasons",contractReasonService.findAll());
         model.addAttribute("customerSite", customerSiteService.findById(Long.valueOf(customerSiteID)));
         model.addAttribute("landlineContract", landlineContract);
         return "admin/customer/manage-landline-contract";

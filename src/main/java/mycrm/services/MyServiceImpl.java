@@ -63,24 +63,18 @@ public class MyServiceImpl implements MyService {
 
     @Override
     public List<MyCallback> getCallbacksForDate(String callbackSearchDate) {
-
         User loggedInUser = userHelper.getLoggedInUser();
-
         if (loggedInUser.getBroker() == null) {
             return new ArrayList<>();
         }
-
         List<MyCallback> myCallbacks = new ArrayList<>();
-
         Map<Date, MyCallback> mapOfCallbacks = buildMapFromCallbacks(loggedInUser.getBroker(), callbackSearchDate);
-
         mapOfCallbacks.forEach((time, myCallback) -> myCallbacks.add(MyCallback
                 .builder()
                 .callbackTime(time)
                 .businessName(myCallback != null ? myCallback.getBusinessName() : null)
                 .customerSite(myCallback != null ? myCallback.getCustomerSite() : null)
                 .build()));
-
         myCallbacks.sort(Comparator.comparing(MyCallback::getCallbackTime));
 
         return myCallbacks;

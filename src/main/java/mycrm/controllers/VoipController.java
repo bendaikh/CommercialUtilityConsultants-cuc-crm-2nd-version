@@ -54,7 +54,8 @@ public class VoipController {
 
         model.addAttribute("brokers", brokers);
         model.addAttribute("suppliers", suppliers);
-        model.addAttribute("contractReasons", doNotRenewReasonService.findAll());
+        model.addAttribute("doNotRenewReasons",doNotRenewReasonService.findAll());
+        model.addAttribute("lostRenewalReasons",contractReasonService.findAll());
         model.addAttribute("customerSite", customerSiteService.findById(Long.valueOf(customerSiteID)));
         model.addAttribute("voipContract", voipContract);
         return "admin/customer/manage-voip-contract";

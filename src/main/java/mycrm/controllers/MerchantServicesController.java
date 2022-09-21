@@ -19,8 +19,7 @@ import java.util.List;
 @Controller
 public class MerchantServicesController {
 
-    @Autowired
-    private DoNotRenewReasonService doNotRenewReasonService;
+    private final DoNotRenewReasonService doNotRenewReasonService;
     private static final Logger logger = LogManager.getLogger();
 
     private final CustomerSiteService customerSiteService;
@@ -40,7 +39,7 @@ public class MerchantServicesController {
                                       MerchantServicesContractSearchService merchantServicesContractSearchService,
                                       UserService userService,
                                       BrokerTransferHistoryService brokerTransferHistoryService,
-                                      ContractReasonService contractReasonService) {
+                                      ContractReasonService contractReasonService,DoNotRenewReasonService doNotRenewReasonService) {
         this.customerSiteService = customerSiteService;
         this.brokerService = brokerService;
         this.merchantServicesService = merchantServicesService;
@@ -48,6 +47,7 @@ public class MerchantServicesController {
         this.userService = userService;
         this.brokerTransferHistoryService = brokerTransferHistoryService;
         this.contractReasonService = contractReasonService;
+        this.doNotRenewReasonService = doNotRenewReasonService;
     }
 
     @RequestMapping("/admin/customer/manage-merchant-services/{customerSiteID}")

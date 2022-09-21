@@ -20,6 +20,10 @@ public interface BrokerTransferHistoryService {
     List<String> findLatestLandlineBrokerTransferHistory(LandlineContract landlineContract);
     List<String> findLatestVoipBrokerTransferHistory(VoipContract voipContract);
     List<String> findLatestWaterBrokerTransferHistory(WaterContract waterContract);
+    List<String> findLatestSolarBrokerTransferHistory(SolarContract solarContract);
+
+    List<String> findLatestMobileBrokerTransferHistory(MobileContract mobileContract);
+
 
 
 }

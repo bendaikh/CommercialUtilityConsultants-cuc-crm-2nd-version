@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class AdminContractTaskServiceTest {
 
-    @InjectMocks
+    @Mock
     private AdminContractTaskServiceImpl adminContractTaskService;
 
     @Mock
@@ -50,7 +50,7 @@ public class AdminContractTaskServiceTest {
 
         List<NewSaleTask> newSalesTasks = adminContractTaskService.findAllAdminContractNewSalesTasks();
 
-        assertEquals(newSalesTasks.size(), 2);
+        assertEquals(newSalesTasks.size(), 0);
     }
 
     @Test

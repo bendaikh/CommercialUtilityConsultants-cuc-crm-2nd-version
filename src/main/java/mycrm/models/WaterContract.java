@@ -105,6 +105,17 @@ public class WaterContract extends Auditable<User>{
 
     @Column(nullable = true, length = 5000)
     private String notes;
+    @Field
+    @Column(nullable = false, length = 1)
+    private boolean lostRenewal;
+
+    public boolean isLostRenewal() {
+        return lostRenewal;
+    }
+
+    public void setLostRenewal(boolean lostRenewal) {
+        this.lostRenewal = lostRenewal;
+    }
 
     public String getSupplyType() {
         return "water";

@@ -21,7 +21,7 @@ import java.util.List;
 public class EnergyContractController {
 
     private static final Logger logger = LogManager.getLogger();
-
+    private final DoNotRenewReasonService doNotRenewReasonService;
     private final GasContractService gasContractService;
     private final ElecContractService elecContractService;
     private final SupplierService supplierService;
@@ -45,7 +45,7 @@ public class EnergyContractController {
                                     SupplierService supplierService, BrokerService brokerService, UserService userService, ContractReasonService contractReasonService,
                                     CustomerSiteService customerSiteService, CustomerNoteService customerNoteService, ContactService contactService,
                                     ContractService contractService, UtilityContractService utilityContractService, BrokerTransferHistoryService brokerTransferHistoryService,
-                                    MerchantServicesService merchantServicesService) {
+                                    MerchantServicesService merchantServicesService,DoNotRenewReasonService doNotRenewReasonService) {
         this.gasContractService = gasContractService;
         this.elecContractService = elecContractService;
         this.supplierService = supplierService;
@@ -59,6 +59,7 @@ public class EnergyContractController {
         this.utilityContractService = utilityContractService;
         this.brokerTransferHistoryService = brokerTransferHistoryService;
         this.merchantServicesService = merchantServicesService;
+        this.doNotRenewReasonService = doNotRenewReasonService;
     }
 
     // new gas contract
@@ -74,7 +75,8 @@ public class EnergyContractController {
         model.addAttribute("brokers", brokers);
         model.addAttribute("suppliers", suppliers);
         model.addAttribute("gasCustomerContract", gasCustomerContract);
-        model.addAttribute("contractReasons", contractReasonService.findAll());
+        model.addAttribute("doNotRenewReasons",doNotRenewReasonService.findAll());
+        model.addAttribute("lostRenewalReasons",contractReasonService.findAll());
         model.addAttribute("campaigns", contractService.getCampaigns());
         return "admin/customer/newgascontract";
 
@@ -150,7 +152,8 @@ public class EnergyContractController {
         model.addAttribute("brokers", brokers);
         model.addAttribute("suppliers", suppliers);
         model.addAttribute("elecCustomerContract", elecCustomerContract);
-        model.addAttribute("contractReasons", contractReasonService.findAll());
+        model.addAttribute("doNotRenewReasons",doNotRenewReasonService.findAll());
+        model.addAttribute("lostRenewalReasons",contractReasonService.findAll());
         model.addAttribute("campaigns", contractService.getCampaigns());
         return "admin/customer/neweleccontract";
 
