@@ -14,19 +14,8 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.SortableField;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import javax.persistence.*;
+import java.util.*;
 
 @Indexed
 @Getter
@@ -63,6 +52,7 @@ public class MerchantServicesContract extends Auditable<User> {
 
     @Column(nullable = false, length = 1)
     private boolean verbal;
+
 
     // below are from merchant form
 
@@ -179,6 +169,81 @@ public class MerchantServicesContract extends Auditable<User> {
     @Column(nullable = false, length = 1)
     private boolean lostRenewal;
 
+    @Column(nullable = true)
+    private int contractMonthlyDuration;
+
+    @Field
+    @Column(nullable = true, length = 150)
+    private String businessAddr;
+
+    @Column(nullable = true, length = 150)
+    private String businessAddr1;
+
+    @Field
+    @Column(nullable = true, length = 150)
+    private String businessCity;
+
+    @Field
+    @Column(nullable = true, length = 4)
+    private String businessPostcodeIn;
+
+    @Field
+    @Column(nullable = true, length = 4)
+    private String businessPostcodeOut;
+
+    @OneToMany(mappedBy = "merchantServicesContract",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private Set<MerchantServicesDocuments> merchantServicesDocuments = new HashSet<>();
+
+
+
+    public String getBusinessAddr() {
+        return businessAddr;
+    }
+
+    public void setBusinessAddr(String businessAddr) {
+        this.businessAddr = businessAddr;
+    }
+
+    public String getBusinessAddr1() {
+        return businessAddr1;
+    }
+
+    public void setBusinessAddr1(String businessAddr1) {
+        this.businessAddr1 = businessAddr1;
+    }
+
+    public String getBusinessCity() {
+        return businessCity;
+    }
+
+    public void setBusinessCity(String businessCity) {
+        this.businessCity = businessCity;
+    }
+
+    public String getBusinessPostcodeIn() {
+        return businessPostcodeIn;
+    }
+
+    public void setBusinessPostcodeIn(String businessPostcodeIn) {
+        this.businessPostcodeIn = businessPostcodeIn;
+    }
+
+    public String getBusinessPostcodeOut() {
+        return businessPostcodeOut;
+    }
+
+    public void setBusinessPostcodeOut(String businessPostcodeOut) {
+        this.businessPostcodeOut = businessPostcodeOut;
+    }
+    public int getContractMonthlyDuration() {
+        return contractMonthlyDuration;
+    }
+
+    public void setContractMonthlyDuration(int contractMonthlyDuration) {
+        this.contractMonthlyDuration = contractMonthlyDuration;
+    }
     public boolean isLostRenewal() {
         return lostRenewal;
     }

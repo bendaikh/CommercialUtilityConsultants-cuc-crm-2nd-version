@@ -69,9 +69,9 @@
     </div>
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-6" id="merchantServiesConfirm">
     <div class="well well-sm">
-      <form class="form-horizontal" id="form" method="post" th:action="@{/merchantServicesContract}" th:object="${merchantServicesContract}">
+      <form class="form-horizontal" id="merchantServiesConfirmForm" method="post" th:object="${merchantServicesContract}">
         <input th:field="*{id}" type="hidden"/>
         <input id="customerSite" name="customerSite" th:value="${customerSite.id}" type="hidden"/>
         <div class="form-group" sec:authorize="!hasAnyAuthority('BROKER','EXTERNAL_BROKER')">
@@ -180,6 +180,14 @@
           </div>
         </div>
         <div class="form-group">
+          <label class="control-label col-md-4" for="contractMonthlyDuration">Contract Term</label>
+          <div class="col-md-8">
+            <select class="form-control input-sm" th:field="*{contractMonthlyDuration}">
+              <option th:each="i : ${#numbers.sequence( 0, 60)}" th:value="${i}" th:text="${i}+' Months'">1</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
           <label class="control-label col-md-4">Contract End Date</label>
           <div class="col-md-8">
             <input class="form-control input-sm" id="altEndDate" name="altEndDate" placeholder="End Date" readonly="readonly"
@@ -269,7 +277,7 @@
                    type="text"/>
           </div>
         </div>
-        <div class="form-group">
+        <!--<div class="form-group">
           <label class="control-label col-md-4">Legal Address</label>
           <div class="col-md-8">
             <input class="form-control input-sm"
@@ -277,7 +285,87 @@
                    th:field="*{legalAddress}"
                    type="text"/>
           </div>
+        </div>-->
+        <div class="form-group">
+          <label class="control-label col-md-4" for="businessAddr">Address Line 1</label>
+          <div class="col-md-8">
+            <input type="text" class="form-control input-sm" placeholder="Address line 1" th:field="*{businessAddr}"/>
+          </div>
         </div>
+        <div class="form-group">
+          <label class="control-label col-md-4" for="businessAddr">Address Line 2</label>
+          <div class="col-md-8">
+            <input type="text" class="form-control input-sm" placeholder="Address line 2" th:field="*{businessAddr1}"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-4" for="businessCity">City</label>
+          <div class="col-md-8">
+            <input type="text" class="form-control input-sm" placeholder="City" th:field="*{businessCity}" required="required"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-4" for="businessPostcode">Postcode</label>
+          <div class="col-md-2">
+            <input type="text" class="form-control input-sm" th:field="*{businessPostcodeOut}"/>
+          </div>
+          <div class="col-md-2">
+            <input type="text" class="form-control input-sm" th:field="*{businessPostcodeIn}"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-md-4">Ownership Type</label>
+          <div class="col-md-8">
+            <select class="form-control input-sm" id="permit">
+              <option>select ownership type</option>
+              <option th:each="ownerShipType : ${T(mycrm.configuration.OwnershipType).values()}"
+                      th:text="${ownerShipType}" th:value="${ownerShipType}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-4" for="upload-file-input">Proof of Identity :</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm" required="required"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-4" for="upload-file-input"></label>
+          <div class="col-sm-8">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+              Add attach file
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-4" for="upload-file-input">Proof of Business :</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm" required="required"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-4" for="upload-file-input"></label>
+          <div class="col-sm-8">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+              Add attach file
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-4" for="upload-file-input">Proof of Bank :</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control input-sm" required="required"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-4" for="upload-file-input"></label>
+          <div class="col-sm-8">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+              Add attach file
+            </button>
+          </div>
+        </div>
+
         <div class="form-group">
           <label class="control-label col-md-4">Incorporation Date</label>
           <div class="col-md-8">
@@ -419,12 +507,12 @@
             </div>
           </div>
         </div>
-        <div class="form-group">
+        <!--<div class="form-group">
           <label class="control-label col-md-4">verbal</label>
           <div class="col-md-2">
             <input th:field="*{verbal}" type="checkbox"/>
           </div>
-        </div>
+        </div>-->
         <div class="form-group">
           <label class="control-label col-md-4" for="callbackDateTime">Call Back Date and Time</label>
           <div class="col-md-6">
@@ -549,6 +637,200 @@
   </div>
 
 </div>
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script>
+$(document).ready(function() {
+  $("#permit").change(function() {
+    var sel = $(this).val();
+    $("#" + sel).modal();
+  });
+});
+</script>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" class="form-horizontal" id="upload_file_form_1" th:action="@{/uploadMerchantDocument}" enctype="multipart/form-data" th:object="${uploadMerchantDocument}">
+          <input id="customer" name="customer" th:value="${customerSite.customer.id}" type="hidden"/>
+          <div class="form-group">
+            <label class="control-label col-sm-4" for="fileTitle">File Title</label>
+            <div class="col-sm-8">
+              <input class="form-control input-sm" id="fileTitle" name="fileTitle" placeholder="File Title" required="required" type="text"/>
+            </div>
+          </div>
+               <div class="form-group">
+                 <label class="control-label col-sm-4" for="validFrom">Valid From</label>
+                 <div class="col-sm-8">
+                   <input class="form-control input-sm" id="altValidFrom" name="altValidFrom" placeholder="Valid To" readonly="readonly" type="text"/>
+                   <input id="validFrom" name="validFrom" type="hidden"/>
+                 </div>
+               </div>
+               <div class="form-group">
+                 <label class="control-label col-sm-4" for="validTo">Valid To</label>
+                 <div class="col-sm-8">
+                   <input class="form-control input-sm" id="altValidTo" name="altValidTo" placeholder="Valid To" readonly="readonly" type="text"/>
+                   <input id="validTo" name="validTo" type="hidden"/>
+                 </div>
+               </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4" for="upload-file-input">Upload your file:</label>
+            <div class="col-sm-8">
+              <input accept="*" class="form-control input-sm" id="upload-file-input" name="file" placeholder="Upload File" type="file"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-8">
+              <button class="btn btn-success" type="submit" onclick="saveModal()" id="save">Upload</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="hide-answer modal fade" id="LIMITED_COMPANY" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Limited Company</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" class="form-horizontal" id="upload_file_form_1" enctype="multipart/form-data" th:object="${merchantServicesDocument}">
+          <input id="customer" name="customer" th:value="${customerSite.customer.id}" type="hidden"/>
+          <input id="merchantServicesContract" name="merchantServicesContract" th:value="${merchantServicesContract.id}" type="hidden"/>
+          <div class="form-group">
+            <label class="control-label col-sm-4" for="fileTitle">Company Reg</label>
+            <div class="col-sm-8">
+              <input class="form-control input-sm" placeholder="company reg" required="required" type="text"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4" for="fileTitle">VAT</label>
+            <div class="col-sm-8">
+              <input class="form-control input-sm" placeholder="vat" required="required" type="text"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-8">
+              <button class="btn btn-success" type="submit" id="save">save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="hide-answer modal fade" id="PARTNERSHIP" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Partnership</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" class="form-horizontal" id="upload-file-form" enctype="multipart/form-data">
+          <input id="customer" name="customer" th:value="${customerSite.customer.id}" type="hidden"/>
+          <input id="merchantServicesContract" name="merchantServicesContract" th:value="${merchantServicesContract.id}" type="hidden"/>
+          <div class="form-group">
+            <label class="control-label col-sm-4">Name</label>
+            <div class="col-sm-8">
+              <input class="form-control input-sm" placeholder="company reg" required="required" type="text"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">Address</label>
+            <div class="col-sm-8">
+              <input class="form-control input-sm" placeholder="address" required="required" type="text"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">date of birth</label>
+            <div class="col-sm-8">
+              <input class="form-control input-sm" placeholder="Date Of Birth" type="date"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">ID</label>
+            <div class="col-sm-8">
+              <input class="form-control input-sm" placeholder="Id" required="required" type="text"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">Contact Number</label>
+            <div class="col-sm-8">
+              <input class="form-control input-sm" placeholder="contact number" required="required" type="text"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">Email Address</label>
+            <div class="col-sm-8">
+              <input class="form-control input-sm" placeholder="email address" required="required" type="text"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-4">Partnership percentage</label>
+            <div class="col-sm-8">
+              <input class="form-control input-sm" placeholder="0.0" required="required" type="text"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-8">
+              <button class="btn btn-success" type="submit" id="save">save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="hide-answer modal fade" id="SOLE_TRADER" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Sole Trader</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" class="form-horizontal" id="upload-file-form" enctype="multipart/form-data">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function saveModal(){
+    $('#exampleModal').modal('hide');
+}
+
+
+document.querySelector("#merchantServiesConfirm").addEventListener('submit', (e) => {
+     $.post('/merchantServicesContract',$('#merchantServiesConfirmForm').serialize(),function (data) {
+        console.log("üüüüüüüüüü");
+    });
+     e.preventDefault();
+});
+
+</script>
 </body>
 <div th:replace="../static/fragments/layout :: callbackDateTime"/>
 </html>
+
+
+

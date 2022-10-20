@@ -1,23 +1,50 @@
 package mycrm.controllers;
 
 import mycrm.models.*;
+import mycrm.repositories.DocumentRepository;
+import mycrm.repositories.MerchantDocumentRepository;
 import mycrm.search.MerchantServicesContractSearchService;
 import mycrm.services.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class MerchantServicesController {
+
+    public Set<MerchantServicesDocuments> merchantServicesDocuments = new HashSet<>();
+
+    public Set<MerchantServicesDocuments> getMerchantServicesDocuments() {
+        return merchantServicesDocuments;
+    }
+
+    public void setMerchantServicesDocuments(Set<MerchantServicesDocuments> merchantServicesDocuments) {
+        this.merchantServicesDocuments = merchantServicesDocuments;
+    }
+
+    @Value("${customer.file.upload.location}")
+    private String UPLOAD_DIR;
+
+    private final MerchantDocumentRepository documentRepo;
 
     private final DoNotRenewReasonService doNotRenewReasonService;
     private static final Logger logger = LogManager.getLogger();
@@ -39,7 +66,7 @@ public class MerchantServicesController {
                                       MerchantServicesContractSearchService merchantServicesContractSearchService,
                                       UserService userService,
                                       BrokerTransferHistoryService brokerTransferHistoryService,
-                                      ContractReasonService contractReasonService,DoNotRenewReasonService doNotRenewReasonService) {
+                                      ContractReasonService contractReasonService,DoNotRenewReasonService doNotRenewReasonService,MerchantDocumentRepository documentRepo) {
         this.customerSiteService = customerSiteService;
         this.brokerService = brokerService;
         this.merchantServicesService = merchantServicesService;
@@ -48,6 +75,7 @@ public class MerchantServicesController {
         this.brokerTransferHistoryService = brokerTransferHistoryService;
         this.contractReasonService = contractReasonService;
         this.doNotRenewReasonService = doNotRenewReasonService;
+        this.documentRepo = documentRepo;
     }
 
     @RequestMapping("/admin/customer/manage-merchant-services/{customerSiteID}")
@@ -63,7 +91,89 @@ public class MerchantServicesController {
         model.addAttribute("merchantServicesContract", merchantServicesContract);
         return "admin/customer/manage-merchant-services";
     }
+    @RequestMapping(value = "/merchantServicesContractPoup", method = RequestMethod.GET)
+    public String saveMerchantServicesContractPop(MerchantServicesDocuments merchantServicesDocuments) {
 
+//        this.merchantServicesDocuments.add(merchantServicesDocuments);
+//        this.getMerchantServicesDocuments().add();
+        this.getMerchantServicesDocuments().add(merchantServicesDocuments);
+        System.out.println(merchantServicesDocuments);
+        System.out.println(this.getMerchantServicesDocuments());
+        return "redirect:/admin/index";
+    }
+
+    @RequestMapping(value = "/merchantServicesContract", method = RequestMethod.POST)
+    public String saveMerchantServicesContract(MerchantServicesContract merchantServicesContract) {
+        merchantServicesContract.setMerchantServicesDocuments(this.getMerchantServicesDocuments());
+        MerchantServicesContract contract = merchantServicesService.save(merchantServicesContract);
+        return "redirect:/admin/customer/viewsite/" + contract.getCustomerSite().getId();
+    }
+
+
+    @RequestMapping(value="/uploadMerchantDocument", method= RequestMethod.POST)
+    public MerchantServicesDocuments handleFileUpload(
+            @RequestParam("file") MultipartFile file,MerchantServicesDocuments uploadMerchantDocument){
+        String name = "test11";
+        if (!file.isEmpty()) {
+            try {
+
+                return uploadMerchantDocument;
+            } catch (Exception e) {
+                return uploadMerchantDocument;
+            }
+        } else {
+            return uploadMerchantDocument;
+        }
+    }
+
+/*    @RequestMapping(value = "/uploadMerchantDocument", method = RequestMethod.POST)
+    public String uploadFile(@RequestParam("file") MultipartFile file, MerchantServicesDocuments uploadMerchantDocument,Model model)
+            throws IOException {
+
+        String filename = StringUtils.getFilename(file.getOriginalFilename());
+
+        Path uploadLocation = Paths.get(UPLOAD_DIR + uploadMerchantDocument.getCustomer().getId() + "\\");
+
+        try {
+            if (file.isEmpty()) {
+                throw new RuntimeException("Failed to store empty file " + filename);
+            }
+
+            // This is a security check
+            if (filename.contains("..")) {
+                throw new RuntimeException(
+                        "Cannot store file with relative path outside current directory " + filename);
+            }
+
+            try (InputStream inputStream = file.getInputStream()) {
+                Files.createDirectories(uploadLocation);
+
+                uploadMerchantDocument.setFileName(filename);
+                uploadMerchantDocument.setFilePath(uploadLocation.toString());
+
+//                logger.info("Filename to upload: {}", filename);
+//                logger.info("Upload location: {}", uploadLocation.toString());
+
+                // save document details to database
+                MerchantServicesDocuments merchantServicesDocuments = save(uploadMerchantDocument);
+                this.getMerchantServicesDocuments().add(merchantServicesDocuments);
+
+                model.addAttribute("uploadMerchantDocument",merchantServicesDocuments);
+                Files.copy(inputStream, uploadLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+
+
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to store file " + filename, e);
+        }
+
+        return "redirect:/unauthorised";
+
+    }*/
+
+    public MerchantServicesDocuments save(MerchantServicesDocuments merchantServicesDocuments) {
+        return this.documentRepo.save(merchantServicesDocuments);
+    }
     @RequestMapping("/admin/customer/edit-merchant-services/{id}")
     public String editMerchantServicesContract(@PathVariable("id") Long id, Model model) {
         List<Broker> brokers = brokerService.findAll();
@@ -105,11 +215,9 @@ public class MerchantServicesController {
         return "admin/customer/manage-merchant-services";
     }
 
-    @RequestMapping(value = "/merchantServicesContract", method = RequestMethod.POST)
-    public String saveMerchantServicesContract(MerchantServicesContract merchantServicesContract) {
-        MerchantServicesContract contract = merchantServicesService.save(merchantServicesContract);
-        return "redirect:/admin/customer/viewsite/" + contract.getCustomerSite().getId();
-    }
+
+
+
 
     @RequestMapping("/admin/merchant-services/index/{pageNumber}")
     public String viewMerchantServicesHomePage(MerchantServicesContractSearch merchantServicesContractSearch,

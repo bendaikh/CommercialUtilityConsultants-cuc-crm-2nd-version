@@ -54,6 +54,8 @@ public class LandlineContract extends Auditable<User>{
     @IndexedEmbedded
     private Supplier supplier;
 
+    @Column(nullable = true)
+    private int contractMonthlyDuration;
 
     @Field
     @Column(columnDefinition = "varchar(255) default ''")
@@ -181,6 +183,14 @@ public class LandlineContract extends Auditable<User>{
 
     public void setCourtesyCall(boolean courtesyCall) {
         this.courtesyCall = courtesyCall;
+    }
+
+    public int getContractMonthlyDuration() {
+        return contractMonthlyDuration;
+    }
+
+    public void setContractMonthlyDuration(int contractMonthlyDuration) {
+        this.contractMonthlyDuration = contractMonthlyDuration;
     }
 
     public boolean isCurrent() {

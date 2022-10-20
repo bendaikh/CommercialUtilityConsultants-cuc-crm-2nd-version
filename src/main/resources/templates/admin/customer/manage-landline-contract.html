@@ -103,7 +103,7 @@
                             </select>
                         </div>
                     </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label class="control-label col-md-4">Customer Package</label>
                     <div class="col-md-8">
                         <ul class="back" style="list-style: none;">
@@ -112,7 +112,7 @@
                             <li tabindex="1">item3</li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
                 <div class="form-group">
                     <label class="control-label col-md-4">monthly charge</label>
                     <div class="col-md-8">
@@ -133,6 +133,14 @@
                         <input class="form-control input-sm" id="altStartDate" name="altStartDate" placeholder="Start Date" readonly="readonly"
                                th:value="*{startDate != null} ? *{#dates.format(startDate, 'dd/MM/yyyy')}" type="text"/>
                         <input id="startDate" name="startDate" th:value="*{startDate}" type="hidden"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4" for="contractMonthlyDuration">Contract Term</label>
+                    <div class="col-md-8">
+                        <select class="form-control input-sm" th:field="*{contractMonthlyDuration}">
+                            <option th:each="i : ${#numbers.sequence( 0, 60)}" th:value="${i}" th:text="${i}+' Months'">1</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -160,10 +168,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-md-4">No.oflines/users</label>
+                    <label class="control-label col-md-4">No Of Lines/Users</label>
                     <div class="col-md-8">
                         <input class="form-control input-sm"
-                               placeholder="No.oflines/users"
+                               placeholder="No of Lines/Users"
                                th:field="*{noOflines}"
                                type="text"/>
                     </div>
@@ -207,7 +215,7 @@
                         </select>
                     </div>
                 </div>
-                <!--<div class="form-group">
+                <div class="form-group">
                     <label class="control-label col-md-4" for="contractPriority">Priority</label>
                     <div class="col-md-4">
                         <select class="form-control input-sm" required="required" th:field="*{contractPriority}">
@@ -216,7 +224,7 @@
                                     th:text="${contractPriority}" th:value="${contractPriority}"></option>
                         </select>
                     </div>
-                </div>-->
+                </div>
                 <div class="form-group">
                     <label class="control-label col-md-4">Contract Renewal</label>
                     <div class="col-md-8">

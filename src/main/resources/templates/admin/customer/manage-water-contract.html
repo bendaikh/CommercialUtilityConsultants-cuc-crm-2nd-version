@@ -119,6 +119,14 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label col-md-4" for="contractMonthlyDuration">Contract Term</label>
+                    <div class="col-md-8">
+                        <select class="form-control input-sm" th:field="*{contractMonthlyDuration}">
+                            <option th:each="i : ${#numbers.sequence( 0, 60)}" th:value="${i}" th:text="${i}+' Months'">1</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label col-md-4" for="endDate">End Date</label>
                     <div class="col-md-8">
                         <input class="form-control input-sm" id="altEndDate" name="altEndDate" placeholder="End Date" readonly="readonly"
@@ -159,7 +167,7 @@
                         </select>
                     </div>
                 </div>
-                <!--<div class="form-group">
+                <div class="form-group">
                     <label class="control-label col-md-4" for="contractPriority">Priority</label>
                     <div class="col-md-4">
                         <select class="form-control input-sm" required="required" th:field="*{contractPriority}">
@@ -168,7 +176,7 @@
                                     th:text="${contractPriority}" th:value="${contractPriority}"></option>
                         </select>
                     </div>
-                </div>-->
+                </div>
                 <div class="form-group">
                     <label class="control-label col-md-4">Contract Renewal</label>
                     <div class="col-md-8">
