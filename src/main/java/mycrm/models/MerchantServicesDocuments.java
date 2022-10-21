@@ -25,11 +25,6 @@ public class MerchantServicesDocuments extends Auditable<User> {
 
     private String fileTitle;
 
-    @JoinColumn(name = "merchant_services_contract_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private MerchantServicesContract merchantServicesContract;
-
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date validFrom;
 

@@ -1,8 +1,7 @@
 package mycrm.controllers;
 
 import mycrm.models.*;
-import mycrm.repositories.DocumentRepository;
-import mycrm.repositories.MerchantDocumentRepository;
+import mycrm.repositories.*;
 import mycrm.search.MerchantServicesContractSearchService;
 import mycrm.services.*;
 import org.apache.logging.log4j.LogManager;
@@ -32,6 +31,36 @@ import java.util.Set;
 public class MerchantServicesController {
 
     public Set<MerchantServicesDocuments> merchantServicesDocuments = new HashSet<>();
+    public Set<LimitedCompany> limitedCompanies = new HashSet<>();
+
+    public Set<Partnership> partnerships = new HashSet<>();
+
+    public Set<SoleTrader> soleTraders = new HashSet<>();
+
+    public Set<SoleTrader> getSoleTraders() {
+        return soleTraders;
+    }
+
+    public void setSoleTraders(Set<SoleTrader> soleTraders) {
+        this.soleTraders = soleTraders;
+    }
+
+    public Set<Partnership> getPartnerships() {
+        return partnerships;
+    }
+
+    public void setPartnerships(Set<Partnership> partnerships) {
+        this.partnerships = partnerships;
+    }
+
+    public Set<LimitedCompany> getLimitedCompanies() {
+        return limitedCompanies;
+    }
+
+
+    public void setLimitedCompanies(Set<LimitedCompany> limitedCompanies) {
+        this.limitedCompanies = limitedCompanies;
+    }
 
     public Set<MerchantServicesDocuments> getMerchantServicesDocuments() {
         return merchantServicesDocuments;
@@ -43,6 +72,17 @@ public class MerchantServicesController {
 
     @Value("${customer.file.upload.location}")
     private String UPLOAD_DIR;
+
+    @Autowired
+    private LimitedCompanyRepository limitedCompanyRepository;
+
+    @Autowired
+    private SoleTraderRepository soleTraderRepository;
+    @Autowired
+    private PartnershipRepository partnershipRepository;
+
+
+
 
     private final MerchantDocumentRepository documentRepo;
 
@@ -104,9 +144,35 @@ public class MerchantServicesController {
 
     @RequestMapping(value = "/merchantServicesContract", method = RequestMethod.POST)
     public String saveMerchantServicesContract(MerchantServicesContract merchantServicesContract) {
-        merchantServicesContract.setMerchantServicesDocuments(this.getMerchantServicesDocuments());
+//        merchantServicesContract.setMerchantServicesDocuments(this.getMerchantServicesDocuments());
+        System.out.println(this.getLimitedCompanies());
+        merchantServicesContract.setLimitedCompanies(this.getLimitedCompanies());
+        merchantServicesContract.setPartnerships(this.getPartnerships());
+        merchantServicesContract.setSoleTraders(this.getSoleTraders());
         MerchantServicesContract contract = merchantServicesService.save(merchantServicesContract);
+        this.getLimitedCompanies().clear();
+        this.getPartnerships().clear();
+        this.getSoleTraders().clear();
         return "redirect:/admin/customer/viewsite/" + contract.getCustomerSite().getId();
+    }
+    @RequestMapping(value = "/limitedCompany", method = RequestMethod.POST)
+    public String saveLimitedCompany(LimitedCompany limitedCompany) {
+        LimitedCompany limitedCompanySaved = this.limitedCompanyRepository.save(limitedCompany);
+        this.getLimitedCompanies().add(limitedCompanySaved);
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = "/soleTrader", method = RequestMethod.POST)
+    public String saveSoleTrader(SoleTrader soleTrader) {
+        SoleTrader soleTraderSaved = this.soleTraderRepository.save(soleTrader);
+        this.getSoleTraders().add(soleTraderSaved);
+        return "redirect:/";
+    }
+    @RequestMapping(value = "/partnership", method = RequestMethod.POST)
+    public String savePartnership(Partnership partnership) {
+        Partnership partnershipsaved = this.partnershipRepository.save(partnership);
+        this.getPartnerships().add(partnershipsaved);
+        return "redirect:/";
     }
 
 

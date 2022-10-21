@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="../static/fragments/layout :: site-head">
   <title>Customer Management</title>
+  <link th:rel="stylesheet" th:href="@{/assets/izitoast/css/iziToast.css} "/>
 </head>
 <body>
 <header th:replace="../static/fragments/layout :: header"/>
@@ -71,7 +72,7 @@
 
   <div class="col-md-6" id="merchantServiesConfirm">
     <div class="well well-sm">
-      <form class="form-horizontal" id="merchantServiesConfirmForm" method="post" th:object="${merchantServicesContract}">
+      <form class="form-horizontal" id="merchantServiesConfirmForm" method="post" th:action="@{/merchantServicesContract}" th:object="${merchantServicesContract}">
         <input th:field="*{id}" type="hidden"/>
         <input id="customerSite" name="customerSite" th:value="${customerSite.id}" type="hidden"/>
         <div class="form-group" sec:authorize="!hasAnyAuthority('BROKER','EXTERNAL_BROKER')">
@@ -326,7 +327,7 @@
         <div class="form-group">
           <label class="control-label col-sm-4" for="upload-file-input">Proof of Identity :</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control input-sm" required="required"/>
+            <input type="text" class="form-control input-sm" id="proofIdentity" name="proofIdentity"/>
           </div>
         </div>
         <div class="form-group">
@@ -340,7 +341,7 @@
         <div class="form-group">
           <label class="control-label col-sm-4" for="upload-file-input">Proof of Business :</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control input-sm" required="required"/>
+            <input type="text" class="form-control input-sm" id="proofBusiness" name="proofBusiness"/>
           </div>
         </div>
         <div class="form-group">
@@ -354,7 +355,7 @@
         <div class="form-group">
           <label class="control-label col-sm-4" for="upload-file-input">Proof of Bank :</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control input-sm" required="required"/>
+            <input type="text" class="form-control input-sm" id="proofBank" name="proofBank"/>
           </div>
         </div>
         <div class="form-group">
@@ -641,6 +642,8 @@
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css}"></script>
 <script>
 $(document).ready(function() {
   $("#permit").change(function() {
@@ -707,19 +710,17 @@ $(document).ready(function() {
         </button>
       </div>
       <div class="modal-body">
-        <form method="post" class="form-horizontal" id="upload_file_form_1" enctype="multipart/form-data" th:object="${merchantServicesDocument}">
-          <input id="customer" name="customer" th:value="${customerSite.customer.id}" type="hidden"/>
-          <input id="merchantServicesContract" name="merchantServicesContract" th:value="${merchantServicesContract.id}" type="hidden"/>
+        <form method="post" class="form-horizontal" id="upload_file_form_limited" th:object="${limitedCompany}">
           <div class="form-group">
             <label class="control-label col-sm-4" for="fileTitle">Company Reg</label>
             <div class="col-sm-8">
-              <input class="form-control input-sm" placeholder="company reg" required="required" type="text"/>
+              <input class="form-control input-sm" id="companyReg" name="companyReg" placeholder="company reg" type="text"/>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-sm-4" for="fileTitle">VAT</label>
             <div class="col-sm-8">
-              <input class="form-control input-sm" placeholder="vat" required="required" type="text"/>
+              <input class="form-control input-sm" id="vat" name="vat" placeholder="vat" type="text"/>
             </div>
           </div>
           <div class="form-group">
@@ -742,49 +743,47 @@ $(document).ready(function() {
         </button>
       </div>
       <div class="modal-body">
-        <form method="post" class="form-horizontal" id="upload-file-form" enctype="multipart/form-data">
-          <input id="customer" name="customer" th:value="${customerSite.customer.id}" type="hidden"/>
-          <input id="merchantServicesContract" name="merchantServicesContract" th:value="${merchantServicesContract.id}" type="hidden"/>
+        <form method="post" class="form-horizontal" id="upload-file-form-partnership" th:object="${partnership}">
           <div class="form-group">
             <label class="control-label col-sm-4">Name</label>
             <div class="col-sm-8">
-              <input class="form-control input-sm" placeholder="company reg" required="required" type="text"/>
+              <input class="form-control input-sm" placeholder="company reg" id="name" name="name" type="text"/>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-sm-4">Address</label>
             <div class="col-sm-8">
-              <input class="form-control input-sm" placeholder="address" required="required" type="text"/>
+              <input class="form-control input-sm" placeholder="address" id="address" name="address" type="text"/>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-sm-4">date of birth</label>
             <div class="col-sm-8">
-              <input class="form-control input-sm" placeholder="Date Of Birth" type="date"/>
+              <input class="form-control input-sm" placeholder="Date Of Birth" id="dateOfBirth" name="dateOfBirth" type="date"/>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-sm-4">ID</label>
             <div class="col-sm-8">
-              <input class="form-control input-sm" placeholder="Id" required="required" type="text"/>
+              <input class="form-control input-sm" placeholder="Id" id="partnershipID" name="partnershipID" type="text"/>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-sm-4">Contact Number</label>
             <div class="col-sm-8">
-              <input class="form-control input-sm" placeholder="contact number" required="required" type="text"/>
+              <input class="form-control input-sm" placeholder="contact number" id="contactNumber" name="contactNumber" type="text"/>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-sm-4">Email Address</label>
             <div class="col-sm-8">
-              <input class="form-control input-sm" placeholder="email address" required="required" type="text"/>
+              <input class="form-control input-sm" placeholder="email address" id="emailAddress" name="emailAddress" type="text"/>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-sm-4">Partnership percentage</label>
             <div class="col-sm-8">
-              <input class="form-control input-sm" placeholder="0.0" required="required" type="text"/>
+              <input class="form-control input-sm" placeholder="0.0" id="partnershipPercentage" name="partnershipPercentage" type="text"/>
             </div>
           </div>
           <div class="form-group">
@@ -807,7 +806,18 @@ $(document).ready(function() {
         </button>
       </div>
       <div class="modal-body">
-        <form method="post" class="form-horizontal" id="upload-file-form" enctype="multipart/form-data">
+        <form method="post" class="form-horizontal" id="upload-file-form-sole" th:object="${soleTrader}">
+          <div class="form-group">
+          <label class="control-label col-sm-4">Name</label>
+          <div class="col-sm-8">
+            <input class="form-control input-sm" placeholder="company reg" id="soleName" name="soleName" type="text"/>
+          </div>
+        </div>
+          <div class="form-group">
+            <div class="col-sm-8">
+              <button class="btn btn-success" type="submit" id="save">save</button>
+            </div>
+          </div>
         </form>
       </div>
     </div>
@@ -820,12 +830,35 @@ function saveModal(){
 }
 
 
-document.querySelector("#merchantServiesConfirm").addEventListener('submit', (e) => {
-     $.post('/merchantServicesContract',$('#merchantServiesConfirmForm').serialize(),function (data) {
-        console.log("üüüüüüüüüü");
+
+document.querySelector("#SOLE_TRADER").addEventListener('submit', (e) => {
+     $.post('/soleTrader',$('#upload-file-form-sole').serialize(),function (data) {
+        $('#SOLE_TRADER').modal('hide');
     });
-     e.preventDefault();
+    e.preventDefault();
 });
+
+document.querySelector("#LIMITED_COMPANY").addEventListener('submit', (e) => {
+     $.post('/limitedCompany',$('#upload_file_form_limited').serialize(),function (data) {
+        $('#LIMITED_COMPANY').modal('hide');
+    });
+    e.preventDefault();
+});
+
+document.querySelector("#PARTNERSHIP").addEventListener('submit', (e) => {
+     $.post('/partnership',$('#upload-file-form-partnership').serialize(),function (data) {
+     $("#upload-file-form-partnership").trigger("reset");
+     toaster.success("hello","hello",{
+     closeButton:true
+     });
+    });
+
+    e.preventDefault();
+});
+
+
+
+
 
 </script>
 </body>

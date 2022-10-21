@@ -1,6 +1,5 @@
 package mycrm.models;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import mycrm.audit.Auditable;
@@ -53,6 +52,20 @@ public class MerchantServicesContract extends Auditable<User> {
     @Column(nullable = false, length = 1)
     private boolean verbal;
 
+    private String proofBusiness;
+
+    private String proofIdentity;
+
+    private String proofBank;
+
+    @OneToMany
+    private Set<LimitedCompany> limitedCompanies;
+
+    @OneToMany
+    private Set<Partnership> partnerships;
+
+    @OneToMany
+    private Set<SoleTrader> soleTraders;
 
     // below are from merchant form
 
@@ -190,13 +203,6 @@ public class MerchantServicesContract extends Auditable<User> {
     @Field
     @Column(nullable = true, length = 4)
     private String businessPostcodeOut;
-
-    @OneToMany(mappedBy = "merchantServicesContract",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private Set<MerchantServicesDocuments> merchantServicesDocuments = new HashSet<>();
-
-
 
     public String getBusinessAddr() {
         return businessAddr;
