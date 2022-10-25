@@ -67,6 +67,9 @@ public class MerchantServicesContract extends Auditable<User> {
     @OneToMany
     private Set<SoleTrader> soleTraders;
 
+    @OneToMany
+    private Set<MerchantServicesDocuments> merchantServicesDocuments;
+
     // below are from merchant form
 
     @Field

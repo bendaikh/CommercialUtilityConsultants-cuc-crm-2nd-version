@@ -8,6 +8,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -15,17 +17,18 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 public class MerchantServicesController {
@@ -149,10 +152,12 @@ public class MerchantServicesController {
         merchantServicesContract.setLimitedCompanies(this.getLimitedCompanies());
         merchantServicesContract.setPartnerships(this.getPartnerships());
         merchantServicesContract.setSoleTraders(this.getSoleTraders());
+        merchantServicesContract.setMerchantServicesDocuments(this.getMerchantServicesDocuments());
         MerchantServicesContract contract = merchantServicesService.save(merchantServicesContract);
         this.getLimitedCompanies().clear();
         this.getPartnerships().clear();
         this.getSoleTraders().clear();
+        this.getMerchantServicesDocuments().clear();
         return "redirect:/admin/customer/viewsite/" + contract.getCustomerSite().getId();
     }
     @RequestMapping(value = "/limitedCompany", method = RequestMethod.POST)
@@ -175,25 +180,66 @@ public class MerchantServicesController {
         return "redirect:/";
     }
 
-
-    @RequestMapping(value="/uploadMerchantDocument", method= RequestMethod.POST)
-    public MerchantServicesDocuments handleFileUpload(
-            @RequestParam("file") MultipartFile file,MerchantServicesDocuments uploadMerchantDocument){
-        String name = "test11";
-        if (!file.isEmpty()) {
-            try {
-
-                return uploadMerchantDocument;
-            } catch (Exception e) {
-                return uploadMerchantDocument;
-            }
-        } else {
-            return uploadMerchantDocument;
+    @RequestMapping(value = "/uploadMerchantDocument", method = RequestMethod.POST)
+    @ResponseBody
+    public void uploadFile(@RequestPart(value="file") MultipartFile multipartFile,@RequestParam(value = "fileTitle") String fileTitle,
+                           @RequestParam(value = "validFrom",required = false,defaultValue = "0000-00-00") String validFrom,
+                           @RequestParam(value = "validTo",required = false,defaultValue = "0000-00-00") String validTo,
+                           @RequestParam(value = "customer") Long customer) throws Exception {
+        MerchantServicesDocuments merchantServicesDocuments1 = new MerchantServicesDocuments();
+        if(!Objects.equals(validFrom, "0000-00-00")){
+            Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(validFrom);
+            merchantServicesDocuments1.setValidFrom(date1);
         }
+
+        if(!Objects.equals(validTo, "0000-00-00")){
+            Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(validTo);
+            merchantServicesDocuments1.setValidTo(date2);
+        }
+
+        merchantServicesDocuments1.setFileTitle(fileTitle);
+        String filename = StringUtils.getFilename(multipartFile.getOriginalFilename());
+        Path uploadLocation = Paths.get(UPLOAD_DIR + customer + "\\");
+
+        try {
+            if (multipartFile.isEmpty()) {
+                throw new RuntimeException("Failed to store empty file " + filename);
+            }
+
+            // This is a security check
+            if (filename.contains("..")) {
+                throw new RuntimeException(
+                        "Cannot store file with relative path outside current directory " + filename);
+            }
+
+            try (InputStream inputStream = multipartFile.getInputStream()) {
+                Files.createDirectories(uploadLocation);
+
+                merchantServicesDocuments1.setFileName(filename);
+                merchantServicesDocuments1.setFilePath(uploadLocation.toString());
+
+//                logger.info("Filename to upload: {}", filename);
+//                logger.info("Upload location: {}", uploadLocation.toString());
+
+                // save document details to database
+                MerchantServicesDocuments merchantServicesDocuments = save(merchantServicesDocuments1);
+                this.getMerchantServicesDocuments().add(merchantServicesDocuments);
+                System.out.println(this.getMerchantServicesDocuments());
+
+                Files.copy(inputStream, uploadLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+
+
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to store file " + filename, e);
+        }
+
+
     }
 
-/*    @RequestMapping(value = "/uploadMerchantDocument", method = RequestMethod.POST)
-    public String uploadFile(@RequestParam("file") MultipartFile file, MerchantServicesDocuments uploadMerchantDocument,Model model)
+/*        @RequestMapping(value = "/uploadMerchantDocument", method = RequestMethod.POST)
+    @ResponseBody
+    public void uploadFile(@RequestParam("file") MultipartFile file, MerchantServicesDocuments uploadMerchantDocument, HttpServletResponse response)
             throws IOException {
 
         String filename = StringUtils.getFilename(file.getOriginalFilename());
@@ -223,8 +269,8 @@ public class MerchantServicesController {
                 // save document details to database
                 MerchantServicesDocuments merchantServicesDocuments = save(uploadMerchantDocument);
                 this.getMerchantServicesDocuments().add(merchantServicesDocuments);
+                System.out.println(this.getMerchantServicesDocuments());
 
-                model.addAttribute("uploadMerchantDocument",merchantServicesDocuments);
                 Files.copy(inputStream, uploadLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
 
 
@@ -233,7 +279,7 @@ public class MerchantServicesController {
             throw new RuntimeException("Failed to store file " + filename, e);
         }
 
-        return "redirect:/unauthorised";
+        response.getOutputStream().close();
 
     }*/
 

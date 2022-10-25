@@ -32,8 +32,6 @@ public class MerchantServicesDocuments extends Auditable<User> {
     private Date validTo;
 
     private String filePath;
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Customer customer;
 
     @Column(columnDefinition = "varchar(255) default ''")
     private String documentStatus;
