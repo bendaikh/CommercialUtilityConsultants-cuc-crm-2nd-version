@@ -13,6 +13,11 @@
 			<a class="btn btn-default" th:href="@{/admin/customer/customersites/{id}/(id=${customerSite.customer.id})}">Sites</a>
 			<a class="btn btn-default" th:href="@{/admin/customer/customerdocuments/{id}/(id=${customerSite.customer.id})}">Documents</a>
 			<a class="btn btn-default" th:href="@{/admin/customer/customernotes/{id}/(id=${customerSite.customer.id})}">Notes</a>
+			<a class="btn btn-default"
+			   th:href="@{/admin/customer/editsite/{id}/(id=${customerSite.id})}"
+			   title="Edit Site">
+				<span class="glyphicon glyphicon-eye-open"></span> Edit Site Details
+			</a>
 		</div>
 	</div>
 	<p>&nbsp;</p>
@@ -21,13 +26,11 @@
 			<li th:each="s: ${siteTransferMessage}" th:text="${s}"></li>
 		</ol>
 	</div>
+	<h2>Create New Contracts</h2>
 	<div class="row">
+
 		<div class="col-md-12">
-			<a class="btn btn-default"
-				 th:href="@{/admin/customer/editsite/{id}/(id=${customerSite.id})}"
-				 title="Edit Site">
-				<span class="glyphicon glyphicon-eye-open"></span> Edit Site Details
-			</a>
+
 			<a class="btn btn-default"
 				 th:href="@{/admin/customer/gascontract(customerID=${customerSite.customer.id},customerSiteID=${customerSite.id})}"
 				 title="Gas Contract">
@@ -46,37 +49,37 @@
 			<a class="btn btn-default"
 			   th:href="@{/admin/customer/landline/{id}/(id=${customerSite.id})}"
 			   title="landline">
-				<span class="glyphicon glyphicon-plus"></span> Landline
+				<span class="glyphicon glyphicon-phone-alt"></span> Landline
 			</a>
 			<a class="btn btn-default"
 			   th:href="@{/admin/customer/broadband/{id}/(id=${customerSite.id})}"
 			   title="broadband">
-				<span class="glyphicon glyphicon-plus"></span> Broadband
+				<span class="glyphicon glyphicon-cloud"></span> Broadband
 			</a>
 			<a class="btn btn-default"
 			   th:href="@{/admin/customer/voip/{id}/(id=${customerSite.id})}"
 			   title="VOiP">
-				<span class="glyphicon glyphicon-plus"></span> VOiP
+				<span class="glyphicon glyphicon-globe"></span> VOiP
 			</a>
 			<a class="btn btn-default"
 			   th:href="@{/admin/customer/water/{id}/(id=${customerSite.id})}"
 			   title="Water">
-				<span class="glyphicon glyphicon-plus"></span> Water
+				<span class="glyphicon glyphicon-tint"></span> Water
 			</a>
 			<a class="btn btn-default"
 			   th:href="@{/admin/customer/solar/{id}/(id=${customerSite.id})}"
 			   title="Solar">
-				<span class="glyphicon glyphicon-plus"></span> Solar
+				<span class="glyphicon glyphicon-certificate"></span> Solar
 			</a>
 			<a class="btn btn-default"
 			   th:href="@{/admin/customer/mobile/{id}/(id=${customerSite.id})}"
 			   title="Solar">
-				<span class="glyphicon glyphicon-plus"></span> Mobile
+				<span class="glyphicon glyphicon-phone"></span> Mobile
 			</a>
 			<a class="btn btn-default"
          th:href="@{/admin/customer/manage-merchant-services/{id}/(id=${customerSite.id})}"
          title="Merchant Services Contract">
-        <span class="glyphicon glyphicon-plus"></span> Create Merchant Services Contract
+        <span class="glyphicon glyphicon-usd"></span> Create Merchant Services Contract
       </a>
 		</div>
 		</div>

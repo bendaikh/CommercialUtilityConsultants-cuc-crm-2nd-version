@@ -52,6 +52,24 @@ public interface CustomerNoteRepository extends JpaRepository<CustomerNote, Long
     List<CustomerNote> findByMerchantServicesContractOrderByDateCreatedDesc(@Param("merchantServicesContract") MerchantServicesContract merchantServicesContract);
 
 
+    @Query("SELECT cn from CustomerNote cn WHERE cn.solarContract=(:solarContract) ORDER BY cn.dateCreated DESC")
+    List<CustomerNote> findBySolarContractOrderByDateCreatedDesc(@Param("solarContract") SolarContract solarContract);
+
+    @Query("SELECT cn from CustomerNote cn WHERE cn.waterContract=(:waterContract) ORDER BY cn.dateCreated DESC")
+    List<CustomerNote> findByWaterContractOrderByDateCreatedDesc(@Param("waterContract") WaterContract waterContract);
+
+    @Query("SELECT cn from CustomerNote cn WHERE cn.voipContract=(:voipContract) ORDER BY cn.dateCreated DESC")
+    List<CustomerNote> findByVoipContractOrderByDateCreatedDesc(@Param("voipContract") VoipContract voipContract);
+
+    @Query("SELECT cn from CustomerNote cn WHERE cn.broadbandContract=(:broadbandContract) ORDER BY cn.dateCreated DESC")
+    List<CustomerNote> findByBroadbandContractOrderByDateCreatedDesc(@Param("broadbandContract") BroadbandContract broadbandContract);
+
+    @Query("SELECT cn from CustomerNote cn WHERE cn.landlineContract=(:landlineContract) ORDER BY cn.dateCreated DESC")
+    List<CustomerNote> findByLandlineContractOrderByDateCreatedDesc(@Param("landlineContract") LandlineContract landlineContract);
+
+    @Query("SELECT cn from CustomerNote cn WHERE cn.mobileContract=(:mobileContract) ORDER BY cn.dateCreated DESC")
+    List<CustomerNote> findByMobileContractOrderByDateCreatedDesc(@Param("mobileContract") MobileContract mobileContract);
+
     @Transactional
     @Modifying
     @Query("DELETE FROM CustomerNote cn WHERE customer=(:customer)")

@@ -4,6 +4,18 @@
     <title>Customer Management</title>
     <link th:rel="stylesheet" th:href="@{/assets/izitoast/css/iziToast.css} "/>
 </head>
+<style>
+    #limitedCompanyDetails {
+      display: none;
+    }
+    #partnershipDetails {
+      display: none;
+    }
+    #soleDetails {
+      display: none;
+    }
+
+</style>
 <body>
 <header th:replace="../static/fragments/layout :: header"/>
 <script th:if="${merchantServicesContract.id}" th:inline="javascript">
@@ -11,7 +23,6 @@
     showMerchantServiceContractNotes(/*[[${merchantServicesContract.id}]]*/);
     showTpsContactsList(/*[[${customerSite.customer.id}]]*/);
     /*]]>*/
-
 
 </script>
 <div class="container-fluid">
@@ -348,6 +359,22 @@
                         </select>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4"></label>
+                    <div class="col-md-8">
+                        <button id="limitedCompanyDetails" data-toggle="modal" data-target="#limitedCompanyModal">
+                            limited company details
+                        </button>
+                        <button id="partnershipDetails" data-toggle="modal" data-target="#PartnershipModal">partnership
+                            details
+                        </button>
+                        <button id="soleDetails" data-toggle="modal" data-target="#soleTraderModal">sole trader
+                            details
+                        </button>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label class="control-label col-sm-4" for="upload-file-input">Proof of Identity :</label>
                     <div class="col-sm-8">
@@ -360,6 +387,7 @@
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                             Add attach file
                         </button>
+                        <p id="attacheFile1"></p>
                     </div>
                 </div>
                 <div class="form-group">
@@ -371,9 +399,10 @@
                 <div class="form-group">
                     <label class="control-label col-sm-4" for="upload-file-input"></label>
                     <div class="col-sm-8">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2">
                             Add attach file
                         </button>
+                        <p id="attacheFile2"></p>
                     </div>
                 </div>
                 <div class="form-group">
@@ -385,9 +414,10 @@
                 <div class="form-group">
                     <label class="control-label col-sm-4" for="upload-file-input"></label>
                     <div class="col-sm-8">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal3">
                             Add attach file
                         </button>
+                        <p id="attacheFile3"></p>
                     </div>
                 </div>
 
@@ -694,7 +724,102 @@ $(document).ready(function() {
 });
 
 
+
 </script>
+
+
+<div class="modal fade" id="limitedCompanyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Limited company details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Company Reg</th>
+                        <th scope="col">VAT</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td id="companyRegDetails"></td>
+                        <td id="vatDetails"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="soleTraderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sole trader details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Date of Birth</th>
+                        <th scope="col">Home Address</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td id="nameSole"></td>
+                        <td id="dateOfBirthSole"></td>
+                        <td id="homeAddress"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="PartnershipModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">partnership details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-dark table-striped" id="myTable">
+                    <thead>
+                    <tr>
+                        <th scope="col">name</th>
+                        <th scope="col">address</th>
+                        <th scope="col">contact number</th>
+                        <th scope="col">date of birth</th>
+                        <th scope="col">email address</th>
+                        <th scope="col">partnership Id</th>
+                        <th scope="col">partnership percentage</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--add attach file modals-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -714,6 +839,16 @@ $(document).ready(function() {
                         <div class="col-sm-8">
                             <input class="form-control input-sm" id="fileTitle1" name="fileTitle"
                                    placeholder="File Title" required="required" type="text"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="fileTitle1">Forlder</label>
+                        <div class="col-sm-8">
+                            <select class="form-control input-sm" id="documentFolder" name="documentFolder">
+                                <option value="">select the folder:</option>
+                                <option th:each="a : ${folderName}"
+                                        th:text="${a.folderName}" th:value="${a.folderName}"></option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -751,6 +886,140 @@ $(document).ready(function() {
         </div>
     </div>
 </div>
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" class="form-horizontal" action="" enctype="multipart/form-data"
+                      id="upload_file_form_2" th:object="${uploadMerchantDocument}">
+                    <input id="customer-id2" name="customer" th:value="${customerSite.customer.id}" type="hidden"/>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="fileTitle2">File Title</label>
+                        <div class="col-sm-8">
+                            <input class="form-control input-sm" id="fileTitle2" name="fileTitle"
+                                   placeholder="File Title" required="required" type="text"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="fileTitle1">Forlder</label>
+                        <div class="col-sm-8">
+                            <select class="form-control input-sm" id="documentFolder" name="documentFolder">
+                                <option value="">select the folder:</option>
+                                <option th:each="a : ${folderName}"
+                                        th:text="${a.folderName}" th:value="${a.folderName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="validFrom2">Valid From</label>
+                        <div class="col-sm-8">
+                            <input class="form-control input-sm"
+                                   placeholder="Valid From" id="validFrom2" name="validFrom" type="date"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="validTo2">Valid To</label>
+                        <div class="col-sm-8">
+                            <input class="form-control input-sm"
+                                   placeholder="Valid To" id="validTo2" name="validTo" type="date"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="file2">Upload your file:</label>
+                        <div class="col-sm-8">
+                            <input accept="*" class="form-control input-sm" id="file2" name="file"
+                                   placeholder="Upload File" type="file"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <button class="btn btn-success" type="submit">Upload</button>
+                        </div>
+                    </div>
+
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" class="form-horizontal" action="" enctype="multipart/form-data"
+                      id="upload_file_form_3" th:object="${uploadMerchantDocument}">
+                    <input id="customer-id3" name="customer" th:value="${customerSite.customer.id}" type="hidden"/>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="fileTitle3">File Title</label>
+                        <div class="col-sm-8">
+                            <input class="form-control input-sm" id="fileTitle3" name="fileTitle"
+                                   placeholder="File Title" required="required" type="text"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="fileTitle1">Forlder</label>
+                        <div class="col-sm-8">
+                            <select class="form-control input-sm" id="documentFolder" name="documentFolder">
+                                <option value="">select the folder:</option>
+                                <option th:each="a : ${folderName}"
+                                        th:text="${a.folderName}" th:value="${a.folderName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="validFrom3">Valid From</label>
+                        <div class="col-sm-8">
+                            <input class="form-control input-sm"
+                                   placeholder="Valid From" id="validFrom3" name="validFrom" type="date"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="validTo3">Valid To</label>
+                        <div class="col-sm-8">
+                            <input class="form-control input-sm"
+                                   placeholder="Valid To" id="validTo3" name="validTo" type="date"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" for="file3">Upload your file:</label>
+                        <div class="col-sm-8">
+                            <input accept="*" class="form-control input-sm" id="file3" name="file"
+                                   placeholder="Upload File" type="file"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <button class="btn btn-success" type="submit">Upload</button>
+                        </div>
+                    </div>
+
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--ownership Type modals-->
 <div class="hide-answer modal fade" id="LIMITED_COMPANY" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -807,10 +1076,33 @@ $(document).ready(function() {
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4">Address</label>
+                        <label class="control-label col-sm-4">Address Line 1</label>
                         <div class="col-sm-8">
-                            <input class="form-control input-sm" placeholder="address" id="address" name="address"
+                            <input class="form-control input-sm" placeholder="address line 1" id="addressLine1" name="addressLine1"
                                    type="text"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">Address Line 2</label>
+                        <div class="col-sm-8">
+                            <input class="form-control input-sm" placeholder="address line 2" id="addressLine2" name="addressLine2"
+                                   type="text"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">City</label>
+                        <div class="col-sm-8">
+                            <input class="form-control input-sm" placeholder="city" id="city" name="city"
+                                   type="text"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Postcode</label>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control input-sm" id="postcodeIn" name="postcodeIn"/>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" class="form-control input-sm" id="postcodeOut" name="postcodeOut"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -880,14 +1172,14 @@ $(document).ready(function() {
                     <div class="form-group">
                         <label class="control-label col-sm-4">date of birth</label>
                         <div class="col-sm-8">
-                            <input class="form-control input-sm" placeholder="Date Of Birth" id="dateOfBirth"
+                            <input class="form-control input-sm" placeholder="Date Of Birth" id="dateOfBirthSoleTrader"
                                    name="dateOfBirth" type="date"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4">Home Address</label>
                         <div class="col-sm-8">
-                            <input class="form-control input-sm" placeholder="address" id="address" name="address"
+                            <input class="form-control input-sm" placeholder="address" id="addressSole" name="address"
                                    type="text"/>
                         </div>
                     </div>
@@ -912,12 +1204,15 @@ var fileTitle = $('#fileTitle1').val();
 var validFrom = $('#validFrom').val();
 var validTo = $('#validTo').val();
 var customer = $('#customer-id').val();
-console.log($('#validFrom').val());
 formData.append('file', file);
 formData.append('fileTitle', fileTitle);
 formData.append('validFrom', validFrom);
 formData.append('validTo', validTo);
 formData.append('customer', customer);
+if($('#file1')[0].files[0]){
+document.getElementById("attacheFile1").innerHTML = $('#file1')[0].files[0].name;
+}
+
 	$.ajax({
 		type:"POST",
 		url:"/uploadMerchantDocument",
@@ -928,6 +1223,7 @@ formData.append('customer', customer);
 		processData:false,
 		success:function(data) {
 		$('#exampleModal').modal('hide');
+
 		$("#upload_file_form_1").trigger("reset");
 		}
 		});
@@ -936,31 +1232,135 @@ formData.append('customer', customer);
         e.preventDefault();
 });
 
+document.querySelector("#upload_file_form_2").addEventListener('submit', (e) => {
+console.log("passed selector");
+var formData = new FormData();
+var file = $('#file2')[0].files[0];
+var fileTitle = $('#fileTitle2').val();
+var validFrom = $('#validFrom2').val();
+var validTo = $('#validTo2').val();
+var customer = $('#customer-id2').val();
+formData.append('file', file);
+formData.append('fileTitle', fileTitle);
+formData.append('validFrom', validFrom);
+formData.append('validTo', validTo);
+formData.append('customer', customer);
+console.log($('#file2')[0].files[0]);
+if($('#file2')[0].files[0]){
+document.getElementById("attacheFile2").innerHTML = $('#file2')[0].files[0].name;
+}
+
+	$.ajax({
+		type:"POST",
+		url:"/uploadMerchantDocument",
+		data:formData,
+		cache:false,
+		dataType:"json",
+		contentType:false,
+		processData:false,
+		success:function(data) {
+		$('#exampleModal2').modal('hide');
+
+		$("#upload_file_form_2").trigger("reset");
+		}
+		});
+		$('#exampleModal2').modal('hide');
+		$("#upload_file_form_2").trigger("reset");
+        e.preventDefault();
+});
+
+
+document.querySelector("#upload_file_form_3").addEventListener('submit', (e) => {
+console.log("passed selector");
+var formData = new FormData();
+var file = $('#file3')[0].files[0];
+var fileTitle = $('#fileTitle3').val();
+var validFrom = $('#validFrom3').val();
+var validTo = $('#validTo3').val();
+var customer = $('#customer-id3').val();
+formData.append('file', file);
+formData.append('fileTitle', fileTitle);
+formData.append('validFrom', validFrom);
+formData.append('validTo', validTo);
+formData.append('customer', customer);
+console.log($('#file3')[0].files[0]);
+if($('#file3')[0].files[0]){
+document.getElementById("attacheFile3").innerHTML = $('#file3')[0].files[0].name;
+
+}
+	$.ajax({
+		type:"POST",
+		url:"/uploadMerchantDocument",
+		data:formData,
+		cache:false,
+		dataType:"json",
+		contentType:false,
+		processData:false,
+		success:function(data) {
+		$('#exampleModal3').modal('hide');
+
+		$("#upload_file_form_3").trigger("reset");
+		}
+		});
+		$('#exampleModal3').modal('hide');
+		$("#upload_file_form_3").trigger("reset");
+        e.preventDefault();
+});
+
+
+const limitedCompanyDetails = document.getElementById('limitedCompanyDetails');
+const partnershipDetails = document.getElementById('partnershipDetails');
+const soleDetails = document.getElementById('soleDetails');
 
 document.querySelector("#SOLE_TRADER").addEventListener('submit', (e) => {
      $.post('/soleTrader',$('#upload-file-form-sole').serialize(),function (data) {
         $('#SOLE_TRADER').modal('hide');
+        document.getElementById("nameSole").innerHTML = $('#soleName').val();
+        document.getElementById("dateOfBirthSole").innerHTML = $('#dateOfBirthSoleTrader').val();
+        document.getElementById("homeAddress").innerHTML = $('#addressSole').val();
+        limitedCompanyDetails.style.display = 'none';
+        partnershipDetails.style.display = 'none';
+        soleDetails.style.display = 'block';
     });
     e.preventDefault();
 });
+
 
 document.querySelector("#LIMITED_COMPANY").addEventListener('submit', (e) => {
      $.post('/limitedCompany',$('#upload_file_form_limited').serialize(),function (data) {
         $('#LIMITED_COMPANY').modal('hide');
+        document.getElementById("companyRegDetails").innerHTML = $('#companyReg').val();
+        document.getElementById("vatDetails").innerHTML = $('#vat').val();
+        limitedCompanyDetails.style.display = 'block';
+        partnershipDetails.style.display = 'none';
+        soleDetails.style.display = 'none';
     });
     e.preventDefault();
 });
+var partnershipData = [];
 
 document.querySelector("#PARTNERSHIP").addEventListener('submit', (e) => {
      $.post('/partnership',$('#upload-file-form-partnership').serialize(),function (data) {
+     const dataFormPart = convertFormToJSON($('#upload-file-form-partnership'));
+     partnershipData.push(dataFormPart);
+     document.querySelector("#myTable tbody").innerHTML = partnershipData.map(partnership => `<tr><td>${partnership.name}</td><td>${partnership.address}</td><td>${partnership.contactNumber}</td><td>${partnership.dateOfBirth}</td><td>${partnership.emailAddress}</td><td>${partnership.partnershipID
+}</td><td>${partnership.partnershipPercentage}</td></tr>`).join('')
      $("#upload-file-form-partnership").trigger("reset");
-     toaster.success("hello","hello",{
-     closeButton:true
-     });
+     limitedCompanyDetails.style.display = 'none';
+     partnershipDetails.style.display = 'block';
+     soleDetails.style.display = 'none';
     });
-
     e.preventDefault();
 });
+
+function convertFormToJSON(form) {
+  const array = $(form).serializeArray(); // Encodes the set of form elements as an array of names and values.
+  const json = {};
+  $.each(array, function () {
+    json[this.name] = this.value || "";
+  });
+  return json;
+}
 
 
 

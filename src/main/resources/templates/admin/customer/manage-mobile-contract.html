@@ -13,15 +13,18 @@
     #box3 {
       display: none;
     }
+    #boxExistingNumber {
+      display: none;
+    }
   </style>
 <body>
 <header th:replace="../static/fragments/layout :: header"/>
-<!--<script th:if="${utilityContract.id}" th:inline="javascript">
+<script th:if="${mobileContract.id}" th:inline="javascript">
     /*<![CDATA[*/
-    showUtilityContractNotes(/*[[${utilityContract.id}]]*/);
+    showMobileContractNotes(/*[[${mobileContract.id}]]*/);
     showTpsContactsList(/*[[${customerSite.customer.id}]]*/);
     /*]]>*/
-</script>-->
+</script>
 <div class="container-fluid">
   <h1 th:text="${customerSite.fullSiteNameAndAddress}">Site</h1>
   <h2>Manage Mobile Contract</h2>
@@ -92,31 +95,31 @@
             </div>
         </div>-->
         <div class="form-group">
-          <label class="control-label col-md-4" for="businessName">business name</label>
+          <label class="control-label col-md-4" for="businessName">Business Name</label>
           <div class="col-md-8">
             <input class="form-control input-sm" placeholder="business name" th:field="*{businessName}" type="text"/>
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label col-md-4" for="fullName">full name</label>
+          <label class="control-label col-md-4" for="fullName">Full Name</label>
           <div class="col-md-8">
             <input class="form-control input-sm" placeholder="full name" th:field="*{fullName}" type="text"/>
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label col-md-4" for="firstLineAddress">first line address</label>
+          <label class="control-label col-md-4" for="firstLineAddress">First Line Address</label>
           <div class="col-md-8">
             <input class="form-control input-sm" placeholder="firs line address" th:field="*{firstLineAddress}" type="text"/>
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label col-md-4" for="phone">phone</label>
+          <label class="control-label col-md-4" for="phone">Phone</label>
           <div class="col-md-8">
             <input class="form-control input-sm" placeholder="phone" th:field="*{phone}" type="text"/>
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label col-md-4" for="email">email</label>
+          <label class="control-label col-md-4" for="email">Email</label>
           <div class="col-md-8">
             <input class="form-control input-sm" placeholder="email" th:field="*{email}" type="text"/>
           </div>
@@ -144,13 +147,13 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label col-md-4">monthly charge</label>
+          <label class="control-label col-md-4">Monthly Charge</label>
           <div class="col-md-8">
             <input class="form-control input-sm" th:field="*{monthlyCharge}" type="text"/>
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label col-md-4">current supplier</label>
+          <label class="control-label col-md-4">Current Supplier</label>
           <div class="col-md-8">
             <select class="form-control input-sm" id="supplier" name="supplier" th:field="*{supplier}">
               <option th:each="s:${suppliers}" th:text="${s.businessName}" th:value="${s.id}"></option>
@@ -283,6 +286,18 @@
           </div>
         </div>
         <div class="form-group">
+          <label class="control-label col-md-4">Keep Existing Number</label>
+          <div class="col-md-8">
+            <input id="showExistingNumber" th:field="*{keepExisting}" type="checkbox"/>
+          </div>
+        </div>
+        <div class="form-group" id="boxExistingNumber">
+          <label class="control-label col-md-4">Existing Number</label>
+          <div class="col-md-8">
+            <input class="form-control input-sm" th:field="*{keepExistingNumber}" placeholder="Existing Number" type="text"/>
+          </div>
+        </div>
+        <div class="form-group">
           <label class="control-label col-md-4" for="logType">Log Type</label>
           <div class="col-md-8">
             <select class="form-control input-sm" required="required" th:field="*{logType}">
@@ -317,7 +332,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label col-md-4">Do not renew</label>
+          <label class="control-label col-md-4">Do Not Renew</label>
           <div class="col-md-2">
             <input th:field="*{doNotRenew}" type="checkbox"/>
           </div>
@@ -371,14 +386,111 @@
       </form>
     </div>
   </div>
+  <div class="col-md-6" th:if="${mobileContract.id}">
+    <div class="panel panel-info">
+      <div class="panel-heading">Contract Notes</div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <a class="btn btn-default pull-right" data-target="#newNoteModal" data-toggle="modal">Create new
+              note</a>
+          </div>
+        </div>
+        <div id="mobile-contract-notes-div"></div>
+      </div>
+    </div>
+    <div class="modal fade" id="newNoteModal" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" data-dismiss="modal" type="button">&times;</button>
+            <h4 class="modal-title">New Note</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal" id="mobileNote" name="mobileNote">
+              <input id="customer" name="customer"
+                     th:value="${mobileContract.customerSite.customer.id}" type="hidden"/>
+              <input id="elecCustomerContract" name="elecCustomerContract" type="hidden" value=""/>
+              <input id="gasCustomerContract" name="gasCustomerContract" type="hidden" value=""/>
+              <input id="utilityContract" name="utilityContract" type="hidden" value=""/>
+              <input id="mobileContract" name="mobileContract"
+                     th:value="${mobileContract.id}" type="hidden"/>
+              <div class="form-group">
+                <div class="col-md-6">
+                  <input class="form-control" id="subject" name="subject" placeholder="Subject"
+                         required="required" type="text"/>
+                </div>
+                <div class="col-md-6">
+                  <select class="form-control input-sm" id="taggedUser" name="taggedUser">
+                    <option value="">Tagged User</option>
+                    <option th:each="u:${users}" th:text="${u.firstName}+' '+${u.lastName}"
+                            th:value="${u.id}"></option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12">
+                                    <textarea class="form-control" cols="100" id="note" name="note"
+                                              placeholder="Enter note here" required="required" rows="5"></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-3">
+                  <label>Completed: <input id="completed" name="completed" type="checkbox"/></label>
+                </div>
+                <div class="col-md-3">
+                  <input class="form-control input-sm" id="altDueByDate" name="altDueByDate"
+                         placeholder="Due by Date" readonly="readonly"
+                         th:value="*{dueByDate != null} ? *{#dates.format(dueByDate, 'dd/MM/yyyy')}"
+                         type="text"/>
+                  <input id="dueByDate" name="dueByDate" th:value="*{dueByDate}" type="hidden"/>
+                </div>
+                <div class="col-md-3">
+                  <select class="form-control input-sm" id="priority" name="priority">
+                    <option value="LOW">LOW</option>
+                    <option value="MEDIUM">MEDIUM</option>
+                    <option value="HIGH">HIGH</option>
+                  </select>
+                </div>
+                <div class="col-md-2">
+                  <label>Quick Win: <input id="quickWin" name="quickWin" type="checkbox"/></label>
+                </div>
+                <div class="col-md-3">
+                  <select class="form-control input-sm" id="relatedTo" name="relatedTo">
+                    <option value="">Related to</option>
+                    <option th:each="relatedTo : ${T(mycrm.configuration.RelatedTo).values()}"
+                            th:text="${relatedTo}" th:value="${relatedTo}"></option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-4">
+                  <a class="btn btn-success"
+                     th:href="'javascript:saveMobileContractNote(\''+ ${mobileContract.id} +'\');'">
+                    <span class="glyphicon glyphicon-save"></span> Add Note
+                  </a>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 <script>
 
 const checkbox = document.getElementById('show');
+const checkboxExistingNumber = document.getElementById('showExistingNumber');
 
 const box1 = document.getElementById('box1');
 const box2 = document.getElementById('box2');
 const box3 = document.getElementById('box3');
+const boxExistingNumber = document.getElementById('boxExistingNumber');
 
 checkbox.addEventListener('click', function handleClick() {
   if (checkbox.checked) {
@@ -389,6 +501,14 @@ checkbox.addEventListener('click', function handleClick() {
     box1.style.display = 'none';
     box2.style.display = 'none';
     box3.style.display = 'none';
+  }
+});
+
+checkboxExistingNumber.addEventListener('click', function handleClick() {
+  if (checkboxExistingNumber.checked) {
+    boxExistingNumber.style.display = 'block';
+  } else {
+    boxExistingNumber.style.display = 'none';
   }
 });
 

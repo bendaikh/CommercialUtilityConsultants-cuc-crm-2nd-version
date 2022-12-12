@@ -93,6 +93,8 @@ public class MerchantServicesController {
     private static final Logger logger = LogManager.getLogger();
 
     private final CustomerSiteService customerSiteService;
+
+    private final DocumentFolderService documentFolderService;
     private final BrokerService brokerService;
     private final MerchantServicesService merchantServicesService;
     private final MerchantServicesContractSearchService merchantServicesContractSearchService;
@@ -103,7 +105,7 @@ public class MerchantServicesController {
     private final BrokerTransferHistoryService brokerTransferHistoryService;
 
     @Autowired
-    public MerchantServicesController(CustomerSiteService customerSiteService,
+    public MerchantServicesController(DocumentFolderService documentFolderService,CustomerSiteService customerSiteService,
                                       BrokerService brokerService,
                                       MerchantServicesService merchantServicesService,
                                       MerchantServicesContractSearchService merchantServicesContractSearchService,
@@ -119,6 +121,7 @@ public class MerchantServicesController {
         this.contractReasonService = contractReasonService;
         this.doNotRenewReasonService = doNotRenewReasonService;
         this.documentRepo = documentRepo;
+        this.documentFolderService = documentFolderService;
     }
 
     @RequestMapping("/admin/customer/manage-merchant-services/{customerSiteID}")
@@ -132,6 +135,8 @@ public class MerchantServicesController {
         model.addAttribute("lostRenewalReasons",contractReasonService.findAll());
         model.addAttribute("customerSite", customerSiteService.findById(Long.valueOf(customerSiteID)));
         model.addAttribute("merchantServicesContract", merchantServicesContract);
+        model.addAttribute("folderName", documentFolderService.findAll());
+
         return "admin/customer/manage-merchant-services";
     }
     @RequestMapping(value = "/merchantServicesContractPoup", method = RequestMethod.GET)
@@ -324,6 +329,7 @@ public class MerchantServicesController {
         model.addAttribute("users", userService.findAll());
         model.addAttribute("doNotRenewReasons",doNotRenewReasonService.findAll());
         model.addAttribute("lostRenewalReasons",contractReasonService.findAll());
+        model.addAttribute("folderName", documentFolderService.findAll());
         return "admin/customer/manage-merchant-services";
     }
 

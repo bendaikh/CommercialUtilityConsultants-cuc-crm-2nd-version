@@ -26,6 +26,7 @@ public class VoipContract extends Auditable<User> {
     @Column(nullable = false, length = 1)
     private boolean welcomePackSentToCustomer;
 
+
     @Column(nullable = false, length = 1)
     private boolean previousSupplyTerminated;
 
