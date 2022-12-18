@@ -34,10 +34,19 @@ public class LinkedAccountsController {
 
     @RequestMapping("/admin/customer/customer-linked-accounts/{id}")
     public String showCustomerLinkedAccounts(@PathVariable("id") Long id, Model model) {
+        Long customerVar = null;
         Customer customer = customerService.findById(id);
         if (customer != null) {
             List<LinkedAccount> linkedAccounts = linkedAccountService.findByCustomer(customer);
-
+/*            if(linkedAccounts.get(0).getCustomer().getId() == customer.getId()){
+                customerVar = linkedAccounts.get(0).getLinkedCustomer().getId();
+            }
+            else if (linkedAccounts.get(0).getLinkedCustomer().getId() == customer.getId()){
+                customerVar = linkedAccounts.get(0).getCustomer().getId();
+            }
+            System.out.println("§§§§§§§§§§§§§§§§§§§§§§§§§§§§§");
+            System.out.println(customerVar);
+            model.addAttribute("customerVar", customerVar);*/
             model.addAttribute("linkedAccounts", linkedAccounts);
             model.addAttribute("customer", customer);
             model.addAttribute("linkedAccountsSize", linkedAccounts.size());
@@ -49,10 +58,19 @@ public class LinkedAccountsController {
 
     @RequestMapping("/admin/customer/linked-accounts/{id}")
     public String showLinkedAccounts(@PathVariable("id") Long id, Model model) {
+        Long customerVar = null;
         Customer customer = customerService.findById(id);
         if (customer != null) {
             List<LinkedAccount> linkedAccounts = linkedAccountService.findByCustomer(customer);
-
+            if(!linkedAccounts.isEmpty()){
+                if(linkedAccounts.get(0).getCustomer().getId() == customer.getId()){
+                    customerVar = linkedAccounts.get(0).getLinkedCustomer().getId();
+                }
+                else if (linkedAccounts.get(0).getLinkedCustomer().getId() == customer.getId()){
+                    customerVar = linkedAccounts.get(0).getCustomer().getId();
+                }
+            }
+            model.addAttribute("customerVar", customerVar);
             model.addAttribute("linkedAccounts", linkedAccounts);
             model.addAttribute("customer", customer);
             return "admin/customer/linked-accounts";

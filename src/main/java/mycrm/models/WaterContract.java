@@ -26,6 +26,7 @@ public class WaterContract extends Auditable<User>{
     @Column(nullable = false, length = 1)
     private boolean welcomePackSentToCustomer;
 
+
     @Column(nullable = false, length = 1)
     private boolean previousSupplyTerminated;
 
@@ -108,6 +109,15 @@ public class WaterContract extends Auditable<User>{
     @Field
     @Column(nullable = false, length = 1)
     private boolean lostRenewal;
+    @Column(nullable = true)
+    private int contractMonthlyDuration;
+    public int getContractMonthlyDuration() {
+        return contractMonthlyDuration;
+    }
+
+    public void setContractMonthlyDuration(int contractMonthlyDuration) {
+        this.contractMonthlyDuration = contractMonthlyDuration;
+    }
 
     public boolean isLostRenewal() {
         return lostRenewal;

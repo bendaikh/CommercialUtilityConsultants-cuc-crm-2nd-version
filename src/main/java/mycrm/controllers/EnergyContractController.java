@@ -37,11 +37,23 @@ public class EnergyContractController {
 
     private final MerchantServicesService merchantServicesService;
 
+    private final SolarContractService solarContractService;
+
+    private final WaterContractService waterContractService;
+
+    private final VoipContractService voipContractService;
+
+    private final BroadbandContractService broadbandContractService;
+
+    private final LandlineContractService landlineContractService;
+
+    private final MobileContractService mobileContractService;
+
     @Value("${default.broker.id}")
     private Long defaultBrokerId;
 
     @Autowired
-    public EnergyContractController(GasContractService gasContractService, ElecContractService elecContractService,
+    public EnergyContractController(MobileContractService mobileContractService,LandlineContractService landlineContractService,BroadbandContractService broadbandContractService,VoipContractService voipContractService,WaterContractService waterContractService,SolarContractService solarContractService,GasContractService gasContractService, ElecContractService elecContractService,
                                     SupplierService supplierService, BrokerService brokerService, UserService userService, ContractReasonService contractReasonService,
                                     CustomerSiteService customerSiteService, CustomerNoteService customerNoteService, ContactService contactService,
                                     ContractService contractService, UtilityContractService utilityContractService, BrokerTransferHistoryService brokerTransferHistoryService,
@@ -60,6 +72,12 @@ public class EnergyContractController {
         this.brokerTransferHistoryService = brokerTransferHistoryService;
         this.merchantServicesService = merchantServicesService;
         this.doNotRenewReasonService = doNotRenewReasonService;
+        this.solarContractService = solarContractService;
+        this.waterContractService = waterContractService;
+        this.voipContractService = voipContractService;
+        this.broadbandContractService = broadbandContractService;
+        this.landlineContractService = landlineContractService;
+        this.mobileContractService = mobileContractService;
     }
 
     // new gas contract
@@ -205,6 +223,66 @@ public class EnergyContractController {
         return "admin/customer/merchant-services-contract-notes";
     }
 
+    @RequestMapping("/admin/customer/solar-contract-notes")
+    public String getSolarContractNotes(@RequestParam Long id, Model model) {
+
+        SolarContract solarContract = solarContractService.findById(id);
+
+        model.addAttribute("solarContractNotes", customerNoteService.findBySolarContractOrderByDateCreatedDesc(solarContract));
+        model.addAttribute("users", userService.findAll());
+        return "admin/customer/solar-contract-notes";
+    }
+
+    @RequestMapping("/admin/customer/water-contract-notes")
+    public String getWaterContractNotes(@RequestParam Long id, Model model) {
+
+        WaterContract waterContract = waterContractService.findById(id);
+
+        model.addAttribute("waterContractNotes", customerNoteService.findByWaterContractOrderByDateCreatedDesc(waterContract));
+        model.addAttribute("users", userService.findAll());
+        return "admin/customer/water-contract-notes";
+    }
+
+    @RequestMapping("/admin/customer/voip-contract-notes")
+    public String getVoipContractNotes(@RequestParam Long id, Model model) {
+
+        VoipContract voipContract = voipContractService.findById(id);
+
+        model.addAttribute("voipContractNotes", customerNoteService.findByVoipContractOrderByDateCreatedDesc(voipContract));
+        model.addAttribute("users", userService.findAll());
+        return "admin/customer/voip-contract-notes";
+    }
+
+    @RequestMapping("/admin/customer/broadband-contract-notes")
+    public String getBroadbandContractNotes(@RequestParam Long id, Model model) {
+
+        BroadbandContract broadbandContract = broadbandContractService.findById(id);
+
+        model.addAttribute("broadbandContractNotes", customerNoteService.findByBroadbandContractOrderByDateCreatedDesc(broadbandContract));
+        model.addAttribute("users", userService.findAll());
+        return "admin/customer/broadband-contract-notes";
+    }
+
+    @RequestMapping("/admin/customer/landline-contract-notes")
+    public String getLandlineContractNotes(@RequestParam Long id, Model model) {
+
+        LandlineContract landlineContract = landlineContractService.findById(id);
+
+        model.addAttribute("landlineContractNotes", customerNoteService.findByLandlineContractOrderByDateCreatedDesc(landlineContract));
+        model.addAttribute("users", userService.findAll());
+        return "admin/customer/landline-contract-notes";
+    }
+
+    @RequestMapping("/admin/customer/mobile-contract-notes")
+    public String getMobileContractNotes(@RequestParam Long id, Model model) {
+
+        MobileContract mobileContract = mobileContractService.findById(id);
+
+        model.addAttribute("mobileContractNotes", customerNoteService.findByMobileContractOrderByDateCreatedDesc(mobileContract));
+        model.addAttribute("users", userService.findAll());
+        return "admin/customer/mobile-contract-notes";
+    }
+
     // create elec contract notes
     @RequestMapping(value = "/elecContractNote", method = RequestMethod.POST)
     public String saveElecContractNote(CustomerNote customerNote) {
@@ -229,6 +307,42 @@ public class EnergyContractController {
     public String saveMerchantServiceContractNote(CustomerNote customerNote) {
         CustomerNote savedNote = customerNoteService.save(customerNote);
         return "redirect:/admin/customer/edit-merchant-services/" + savedNote.getMerchantServicesContract().getId();
+    }
+
+    @RequestMapping(value = "/solarContractNote", method = RequestMethod.POST)
+    public String saveSolarContractNote(CustomerNote customerNote) {
+        CustomerNote savedNote = customerNoteService.save(customerNote);
+        return "redirect:/admin/customer/edit-solar-contract/" + savedNote.getSolarContract().getId();
+    }
+
+    @RequestMapping(value = "/voipContractNote", method = RequestMethod.POST)
+    public String saveVoipContractNote(CustomerNote customerNote) {
+        CustomerNote savedNote = customerNoteService.save(customerNote);
+        return "redirect:/admin/customer/edit-voip-contract/" + savedNote.getVoipContract().getId();
+    }
+
+    @RequestMapping(value = "/waterContractNote", method = RequestMethod.POST)
+    public String saveWaterContractNote(CustomerNote customerNote) {
+        CustomerNote savedNote = customerNoteService.save(customerNote);
+        return "redirect:/admin/customer/edit-water-contract/" + savedNote.getWaterContract().getId();
+    }
+
+    @RequestMapping(value = "/landlineContractNote", method = RequestMethod.POST)
+    public String saveLandlineContractNote(CustomerNote customerNote) {
+        CustomerNote savedNote = customerNoteService.save(customerNote);
+        return "redirect:/admin/customer/edit-landline-contract/" + savedNote.getLandlineContract().getId();
+    }
+
+    @RequestMapping(value = "/broadbandContractNote", method = RequestMethod.POST)
+    public String saveBroadbandContractNote(CustomerNote customerNote) {
+        CustomerNote savedNote = customerNoteService.save(customerNote);
+        return "redirect:/admin/customer/edit-broadband-contract/" + savedNote.getBroadbandContract().getId();
+    }
+
+    @RequestMapping(value = "/mobileContractNote", method = RequestMethod.POST)
+    public String saveMobileContractNote(CustomerNote customerNote) {
+        CustomerNote savedNote = customerNoteService.save(customerNote);
+        return "redirect:/admin/customer/edit-mobile-contract/" + savedNote.getMobileContract().getId();
     }
 
     @RequestMapping("/admin/customer/editeleccontract/{id}")

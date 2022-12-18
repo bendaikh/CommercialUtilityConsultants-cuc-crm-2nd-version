@@ -404,16 +404,61 @@ function showUtilityContractNotes(id) {
 }
 
 function showMerchantServiceContractNotes(id) {
-    console.log("entered with this id");
-    console.log(id);
     $.get('/admin/customer/merchant-services-contract-notes', {
         id: id
     }, function (data) {
-        console.log("+++++++++++++++++++++++");
-        console.log(data);
         $('#merchant-services-contract-notes-div').html(data);
     });
 }
+
+function showSolarContractNotes(id) {
+    $.get('/admin/customer/solar-contract-notes', {
+        id: id
+    }, function (data) {
+        $('#solar-contract-notes-div').html(data);
+    });
+}
+
+function showVoipContractNotes(id) {
+    $.get('/admin/customer/voip-contract-notes', {
+        id: id
+    }, function (data) {
+        $('#voip-contract-notes-div').html(data);
+    });
+}
+
+function showWaterContractNotes(id) {
+    $.get('/admin/customer/water-contract-notes', {
+        id: id
+    }, function (data) {
+        $('#water-contract-notes-div').html(data);
+    });
+}
+
+function showLandlineContractNotes(id) {
+    $.get('/admin/customer/landline-contract-notes', {
+        id: id
+    }, function (data) {
+        $('#landline-contract-notes-div').html(data);
+    });
+}
+
+function showMobileContractNotes(id) {
+    $.get('/admin/customer/mobile-contract-notes', {
+        id: id
+    }, function (data) {
+        $('#mobile-contract-notes-div').html(data);
+    });
+}
+
+function showBroadbandContractNotes(id) {
+    $.get('/admin/customer/broadband-contract-notes', {
+        id: id
+    }, function (data) {
+        $('#broadband-contract-notes-div').html(data);
+    });
+}
+
 function saveUtilityContractNote(id) {
     if ($('#utilityNote').valid()) {
         $.post('/utilityContractNote', $('#utilityNote').serialize(), function (data) {
@@ -428,6 +473,66 @@ function saveMerchantServicesContractNote(id) {
         $.post('/merchantServiceContractNote', $('#merchantNote').serialize(), function (data) {
             showMerchantServiceContractNotes(id);
             $('#merchantNote').get(0).reset();
+            $('#newNoteModal').modal('hide');
+        });
+    }
+}
+
+function saveSolarContractNote(id){
+if ($('#solarNote').valid()) {
+        $.post('/solarContractNote', $('#solarNote').serialize(), function (data) {
+            showSolarContractNotes(id);
+            $('#solarNote').get(0).reset();
+            $('#newNoteModal').modal('hide');
+        });
+    }
+}
+
+function saveVoipContractNote(id){
+if ($('#voipNote').valid()) {
+        $.post('/voipContractNote', $('#voipNote').serialize(), function (data) {
+            showVoipContractNotes(id);
+            $('#voipNote').get(0).reset();
+            $('#newNoteModal').modal('hide');
+        });
+    }
+}
+
+function saveWaterContractNote(id){
+if ($('#waterNote').valid()) {
+        $.post('/waterContractNote', $('#waterNote').serialize(), function (data) {
+            showWaterContractNotes(id);
+            $('#waterNote').get(0).reset();
+            $('#newNoteModal').modal('hide');
+        });
+    }
+}
+
+function saveMobileContractNote(id){
+if ($('#mobileNote').valid()) {
+        $.post('/mobileContractNote', $('#mobileNote').serialize(), function (data) {
+            showMobileContractNotes(id);
+            $('#mobileNote').get(0).reset();
+            $('#newNoteModal').modal('hide');
+        });
+    }
+}
+
+function saveLandlineContractNote(id){
+if ($('#landlineNote').valid()) {
+        $.post('/landlineContractNote', $('#landlineNote').serialize(), function (data) {
+            showLandlineContractNotes(id);
+            $('#landlineNote').get(0).reset();
+            $('#newNoteModal').modal('hide');
+        });
+    }
+}
+
+function saveBroadbandContractNote(id){
+if ($('#broadbandNote').valid()) {
+        $.post('/broadbandContractNote', $('#broadbandNote').serialize(), function (data) {
+            showBroadbandContractNotes(id);
+            $('#broadbandNote').get(0).reset();
             $('#newNoteModal').modal('hide');
         });
     }
