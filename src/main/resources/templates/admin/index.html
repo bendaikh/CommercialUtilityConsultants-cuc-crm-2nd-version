@@ -84,1000 +84,349 @@
             <div class="col-md-8">
                 <ul class="nav nav-tabs" id="myTab">
                     <li class="active">
-                        <a href="#1" data-toggle="tab" id="site">Site</a>
+                        <a href="#site2" data-toggle="tab" id="Site">Site</a>
                     </li>
-                    <li><a href="#3" data-toggle="tab" id="contracts">Contracts</a>
+                    <li><a href="#contracts2" data-toggle="tab" id="Contracts">Contracts</a>
                     </li>
-                    <li><a href="#3" data-toggle="tab">Meters</a>
+                    <li><a href="#meters2" data-toggle="tab" id="Meters">Meters</a>
                     </li>
-                    <li><a href="#3" data-toggle="tab">Billing</a>
+                    <li><a href="#billing2" data-toggle="tab" id="Billing">Billing</a>
                     </li>
-                    <li><a href="#3" data-toggle="tab">WorkFlow</a>
+                    <li><a href="#workflow2" data-toggle="tab" id="Workflow">WorkFlow</a>
                     </li>
-                    <li><a href="#results" data-toggle="tab">Results</a>
+                    <li><a href="#results2" data-toggle="tab" id="Results">Results</a>
                     </li>
-                    <li><a href="#3" data-toggle="tab">Accounts</a>
+                    <li><a href="#accounts2" data-toggle="tab" id="Accounts">Accounts</a>
+                    </li>
+                    <li><a data-toggle="tab" class="tasksWorkflows" id="Tasks WorkFlows">Tasks WorkFlow</a>
                     </li>
                 </ul>
             </div>
             <div class="col-md-4">
-                <div class="input-group">
-                    <input type="search" class="form-control"/>
-                    <span class="input-group-btn">
-                    <button class="btn btn-primary" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true">
+
+                    <form th:action="@{1}" method="get" th:object="${customerSearch}" class="form-horizontal">
+                        <div class="input-group">
+                        <input type="search" class="form-control" th:field="*{q}"
+                               placeholder="search by name, address, postcode"/>
+                        <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"
+                                                                        aria-hidden="true">
                     </span> Search!</button>
                     </span>
-                </div>
+                        </div>
+                    </form>
+
             </div>
         </div>
         <div class="row">
             <div class="col-md-8">
                 <div class="tab-content ">
-                    <div class="tab-pane active" id="1">
+                    <div class="tab-pane active" id="site2">
+                        <h3>site 2</h3>
+                    </div>
+                    <div class="tab-pane" id="contracts2">
                         <h3>Standard tab panel created on bootstrap using nav-tabs</h3>
                     </div>
-                    <div class="tab-pane" id="results">
+                    <div class="tab-pane" id="meters2">
                         <h3>Standard tab panel created on bootstrap using nav-tabs</h3>
                     </div>
-                    <div class="tab-pane" id="myTaskworkFlow">
-                        <div class="container-fluid">
-                            <h3>Workflow</h3>
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a data-toggle="tab" href="#customer-notes">Customer Notes</a></li>
-                                <li><a data-toggle="tab" href="#quick-wins">Quick Wins</a></li>
-                                <li sec:authorize="hasAnyAuthority('SUPERADMIN','ADMIN')"><a data-toggle="tab"
-                                                                                             href="#processing">Processing
-                                    <span class="badge" th:text="${#lists.size(findAllContractsToProcess)}">5</span></a>
-                                </li>
-                                <li sec:authorize="hasAnyAuthority('SUPERADMIN','ADMIN')"><a data-toggle="tab"
-                                                                                             href="#new-sales">New Sales
-                                    <span class="badge"
-                                          th:text="${#lists.size(findAllAdminContractNewSalesTasks)}">5</span></a>
-                                </li>
-                                <li sec:authorize="hasAnyAuthority('SUPERADMIN','ADMIN')"><a data-toggle="tab"
-                                                                                             href="#terminations">Terminations
-                                    <span class="badge"
-                                          th:text="${#lists.size(findAllContractsToTerminate)}">5</span></a>
-                                </li>
-                                <li sec:authorize="hasAuthority('SUPERADMIN')"><a data-toggle="tab"
-                                                                                  href="#broker-notes">Broker
-                                    Notes
-                                    <span class="badge" th:text="${#lists.size(findAllBrokerNotesByUser)}">5</span></a>
-                                </li>
-                                <li sec:authorize="hasAnyAuthority('SUPERADMIN','ADMIN')"><a data-toggle="tab"
-                                                                                             href="#objections">Objections
-                                    <span class="badge" th:text="${#lists.size(findAllObjectedContracts)}">5</span></a>
-                                </li>
-                                <!--<li sec:authorize="hasAnyAuthority('SUPERADMIN','ADMIN')"><a data-toggle="tab" href="#verbals">Verbal
-                                  <span class="badge" th:text="${#lists.size(findAllVerbalContracts)}">5</span></a></li>-->
-                                <li><a data-toggle="tab" href="#expiring-documents">Expiring Documents
-                                    <span class="badge" th:text="${#lists.size(expiringDocuments)}">5</span></a></li>
-                            </ul>
-
-                            <div class="tab-content">
-                                <div class="tab-pane fade in active" id="customer-notes">
-                                    <h3>Customer Notes</h3>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="panel panel-danger small">
-                                                <div class="panel-heading">High Importance</div>
-                                                <div class="panel-body fixed-panel-large" id="high-priority-list">
-                                                    <table class="table table-hover table-condensed">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>Note</th>
-                                                            <th>Due Date</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr th:class="${customerNote.priorityClass}"
-                                                            th:each="customerNote:${findAllIncompleteCustomerNotesByTaggedUser}"
-                                                            th:if="${customerNote.priority == 'HIGH'} and ${customerNote.quickWin == false}">
-                                                            <td>
-                                                                <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerNote.customer.id}, noteId = ${customerNote.id})}">
-                                                                    <span th:text="${customerNote.subject}"></span>
-                                                                </a>
-                                                            </td>
-                                                            <td th:class="${customerNote.priorityClass}"
-                                                                th:text="${customerNote.dueByDate != null} ? ${#dates.format(customerNote.dueByDate, 'dd/MM/yyyy')}">
-                                                                Due By Date
-                                                            </td>
-                                                        </tr>
-                                                        <tr th:class="${customerChildNote.priorityClass}"
-                                                            th:each="customerChildNote:${findAllIncompleteCustomerChildNotesByTaggedUser}"
-                                                            th:if="${customerChildNote.replyPriority == 'HIGH'} and ${customerChildNote.quickWin == false}">
-                                                            <td>
-                                                                <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerChildNote.customer.id}, noteId = ${customerChildNote.customerNote.id}, childNoteId = ${customerChildNote.id})}">
-                                                                    <span th:text="${customerChildNote.customerNote.subject}"></span>
-                                                                </a>
-                                                            </td>
-                                                            <td th:class="${customerChildNote.priorityClass}"
-                                                                th:text="${customerChildNote.replyDueByDate != null} ? ${#dates.format(customerChildNote.replyDueByDate, 'dd/MM/yyyy')}">
-                                                                Due By Date
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="panel panel-warning small">
-                                                <div class="panel-heading">Medium Importance</div>
-                                                <div class="panel-body fixed-panel-large">
-                                                    <table class="table table-hover table-condensed">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>Note</th>
-                                                            <th>Due Date</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr th:class="${customerNote.priorityClass}"
-                                                            th:each="customerNote:${findAllIncompleteCustomerNotesByTaggedUser}"
-                                                            th:if="${customerNote.priority == 'MEDIUM'} and ${customerNote.quickWin == false}">
-                                                            <td>
-                                                                <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerNote.customer.id}, noteId = ${customerNote.id})}">
-                                                                    <span th:text="${customerNote.subject}"></span>
-                                                                </a>
-                                                            </td>
-                                                            <td th:class="${customerNote.priorityClass}"
-                                                                th:text="${customerNote.dueByDate != null} ? ${#dates.format(customerNote.dueByDate, 'dd/MM/yyyy')}">
-                                                                Due By Date
-                                                            </td>
-                                                        </tr>
-                                                        <tr th:class="${customerChildNote.priorityClass}"
-                                                            th:each="customerChildNote:${findAllIncompleteCustomerChildNotesByTaggedUser}"
-                                                            th:if="${customerChildNote.replyPriority == 'MEDIUM'} and ${customerChildNote.quickWin == false}">
-                                                            <td>
-                                                                <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerChildNote.customer.id}, noteId = ${customerChildNote.customerNote.id}, childNoteId = ${customerChildNote.id})}">
-                                                                    <span th:text="${customerChildNote.customerNote.subject}"></span>
-                                                                </a>
-                                                            </td>
-                                                            <td th:class="${customerChildNote.priorityClass}"
-                                                                th:text="${customerChildNote.replyDueByDate != null} ? ${#dates.format(customerChildNote.replyDueByDate, 'dd/MM/yyyy')}">
-                                                                Due By Date
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="panel panel-success small">
-                                                <div class="panel-heading">Low Importance</div>
-                                                <div class="panel-body fixed-panel-large">
-                                                    <table class="table table-hover table-condensed">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>Note</th>
-                                                            <th>Due Date</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr th:class="${customerNote.priorityClass}"
-                                                            th:each="customerNote:${findAllIncompleteCustomerNotesByTaggedUser}"
-                                                            th:if="${customerNote.priority == 'LOW'} and ${customerNote.quickWin == false}">
-                                                            <td>
-                                                                <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerNote.customer.id}, noteId = ${customerNote.id})}">
-                                                                    <span th:text="${customerNote.subject}"></span>
-                                                                </a>
-                                                            </td>
-                                                            <td th:class="${customerNote.priorityClass}"
-                                                                th:text="${customerNote.dueByDate != null} ? ${#dates.format(customerNote.dueByDate, 'dd/MM/yyyy')}">
-                                                                Due By Date
-                                                            </td>
-                                                        </tr>
-                                                        <tr th:class="${customerChildNote.priorityClass}"
-                                                            th:each="customerChildNote:${findAllIncompleteCustomerChildNotesByTaggedUser}"
-                                                            th:if="${customerChildNote.replyPriority == 'LOW'} and ${customerChildNote.quickWin == false}">
-                                                            <td>
-                                                                <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerChildNote.customer.id}, noteId = ${customerChildNote.customerNote.id}, childNoteId = ${customerChildNote.id})}">
-                                                                    <span th:text="${customerChildNote.customerNote.subject}"></span>
-                                                                </a>
-                                                            </td>
-                                                            <td th:class="${customerChildNote.priorityClass}"
-                                                                th:text="${customerChildNote.replyDueByDate != null} ? ${#dates.format(customerChildNote.replyDueByDate, 'dd/MM/yyyy')}">
-                                                                Due By Date
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="panel panel-primary small">
-                                                <div class="panel-heading">Domestic</div>
-                                                <div class="panel-body fixed-panel-large">
-                                                    <table class="table table-hover table-condensed">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>Note</th>
-                                                            <th>Due Date</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr th:class="${customerNote.priorityClass}"
-                                                            th:each="customerNote:${findAllIncompleteCustomerNotesByTaggedUser}"
-                                                            th:if="${customerNote.relatedTo == 'DOMESTIC'} and ${customerNote.quickWin == false}">
-                                                            <td>
-                                                                <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerNote.customer.id}, noteId = ${customerNote.id})}">
-                                                                    <span th:text="${customerNote.subject}"></span>
-                                                                </a>
-                                                            </td>
-                                                            <td th:class="${customerNote.priorityClass}"
-                                                                th:text="${customerNote.dueByDate != null} ? ${#dates.format(customerNote.dueByDate, 'dd/MM/yyyy')}">
-                                                                Due By Date
-                                                            </td>
-                                                        </tr>
-                                                        <tr th:class="${customerChildNote.priorityClass}"
-                                                            th:each="customerChildNote:${findAllIncompleteCustomerChildNotesByTaggedUser}"
-                                                            th:if="${customerChildNote.replyRelatedTo == 'DOMESTIC'} and ${customerChildNote.quickWin == false}">
-                                                            <td>
-                                                                <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerChildNote.customer.id}, noteId = ${customerChildNote.customerNote.id}, childNoteId = ${customerChildNote.id})}">
-                                                                    <span th:text="${customerChildNote.customerNote.subject}"></span>
-                                                                </a>
-                                                            </td>
-                                                            <td th:class="${customerChildNote.priorityClass}"
-                                                                th:text="${customerChildNote.replyDueByDate != null} ? ${#dates.format(customerChildNote.replyDueByDate, 'dd/MM/yyyy')}">
-                                                                Due By Date
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--      <div class="row">-->
-                                    <!--        <div class="col-md-6">-->
-                                    <!--          <div class="panel panel-primary small">-->
-                                    <!--            <div class="panel-heading">-->
-                                    <!--              <b>Customer Notes</b> - Mark as completed once done-->
-                                    <!--            </div>-->
-                                    <!--            <div class="panel-body fixed-panel-large" id="customernote">-->
-                                    <!--              <table class="table table-striped table-hover table-condensed">-->
-                                    <!--                <thead>-->
-                                    <!--                <tr class="info">-->
-                                    <!--                  <th>Priority</th>-->
-                                    <!--                  <th>Customer</th>-->
-                                    <!--                  <th>Subject</th>-->
-                                    <!--                  <th>Note</th>-->
-                                    <!--                  <th>Tagged User</th>-->
-                                    <!--                  <th>Due By Date</th>-->
-                                    <!--                  <th>Date Created</th>-->
-                                    <!--                  <th>Created By</th>-->
-                                    <!--                  <th>&nbsp;</th>-->
-                                    <!--                </tr>-->
-                                    <!--                </thead>-->
-                                    <!--                <tbody>-->
-                                    <!--                <tr th:class="${customerNote.priorityClass}" th:each="customerNote:${findAllIncompleteCustomerNotesByTaggedUser}">-->
-                                    <!--                  <td th:inline="text">[[${customerNote.priority}]]</td>-->
-                                    <!--                  <td><a th:href="@{/admin/customer/view/{id}/(id=${customerNote.customer.id})}" th:inline="text">[[${customerNote.customer.businessName}]]</a></td>-->
-                                    <!--                  <td th:text="${customerNote.subject}">Subject</td>-->
-                                    <!--                  <td><a th:href="@{/admin/customer/customernotes/{id}/(id=${customerNote.customer.id}, noteId = ${customerNote.id})}"><span-->
-                                    <!--                      th:text="${#strings.abbreviate(customerNote.note, 50)}"></span></a>-->
-                                    <!--                    <a data-placement="auto bottom" data-toggle="tooltip" href="#" th:title="${customerNote.note}">-->
-                                    <!--                      <span class="glyphicon glyphicon-info-sign"></span></a></td>-->
-                                    <!--                  <td th:text="${customerNote.taggedUser.firstName}+' '+${customerNote.taggedUser.lastName}">First Name and Surname</td>-->
-                                    <!--                  <td th:text="${customerNote.dueByDate != null} ? ${#dates.format(customerNote.dueByDate, 'dd/MM/yyyy')}">Due By Date</td>-->
-                                    <!--                  <td th:text="${#dates.format(customerNote.dateCreated, 'dd/MM/yyyy HH:mm:ss')}">Date Created</td>-->
-                                    <!--                  <td th:text="${customerNote.createdBy.firstName}+' '+${customerNote.createdBy.lastName}">First Name and Surname</td>-->
-                                    <!--                  <td>-->
-                                    <!--                    <button class="btn btn-success btn-xs" th:onclick="'showCustomerNote(\''+${customerNote.id}+'\');'">Mark as complete</button>-->
-                                    <!--                  </td>-->
-                                    <!--                </tr>-->
-                                    <!--                </tbody>-->
-                                    <!--              </table>-->
-                                    <!--            </div>-->
-                                    <!--          </div>-->
-                                    <!--        </div>-->
-                                    <!--      </div>-->
-                                    <!--      <div class="col-md-6">-->
-                                    <!--        <div class="panel panel-primary small">-->
-                                    <!--          <div class="panel-heading">-->
-                                    <!--            <b>Customer Child Notes</b> - Mark as completed once done-->
-                                    <!--          </div>-->
-                                    <!--          <div class="panel-body fixed-panel-large" id="customerchildnote">-->
-                                    <!--            <table class="table table-striped table-hover table-condensed">-->
-                                    <!--              <thead>-->
-                                    <!--              <tr class="info">-->
-                                    <!--                <th>Priority</th>-->
-                                    <!--                <th>Customer</th>-->
-                                    <!--                <th>Subject</th>-->
-                                    <!--                <th>Note</th>-->
-                                    <!--                <th>Tagged User</th>-->
-                                    <!--                <th>Due By Date</th>-->
-                                    <!--                <th>Date Created</th>-->
-                                    <!--                <th>Created By</th>-->
-                                    <!--                <th>&nbsp;</th>-->
-                                    <!--              </tr>-->
-                                    <!--              </thead>-->
-                                    <!--              <tbody>-->
-                                    <!--              <tr th:class="${customerChildNote.priorityClass}" th:each="customerChildNote:${findAllIncompleteCustomerChildNotesByTaggedUser}">-->
-                                    <!--                <td th:inline="text">[[${customerChildNote.replyPriority}]]</td>-->
-                                    <!--                <td><a th:href="@{/admin/customer/view/{id}/(id=${customerChildNote.customer.id})}"-->
-                                    <!--                       th:inline="text">[[${customerChildNote.customer.businessName}]]</a>-->
-                                    <!--                </td>-->
-                                    <!--                <td th:text="${customerChildNote.customerNote.subject}">Subject</td>-->
-                                    <!--                <td><a-->
-                                    <!--                    th:href="@{/admin/customer/customernotes/{id}/(id=${customerChildNote.customer.id}, noteId = ${customerChildNote.customerNote.id}, childNoteId = ${customerChildNote.id})}">-->
-                                    <!--                  <span th:text="${#strings.abbreviate(customerChildNote.message, 50)}"></span>-->
-                                    <!--                </a>-->
-                                    <!--                  <a data-placement="auto bottom" data-toggle="tooltip" href="#" th:title="${customerChildNote.message}">-->
-                                    <!--                    <span class="glyphicon glyphicon-info-sign"></span></a></td>-->
-                                    <!--                <td th:text="${customerChildNote.replyTaggedUser.firstName}+' '+${customerChildNote.replyTaggedUser.lastName}">First Name and Surname</td>-->
-                                    <!--                <td th:text="${customerChildNote.replyDueByDate != null} ? ${#dates.format(customerChildNote.replyDueByDate, 'dd/MM/yyyy')}">Due By Date</td>-->
-                                    <!--                <td th:text="${#dates.format(customerChildNote.dateCreated, 'dd/MM/yyyy HH:mm:ss')}">Date Created</td>-->
-                                    <!--                <td th:text="${customerChildNote.createdBy.firstName}+' '+${customerChildNote.createdBy.lastName}">First Name and Surname</td>-->
-                                    <!--                <td>-->
-                                    <!--                  <button class="btn btn-success btn-xs" th:onclick="'showCustomerChildNote(\''+${customerChildNote.id}+'\');'">Mark as complete</button>-->
-                                    <!--                </td>-->
-                                    <!--              </tr>-->
-                                    <!--              </tbody>-->
-                                    <!--            </table>-->
-                                    <!--          </div>-->
-                                    <!--        </div>-->
-                                    <!--      </div>-->
-                                </div>
-
-                                <!--    QUICK WINS-->
-
-
-                                <div class="tab-pane fade" id="quick-wins">
-                                    <h3>Quick Wins</h3>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="panel panel-danger small">
-                                                <div class="panel-heading">High Importance</div>
-                                                <div class="panel-body fixed-panel-large">
-                                                    <table class="table table-hover table-condensed">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>Note</th>
-                                                            <th>Due Date</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr th:class="${customerNote.priorityClass}"
-                                                            th:each="customerNote:${findAllIncompleteCustomerNotesByTaggedUser}"
-                                                            th:if="${customerNote.priority == 'HIGH'} and ${customerNote.quickWin}">
-                                                            <td>
-                                                                <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerNote.customer.id}, noteId = ${customerNote.id})}">
-                                                                    <span th:text="${customerNote.subject}"></span>
-                                                                </a>
-                                                            </td>
-                                                            <td th:class="${customerNote.priorityClass}"
-                                                                th:text="${customerNote.dueByDate != null} ? ${#dates.format(customerNote.dueByDate, 'dd/MM/yyyy')}">
-                                                                Due By Date
-                                                            </td>
-                                                        </tr>
-                                                        <tr th:class="${customerChildNote.priorityClass}"
-                                                            th:each="customerChildNote:${findAllIncompleteCustomerChildNotesByTaggedUser}"
-                                                            th:if="${customerChildNote.replyPriority == 'HIGH'} and ${customerChildNote.quickWin}">
-                                                            <td>
-                                                                <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerChildNote.customer.id}, noteId = ${customerChildNote.customerNote.id}, childNoteId = ${customerChildNote.id})}">
-                                                                    <span th:text="${customerChildNote.customerNote.subject}"></span>
-                                                                </a>
-                                                            </td>
-                                                            <td th:class="${customerChildNote.priorityClass}"
-                                                                th:text="${customerChildNote.replyDueByDate != null} ? ${#dates.format(customerChildNote.replyDueByDate, 'dd/MM/yyyy')}">
-                                                                Due By Date
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="panel panel-warning small">
-                                                <div class="panel-heading">Medium Importance</div>
-                                                <div class="panel-body fixed-panel-large">
-                                                    <table class="table table-hover table-condensed">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>Note</th>
-                                                            <th>Due Date</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr th:class="${customerNote.priorityClass}"
-                                                            th:each="customerNote:${findAllIncompleteCustomerNotesByTaggedUser}"
-                                                            th:if="${customerNote.priority == 'MEDIUM'} and ${customerNote.quickWin}">
-                                                            <td>
-                                                                <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerNote.customer.id}, noteId = ${customerNote.id})}">
-                                                                    <span th:text="${customerNote.subject}"></span>
-                                                                </a>
-                                                            </td>
-                                                            <td th:class="${customerNote.priorityClass}"
-                                                                th:text="${customerNote.dueByDate != null} ? ${#dates.format(customerNote.dueByDate, 'dd/MM/yyyy')}">
-                                                                Due By Date
-                                                            </td>
-                                                        </tr>
-                                                        <tr th:class="${customerChildNote.priorityClass}"
-                                                            th:each="customerChildNote:${findAllIncompleteCustomerChildNotesByTaggedUser}"
-                                                            th:if="${customerChildNote.replyPriority == 'MEDIUM'} and ${customerChildNote.quickWin}">
-                                                            <td>
-                                                                <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerChildNote.customer.id}, noteId = ${customerChildNote.customerNote.id}, childNoteId = ${customerChildNote.id})}">
-                                                                    <span th:text="${customerChildNote.customerNote.subject}"></span>
-                                                                </a>
-                                                            </td>
-                                                            <td th:class="${customerChildNote.priorityClass}"
-                                                                th:text="${customerChildNote.replyDueByDate != null} ? ${#dates.format(customerChildNote.replyDueByDate, 'dd/MM/yyyy')}">
-                                                                Due By Date
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="panel panel-success small">
-                                                <div class="panel-heading">Low Importance</div>
-                                                <div class="panel-body fixed-panel-large">
-                                                    <table class="table table-hover table-condensed">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>Note</th>
-                                                            <th>Due Date</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr th:class="${customerNote.priorityClass}"
-                                                            th:each="customerNote:${findAllIncompleteCustomerNotesByTaggedUser}"
-                                                            th:if="${customerNote.priority == 'LOW'} and ${customerNote.quickWin}">
-                                                            <td>
-                                                                <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerNote.customer.id}, noteId = ${customerNote.id})}">
-                                                                    <span th:text="${customerNote.subject}"></span>
-                                                                </a>
-                                                            </td>
-                                                            <td th:class="${customerNote.priorityClass}"
-                                                                th:text="${customerNote.dueByDate != null} ? ${#dates.format(customerNote.dueByDate, 'dd/MM/yyyy')}">
-                                                                Due By Date
-                                                            </td>
-                                                        </tr>
-                                                        <tr th:class="${customerChildNote.priorityClass}"
-                                                            th:each="customerChildNote:${findAllIncompleteCustomerChildNotesByTaggedUser}"
-                                                            th:if="${customerChildNote.replyPriority == 'LOW'} and ${customerChildNote.quickWin}">
-                                                            <td>
-                                                                <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerChildNote.customer.id}, noteId = ${customerChildNote.customerNote.id}, childNoteId = ${customerChildNote.id})}">
-                                                                    <span th:text="${customerChildNote.customerNote.subject}"></span>
-                                                                </a>
-                                                            </td>
-                                                            <td th:class="${customerChildNote.priorityClass}"
-                                                                th:text="${customerChildNote.replyDueByDate != null} ? ${#dates.format(customerChildNote.replyDueByDate, 'dd/MM/yyyy')}">
-                                                                Due By Date
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="panel panel-primary small">
-                                                <div class="panel-heading">Domestic</div>
-                                                <div class="panel-body fixed-panel-large">
-                                                    <table class="table table-hover table-condensed">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>Note</th>
-                                                            <th>Due Date</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <tr th:class="${customerNote.priorityClass}"
-                                                            th:each="customerNote:${findAllIncompleteCustomerNotesByTaggedUser}"
-                                                            th:if="${customerNote.relatedTo == 'DOMESTIC'} and ${customerNote.quickWin}">
-                                                            <td>
-                                                                <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerNote.customer.id}, noteId = ${customerNote.id})}">
-                                                                    <span th:text="${customerNote.subject}"></span>
-                                                                </a>
-                                                            </td>
-                                                            <td th:class="${customerNote.priorityClass}"
-                                                                th:text="${customerNote.dueByDate != null} ? ${#dates.format(customerNote.dueByDate, 'dd/MM/yyyy')}">
-                                                                Due By Date
-                                                            </td>
-                                                        </tr>
-                                                        <tr th:class="${customerChildNote.priorityClass}"
-                                                            th:each="customerChildNote:${findAllIncompleteCustomerChildNotesByTaggedUser}"
-                                                            th:if="${customerChildNote.replyRelatedTo == 'DOMESTIC'} and ${customerChildNote.quickWin}">
-                                                            <td>
-                                                                <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerChildNote.customer.id}, noteId = ${customerChildNote.customerNote.id}, childNoteId = ${customerChildNote.id})}">
-                                                                    <span th:text="${customerChildNote.customerNote.subject}"></span>
-                                                                </a>
-                                                            </td>
-                                                            <td th:class="${customerChildNote.priorityClass}"
-                                                                th:text="${customerChildNote.replyDueByDate != null} ? ${#dates.format(customerChildNote.replyDueByDate, 'dd/MM/yyyy')}">
-                                                                Due By Date
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="processing">
-                                    <h3>Processing</h3>
-                                    <div class="panel panel-primary small">
-                                        <div class="panel-heading">
-                                            <b>Processing</b>
-                                        </div>
-                                        <div class="panel-body fixed-panel-large" id="processPack"
-                                             th:fragment="processPack">
-                                            <table class="table table-striped table-hover table-condensed">
-                                                <thead>
-                                                <tr class="info">
-                                                    <th>Supply Type</th>
-                                                    <th>Customer Reference</th>
-                                                    <th>Site Name</th>
-                                                    <th>Meter Serial</th>
-                                                    <th>Start Date</th>
-                                                    <th>End Date</th>
-                                                    <th>Contract Sent in post</th>
-                                                    <th>Contract Received</th>
-                                                    <th>Supplier</th>
-                                                    <th>Broker</th>
-                                                    <th>Date Created</th>
-                                                    <th>Created By</th>
-                                                    <th>&nbsp;</th>
-                                                    <th>&nbsp;</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr th:each="processContract:${findAllContractsToProcess}">
-                                                    <td th:text="${processContract.supplyType}">Supply Type</td>
-                                                    <td th:text="${processContract.customer.customerReference}">Customer
-                                                        Reference
-                                                    </td>
-                                                    <td th:text="${processContract.customerSite.siteName}">Site Name
-                                                    </td>
-                                                    <td th:if="${processContract.supplyType == 'GAS'}"
-                                                        th:text="'MPR: '+ ${processContract.accountNumber}">
-                                                        MPR
-                                                    </td>
-                                                    <td th:if="${processContract.supplyType == 'ELEC'}"
-                                                        th:text="'MPAN Bottom Line: '+${processContract.accountNumber}">
-                                                        MPAN
-                                                    </td>
-                                                    <td th:if="${processContract.supplyType != 'ELEC' and processContract.supplyType != 'GAS'}">
-                                                        N/A
-                                                    </td>
-                                                    <td th:text="${processContract.startDate} ? ${#dates.format(processContract.startDate, 'dd/MM/yyyy')}">
-                                                        Start Date
-                                                    </td>
-                                                    <td th:text="${processContract.endDate} ? ${#dates.format(processContract.endDate, 'dd/MM/yyyy')}">
-                                                        End Date
-                                                    </td>
-                                                    <td><span class="glyphicon glyphicon-ok"
-                                                              th:if="${processContract.contractSentToCustomer == true}"></span><span
-                                                            class="glyphicon glyphicon-remove"
-                                                            th:if="${processContract.contractSentToCustomer == false}"></span>
-                                                    </td>
-                                                    <td><span class="glyphicon glyphicon-ok"
-                                                              th:if="${processContract.contractReceived == true}"></span><span
-                                                            class="glyphicon glyphicon-remove"
-                                                            th:if="${processContract.contractReceived == false}"></span>
-                                                    </td>
-                                                    <td th:text="${processContract.supplier.businessName}">Supplier</td>
-                                                    <td th:text="${processContract.broker.firstName}+' '+${processContract.broker.lastName}">
-                                                        Broker First Name and Surname
-                                                    </td>
-                                                    <td th:text="${#dates.format(processContract.dateCreated, 'dd/MM/yyyy HH:mm:ss')}">
-                                                        Date Created
-                                                    </td>
-                                                    <td th:text="${processContract.createdBy.firstName}+' '+${processContract.createdBy.lastName}">
-                                                        First Name and Surname
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-warning btn-xs"
-                                                                th:onclick="'showProcessOptions(\''+${processContract.id}+'\', \''+${processContract.supplyType}+'\');'">
-                                                            Update
-                                                        </button>
-                                                    </td>
-                                                    <td th:if="${processContract.supplyType == 'GAS'}">
-                                                        <a class="btn btn-info btn-xs"
-                                                           th:href="@{/admin/customer/editgascontract/{id}/(id=${processContract.id})}">Open
-                                                            Contract</a>
-                                                    </td>
-                                                    <td th:if="${processContract.supplyType == 'ELEC'}">
-                                                        <a class="btn btn-info btn-xs"
-                                                           th:href="@{/admin/customer/editeleccontract/{id}/(id=${processContract.id})}">Open
-                                                            Contract</a>
-                                                    </td>
-                                                    <td th:if="${processContract.supplyType != 'ELEC' and processContract.supplyType != 'GAS'}">
-                                                        <a class="btn btn-info btn-xs"
-                                                           th:href="@{/admin/customer/edit-utility-contract/{id}/(id=${processContract.id})}">Open
-                                                            Contract</a>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="new-sales"
-                                     sec:authorize="hasAnyAuthority('SUPERADMIN','ADMIN')">
-                                    <h3>New Sales</h3>
-                                    <div class="panel panel-success small">
-                                        <div class="panel-heading">
-                                            <b>New Sales</b>
-                                        </div>
-                                        <div class="panel-body fixed-panel" id="welcomePack" th:fragment="welcomePack">
-                                            <table class="table table-striped table-hover table-condensed">
-                                                <thead>
-                                                <tr class="info">
-                                                    <th>Customer</th>
-                                                    <th>Site</th>
-                                                    <th>Start Date</th>
-                                                    <th>Supply Type</th>
-                                                    <th>Welcome pack sent</th>
-                                                    <th>Old Supply Terminated</th>
-                                                    <th>Update</th>
-                                                    <th>Print Welcome letter</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr th:each="newSalesTask:${findAllAdminContractNewSalesTasks}">
-                                                    <td>
-                                                        <a th:href="@{/admin/customer/view/{id}/(id=${newSalesTask.customer.id})}"
-                                                           th:inline="text">[[${newSalesTask.customerSite.siteName}]]</a>
-                                                    </td>
-                                                    <td>
-                                                        <a th:href="@{/admin/customer/viewsite/{id}/(id=${newSalesTask.customerSite.id})}"
-                                                           th:inline="text">[[${newSalesTask.customerSite.siteAddr}]]</a>
-                                                    </td>
-                                                    <td nowrap="nowrap"
-                                                        th:text="${newSalesTask.startDate} ? ${#dates.format(newSalesTask.startDate, 'dd/MM/yyyy')}">
-                                                        Start date
-                                                    </td>
-                                                    <td th:text="${newSalesTask.supplyType}">Supply Type</td>
-                                                    <td>
+                    <div class="tab-pane" id="billing2">
+                        <h3>Standard tab panel created on bootstrap using nav-tabs</h3>
+                    </div>
+                    <div class="tab-pane" id="workflow2">
+                        <h3>Standard tab panel created on bootstrap using nav-tabs</h3>
+                    </div>
+                    <div class="tab-pane" id="results2">
+                        <h3>Standard tab panel created on bootstrap using nav-tabs</h3>
+                    </div>
+                    <div class="tab-pane" id="accounts2">
+                        <h3>Standard tab panel created on bootstrap using nav-tabs</h3>
+                    </div>
+                    <div role="tabpanel" class="tab-pane myTabsTask" id="newSales2">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <b>New Sales</b>
+                            </div>
+                            <div class="panel-body fixed-panel" id="welcomePack" th:fragment="welcomePack">
+                                <table class="table table-striped table-hover table-condensed">
+                                    <thead>
+                                    <tr class="info">
+                                        <th>Customer</th>
+                                        <th>Site</th>
+                                        <th>Start Date</th>
+                                        <th>Supply Type</th>
+                                        <th>Welcome pack sent</th>
+                                        <th>Old Supply Terminated</th>
+                                        <th>Update</th>
+                                        <th>Print Welcome letter</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="newSalesTask:${findAllAdminContractNewSalesTasks}">
+                                        <td>
+                                            <a th:href="@{/admin/customer/view/{id}/(id=${newSalesTask.customer.id})}"
+                                               th:inline="text">[[${newSalesTask.customerSite.siteName}]]</a>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/admin/customer/viewsite/{id}/(id=${newSalesTask.customerSite.id})}"
+                                               th:inline="text">[[${newSalesTask.customerSite.siteAddr}]]</a>
+                                        </td>
+                                        <td nowrap="nowrap"
+                                            th:text="${newSalesTask.startDate} ? ${#dates.format(newSalesTask.startDate, 'dd/MM/yyyy')}">
+                                            Start date
+                                        </td>
+                                        <td th:text="${newSalesTask.supplyType}">Supply Type</td>
+                                        <td>
                                                 <span class="glyphicon glyphicon-ok"
                                                       th:if="${newSalesTask.welcomePackSentToCustomer == true}"></span>
-                                                        <span class="glyphicon glyphicon-remove"
-                                                              th:if="${newSalesTask.welcomePackSentToCustomer == false}"></span>
-                                                    </td>
-                                                    <td>
+                                            <span class="glyphicon glyphicon-remove"
+                                                  th:if="${newSalesTask.welcomePackSentToCustomer == false}"></span>
+                                        </td>
+                                        <td>
                                                 <span class="glyphicon glyphicon-ok"
                                                       th:if="${newSalesTask.previousSupplyTerminated == true}"></span>
-                                                        <span class="glyphicon glyphicon-remove"
-                                                              th:if="${newSalesTask.previousSupplyTerminated == false}"></span>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-warning btn-xs"
-                                                                th:onclick="'showWelcomeOptions(\''+${newSalesTask.id}+'\', \''+${newSalesTask.supplyType}+'\');'">
-                                                            Update
-                                                        </button>
-                                                    </td>
-                                                    <td th:if="${newSalesTask.supplyType == 'GAS'}">
-                                                        <a class="btn btn-primary btn-xs"
-                                                           th:href="@{/gasWelcomeLetter/{id}/(id=${newSalesTask.id})}">Print
-                                                            Welcome Letter</a>
-                                                    </td>
-                                                    <td th:if="${newSalesTask.supplyType == 'ELEC'}">
-                                                        <a class="btn btn-primary btn-xs"
-                                                           th:href="@{/electricWelcomeLetter/{id}/(id=${newSalesTask.id})}">Print
-                                                            Welcome Letter</a>
-                                                    </td>
-                                                    <td th:if="${newSalesTask.supplyType != 'ELEC' AND newSalesTask.supplyType != 'GAS'}">
-                                                        Unavailable
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="terminations"
-                                     sec:authorize="hasAnyAuthority('SUPERADMIN','ADMIN')">
-                                    <h3>Terminations</h3>
-                                    <div class="panel panel-danger small">
-                                        <div class="panel-heading">
-                                            <b>Terminations</b>
-                                        </div>
-                                        <div class="panel-body fixed-panel" id="terminationTask"
-                                             th:fragment="terminationTask">
-                                            <table class="table table-striped table-hover table-condensed">
-                                                <thead>
-                                                <tr class="info">
-                                                    <th>Customer</th>
-                                                    <th>Supply Type</th>
-                                                    <th>Start Date</th>
-                                                    <th>End Date</th>
-                                                    <th>Current Supply Terminated</th>
-                                                    <th>Update</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr th:each="endedContract:${findAllContractsToTerminate}">
-                                                    <td>
-                                                        <a th:href="@{/admin/customer/view/{id}/(id=${endedContract.customer.id})}"
-                                                           th:inline="text">[[${endedContract.customer.businessName}]]
-                                                        </a>
-                                                    </td>
-                                                    <td nowrap="nowrap" th:text="${endedContract.supplyType}"></td>
-                                                    <td nowrap="nowrap"
-                                                        th:text="${endedContract.startDate} ? ${#dates.format(endedContract.startDate, 'dd/MM/yyyy')}"></td>
-                                                    <td nowrap="nowrap"
-                                                        th:text="${endedContract.endDate} ? ${#dates.format(endedContract.endDate, 'dd/MM/yyyy')}"></td>
-                                                    <td><span class="glyphicon glyphicon-ok"
-                                                              th:if="${endedContract.currentSupplyTerminated == true}"></span><span
-                                                            class="glyphicon glyphicon-remove"
-                                                            th:if="${endedContract.currentSupplyTerminated == false}"></span>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-warning btn-xs"
-                                                                th:onclick="'showTerminationOptions(\'' + ${ endedContract.id } + '\', \''+${endedContract.supplyType}+'\');'">
-                                                            Update
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="broker-notes"
-                                     sec:authorize="hasAnyAuthority('SUPERADMIN')">
-                                    <h3>Broker Notes</h3>
-                                    <div class="panel panel-primary small">
-                                        <div class="panel-heading">
-                                            <b>Broker Notes</b> - Mark as completed once done
-                                        </div>
-                                        <div class="panel-body fixed-panel" id="brokernote">
-                                            <table class="table table-striped table-hover table-condensed">
-                                                <thead>
-                                                <tr class="info">
-                                                    <th>Broker</th>
-                                                    <th>Subject</th>
-                                                    <th>Note</th>
-                                                    <th>Tagged User</th>
-                                                    <th>Date Created</th>
-                                                    <th>Created By</th>
-                                                    <th>&nbsp;</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr th:each="brokerNote:${findAllBrokerNotesByUser}">
-                                                    <td>
-                                                        <a th:href="@{/admin/broker/view/{id}/(id=${brokerNote.broker.id})}"
-                                                           th:inline="text">[[${brokerNote.broker.businessName}]]</a>
-                                                    </td>
-                                                    <td th:text="${brokerNote.subject}">Subject</td>
-                                                    <td><a data-placement="auto bottom" data-toggle="tooltip" href="#"
-                                                           th:title="${brokerNote.note}"><span
-                                                            th:text="${#strings.abbreviate(brokerNote.note, 50)}"></span></a>
-                                                    </td>
-                                                    <td th:text="${brokerNote.taggedUser.firstName}+' '+${brokerNote.taggedUser.lastName}">
-                                                        First Name and Surname
-                                                    </td>
-                                                    <td th:text="${#dates.format(brokerNote.dateCreated, 'dd/MM/yyyy HH:mm:ss')}">
-                                                        Date Created
-                                                    </td>
-                                                    <td th:text="${brokerNote.createdBy.firstName}+' '+${brokerNote.createdBy.lastName}">
-                                                        First Name and Surname
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-success btn-xs"
-                                                                th:onclick="'showBrokerNote(\''+${brokerNote.id}+'\');'">
-                                                            Mark as
-                                                            complete
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="objections"
-                                     sec:authorize="hasAnyAuthority('SUPERADMIN','ADMIN')">
-                                    <h3>Objections</h3>
-                                    <div class="panel panel-primary small">
-                                        <div class="panel-heading">
-                                            <b>Objections</b>
-                                        </div>
-                                        <div class="panel-body fixed-panel">
-                                            <table class="table table-striped table-hover table-condensed">
-                                                <thead>
-                                                <tr class="info">
-                                                    <th>Supply Type</th>
-                                                    <th>Customer Reference</th>
-                                                    <th>Site Name</th>
-                                                    <th>Meter Serial</th>
-                                                    <th>Start Date</th>
-                                                    <th>End Date</th>
-                                                    <th>Supplier</th>
-                                                    <th>Broker</th>
-                                                    <th>Date Created</th>
-                                                    <th>Created By</th>
-                                                    <th>&nbsp;</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr th:each="objectedContract:${findAllObjectedContracts}">
-                                                    <td th:text="${objectedContract.supplyType}">Supply Type</td>
-                                                    <td th:text="${objectedContract.customer.customerReference}">
-                                                        Customer
-                                                        Reference
-                                                    </td>
-                                                    <td th:text="${objectedContract.customerSite.siteName}">Site Name
-                                                    </td>
-                                                    <td th:if="${objectedContract.supplyType == 'GAS'}"
-                                                        th:text="'MPR: '+ ${objectedContract.accountNumber}">
-                                                        MPR
-                                                    </td>
-                                                    <td th:if="${objectedContract.supplyType == 'ELEC'}"
-                                                        th:text="'MPAN Bottom Line: '+${objectedContract.accountNumber}">
-                                                        MPAN
-                                                    </td>
-                                                    <td th:if="${objectedContract.supplyType != 'ELEC' and objectedContract.supplyType != 'GAS'}">
-                                                        N/A
-                                                    </td>
-                                                    <td th:text="${objectedContract.startDate} ? ${#dates.format(objectedContract.startDate, 'dd/MM/yyyy')}">
-                                                        Start Date
-                                                    </td>
-                                                    <td th:text="${objectedContract.endDate} ? ${#dates.format(objectedContract.endDate, 'dd/MM/yyyy')}">
-                                                        End Date
-                                                    </td>
-                                                    <td th:text="${objectedContract.supplier.businessName}">Supplier
-                                                    </td>
-                                                    <td th:text="${objectedContract.broker.firstName}+' '+${objectedContract.broker.lastName}">
-                                                        Broker First Name and Surname
-                                                    </td>
-                                                    <td th:text="${#dates.format(objectedContract.dateCreated, 'dd/MM/yyyy HH:mm:ss')}">
-                                                        Date Created
-                                                    </td>
-                                                    <td th:text="${objectedContract.createdBy.firstName}+' '+${objectedContract.createdBy.lastName}">
-                                                        First Name and Surname
-                                                    </td>
-                                                    <td th:if="${objectedContract.supplyType == 'GAS'}">
-                                                        <a class="btn btn-warning btn-xs"
-                                                           th:href="@{/admin/customer/editgascontract/{id}/(id=${objectedContract.id})}">Open</a>
-                                                    </td>
-                                                    <td th:if="${objectedContract.supplyType == 'ELEC'}">
-                                                        <a class="btn btn-warning btn-xs"
-                                                           th:href="@{/admin/customer/editeleccontract/{id}/(id=${objectedContract.id})}">Open</a>
-                                                    </td>
-                                                    <td th:if="${objectedContract.supplyType != 'ELEC' and objectedContract.supplyType != 'GAS'}">
-                                                        <a class="btn btn-warning btn-xs"
-                                                           th:href="@{/admin/customer/edit-utility-contract/{id}/(id=${objectedContract.id})}">Open</a>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="verbals"
-                                     sec:authorize="hasAnyAuthority('SUPERADMIN','ADMIN')">
-                                    <h3>Verbal Contracts</h3>
-                                    <div class="panel panel-primary small">
-                                        <div class="panel-heading">
-                                            <b>Verbal Contracts</b>
-                                        </div>
-                                        <div class="panel-body fixed-panel">
-                                            <table class="table table-striped table-hover table-condensed">
-                                                <thead>
-                                                <tr class="info">
-                                                    <th>Supply Type</th>
-                                                    <th>Customer Reference</th>
-                                                    <th>Site Name</th>
-                                                    <th>Meter Serial</th>
-                                                    <th>Start Date</th>
-                                                    <th>End Date</th>
-                                                    <th>Supplier</th>
-                                                    <th>Broker</th>
-                                                    <th>Date Created</th>
-                                                    <th>Created By</th>
-                                                    <th>&nbsp;</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr th:each="verbalContract:${findAllVerbalContracts}">
-                                                    <td th:text="${verbalContract.supplyType}">Supply Type</td>
-                                                    <td th:text="${verbalContract.customer.customerReference}">Customer
-                                                        Reference
-                                                    </td>
-                                                    <td th:text="${verbalContract.customerSite.siteName}">Site Name</td>
-                                                    <td th:if="${verbalContract.supplyType == 'GAS'}"
-                                                        th:text="'MPR: '+ ${verbalContract.accountNumber}">
-                                                        MPR
-                                                    </td>
-                                                    <td th:if="${verbalContract.supplyType == 'ELEC'}"
-                                                        th:text="'MPAN Bottom Line: '+${verbalContract.accountNumber}">
-                                                        MPAN
-                                                    </td>
-                                                    <td th:if="${verbalContract.supplyType != 'ELEC' and verbalContract.supplyType != 'GAS'}">
-                                                        N/A
-                                                    </td>
-                                                    <td th:text="${verbalContract.startDate} ? ${#dates.format(verbalContract.startDate, 'dd/MM/yyyy')}">
-                                                        Start Date
-                                                    </td>
-                                                    <td th:text="${verbalContract.endDate} ? ${#dates.format(verbalContract.endDate, 'dd/MM/yyyy')}">
-                                                        End Date
-                                                    </td>
-                                                    <td th:text="${verbalContract.supplier.businessName}">Supplier</td>
-                                                    <td th:text="${verbalContract.broker.firstName}+' '+${verbalContract.broker.lastName}">
-                                                        Broker First Name and Surname
-                                                    </td>
-                                                    <td th:text="${#dates.format(verbalContract.dateCreated, 'dd/MM/yyyy HH:mm:ss')}">
-                                                        Date Created
-                                                    </td>
-                                                    <td th:text="${verbalContract.createdBy.firstName}+' '+${verbalContract.createdBy.lastName}">
-                                                        First Name and Surname
-                                                    </td>
-                                                    <td th:if="${verbalContract.supplyType == 'GAS'}">
-                                                        <a class="btn btn-warning btn-xs"
-                                                           th:href="@{/admin/customer/editgascontract/{id}/(id=${verbalContract.id})}">Open</a>
-                                                    </td>
-                                                    <td th:if="${verbalContract.supplyType == 'ELEC'}">
-                                                        <a class="btn btn-warning btn-xs"
-                                                           th:href="@{/admin/customer/editeleccontract/{id}/(id=${verbalContract.id})}">Open</a>
-                                                    </td>
-                                                    <td th:if="${verbalContract.supplyType != 'ELEC' and verbalContract.supplyType != 'GAS'}">
-                                                        <a class="btn btn-warning btn-xs"
-                                                           th:href="@{/admin/customer/edit-utility-contract/{id}/(id=${verbalContract.id})}">Open</a>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="expiring-documents">
-                                    <h3>Expiring Documents</h3>
-                                    <div class="panel panel-primary small">
-                                        <div class="panel-heading">
-                                            <b>Expiring Documents</b>
-                                        </div>
-                                        <div class="panel-body fixed-panel">
-                                            <table class="table table-striped table-hover table-condensed">
-                                                <thead>
-                                                <tr class="info">
-                                                    <th>Customer Reference</th>
-                                                    <th>File Title</th>
-                                                    <th>File Name</th>
-                                                    <th>Valid From</th>
-                                                    <th>Valid To</th>
-                                                    <th>Date Created</th>
-                                                    <th>Created By</th>
-                                                    <th>&nbsp;</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr th:each="expiredDocument:${expiringDocuments}">
-                                                    <td>
-                                                        <a th:href="@{/admin/customer/view/{id}/(id=${expiredDocument.customer.id})}"
-                                                           th:inline="text">[[${expiredDocument.customer.customerReference}]]
-                                                            - [[${expiredDocument.customer.businessName}]]</a></td>
-                                                    <td th:text="${expiredDocument.fileTitle}"></td>
-                                                    <td th:text="${expiredDocument.fileName}"></td>
-                                                    <td th:text="${expiredDocument.validFrom != null} ? ${#dates.format(expiredDocument.validFrom, 'dd/MM/yyyy')}"></td>
-                                                    <td th:text="${expiredDocument.validTo != null} ? ${#dates.format(expiredDocument.validTo, 'dd/MM/yyyy')}"></td>
-                                                    <td th:text="${#dates.format(expiredDocument.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
-                                                    <td th:text="${expiredDocument.createdBy.firstName}+' '+${expiredDocument.createdBy.lastName}"></td>
-                                                    <td><a class="btn btn-success btn-xs"
-                                                           th:href="@{/admin/customer/customerdocuments/{id}/{documentFolder}/(id=${expiredDocument.customer.id}, documentFolder=${expiredDocument.documentFolder})}">Open
-                                                    </a></td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
+                                            <span class="glyphicon glyphicon-remove"
+                                                  th:if="${newSalesTask.previousSupplyTerminated == false}"></span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-warning btn-xs"
+                                                    th:onclick="'showWelcomeOptions(\''+${newSalesTask.id}+'\', \''+${newSalesTask.supplyType}+'\');'">
+                                                Update
+                                            </button>
+                                        </td>
+                                        <td th:if="${newSalesTask.supplyType == 'GAS'}">
+                                            <a class="btn btn-primary btn-xs"
+                                               th:href="@{/gasWelcomeLetter/{id}/(id=${newSalesTask.id})}">Print
+                                                Welcome Letter</a>
+                                        </td>
+                                        <td th:if="${newSalesTask.supplyType == 'ELEC'}">
+                                            <a class="btn btn-primary btn-xs"
+                                               th:href="@{/electricWelcomeLetter/{id}/(id=${newSalesTask.id})}">Print
+                                                Welcome Letter</a>
+                                        </td>
+                                        <td th:if="${newSalesTask.supplyType != 'ELEC' AND newSalesTask.supplyType != 'GAS'}">
+                                            Unavailable
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="3">
-                        <h3>add clearfix to tab-content (see the css)</h3>
+                    <div role="tabpanel" class="tab-pane myTabsTask" id="terminations2">
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">
+                                <b>Terminations</b>
+                            </div>
+                            <div class="panel-body fixed-panel" id="terminationTask"
+                                 th:fragment="terminationTask">
+                                <table class="table table-striped table-hover table-condensed">
+                                    <thead>
+                                    <tr class="info">
+                                        <th>Customer</th>
+                                        <th>Supply Type</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Current Supply Terminated</th>
+                                        <th>Update</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="endedContract:${findAllContractsToTerminate}">
+                                        <td>
+                                            <a th:href="@{/admin/customer/view/{id}/(id=${endedContract.customer.id})}"
+                                               th:inline="text">[[${endedContract.customer.businessName}]]
+                                            </a>
+                                        </td>
+                                        <td nowrap="nowrap" th:text="${endedContract.supplyType}"></td>
+                                        <td nowrap="nowrap"
+                                            th:text="${endedContract.startDate} ? ${#dates.format(endedContract.startDate, 'dd/MM/yyyy')}"></td>
+                                        <td nowrap="nowrap"
+                                            th:text="${endedContract.endDate} ? ${#dates.format(endedContract.endDate, 'dd/MM/yyyy')}"></td>
+                                        <td><span class="glyphicon glyphicon-ok"
+                                                  th:if="${endedContract.currentSupplyTerminated == true}"></span><span
+                                                class="glyphicon glyphicon-remove"
+                                                th:if="${endedContract.currentSupplyTerminated == false}"></span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-warning btn-xs"
+                                                    th:onclick="'showTerminationOptions(\'' + ${ endedContract.id } + '\', \''+${endedContract.supplyType}+'\');'">
+                                                Update
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="broker2">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <b>Broker Notes</b> - Mark as completed once done
+                            </div>
+                            <div class="panel-body fixed-panel" id="brokernote">
+                                <table class="table table-striped table-hover table-condensed">
+                                    <thead>
+                                    <tr class="info">
+                                        <th>Broker</th>
+                                        <th>Subject</th>
+                                        <th>Note</th>
+                                        <th>Tagged User</th>
+                                        <th>Date Created</th>
+                                        <th>Created By</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="brokerNote:${findAllBrokerNotesByUser}">
+                                        <td>
+                                            <a th:href="@{/admin/broker/view/{id}/(id=${brokerNote.broker.id})}"
+                                               th:inline="text">[[${brokerNote.broker.businessName}]]</a>
+                                        </td>
+                                        <td th:text="${brokerNote.subject}">Subject</td>
+                                        <td><a data-placement="auto bottom" data-toggle="tooltip" href="#"
+                                               th:title="${brokerNote.note}"><span
+                                                th:text="${#strings.abbreviate(brokerNote.note, 50)}"></span></a>
+                                        </td>
+                                        <td th:text="${brokerNote.taggedUser.firstName}+' '+${brokerNote.taggedUser.lastName}">
+                                            First Name and Surname
+                                        </td>
+                                        <td th:text="${#dates.format(brokerNote.dateCreated, 'dd/MM/yyyy HH:mm:ss')}">
+                                            Date Created
+                                        </td>
+                                        <td th:text="${brokerNote.createdBy.firstName}+' '+${brokerNote.createdBy.lastName}">
+                                            First Name and Surname
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-success btn-xs"
+                                                    th:onclick="'showBrokerNote(\''+${brokerNote.id}+'\');'">
+                                                Mark as
+                                                complete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="objections2">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <b>Objections</b>
+                            </div>
+                            <div class="panel-body fixed-panel">
+                                <table class="table table-striped table-hover table-condensed">
+                                    <thead>
+                                    <tr class="info">
+                                        <th>Supply Type</th>
+                                        <th>Customer Reference</th>
+                                        <th>Site Name</th>
+                                        <th>Meter Serial</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Supplier</th>
+                                        <th>Broker</th>
+                                        <th>Date Created</th>
+                                        <th>Created By</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="objectedContract:${findAllObjectedContracts}">
+                                        <td th:text="${objectedContract.supplyType}">Supply Type</td>
+                                        <td th:text="${objectedContract.customer.customerReference}">
+                                            Customer
+                                            Reference
+                                        </td>
+                                        <td th:text="${objectedContract.customerSite.siteName}">Site Name
+                                        </td>
+                                        <td th:if="${objectedContract.supplyType == 'GAS'}"
+                                            th:text="'MPR: '+ ${objectedContract.accountNumber}">
+                                            MPR
+                                        </td>
+                                        <td th:if="${objectedContract.supplyType == 'ELEC'}"
+                                            th:text="'MPAN Bottom Line: '+${objectedContract.accountNumber}">
+                                            MPAN
+                                        </td>
+                                        <td th:if="${objectedContract.supplyType != 'ELEC' and objectedContract.supplyType != 'GAS'}">
+                                            N/A
+                                        </td>
+                                        <td th:text="${objectedContract.startDate} ? ${#dates.format(objectedContract.startDate, 'dd/MM/yyyy')}">
+                                            Start Date
+                                        </td>
+                                        <td th:text="${objectedContract.endDate} ? ${#dates.format(objectedContract.endDate, 'dd/MM/yyyy')}">
+                                            End Date
+                                        </td>
+                                        <td th:text="${objectedContract.supplier.businessName}">Supplier
+                                        </td>
+                                        <td th:text="${objectedContract.broker.firstName}+' '+${objectedContract.broker.lastName}">
+                                            Broker First Name and Surname
+                                        </td>
+                                        <td th:text="${#dates.format(objectedContract.dateCreated, 'dd/MM/yyyy HH:mm:ss')}">
+                                            Date Created
+                                        </td>
+                                        <td th:text="${objectedContract.createdBy.firstName}+' '+${objectedContract.createdBy.lastName}">
+                                            First Name and Surname
+                                        </td>
+                                        <td th:if="${objectedContract.supplyType == 'GAS'}">
+                                            <a class="btn btn-warning btn-xs"
+                                               th:href="@{/admin/customer/editgascontract/{id}/(id=${objectedContract.id})}">Open</a>
+                                        </td>
+                                        <td th:if="${objectedContract.supplyType == 'ELEC'}">
+                                            <a class="btn btn-warning btn-xs"
+                                               th:href="@{/admin/customer/editeleccontract/{id}/(id=${objectedContract.id})}">Open</a>
+                                        </td>
+                                        <td th:if="${objectedContract.supplyType != 'ELEC' and objectedContract.supplyType != 'GAS'}">
+                                            <a class="btn btn-warning btn-xs"
+                                               th:href="@{/admin/customer/edit-utility-contract/{id}/(id=${objectedContract.id})}">Open</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="expiring2">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <b>Expiring Documents</b>
+                            </div>
+                            <div class="panel-body fixed-panel">
+                                <table class="table table-striped table-hover table-condensed">
+                                    <thead>
+                                    <tr class="info">
+                                        <th>Customer Reference</th>
+                                        <th>File Title</th>
+                                        <th>File Name</th>
+                                        <th>Valid From</th>
+                                        <th>Valid To</th>
+                                        <th>Date Created</th>
+                                        <th>Created By</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="expiredDocument:${expiringDocuments}">
+                                        <td>
+                                            <a th:href="@{/admin/customer/view/{id}/(id=${expiredDocument.customer.id})}"
+                                               th:inline="text">[[${expiredDocument.customer.customerReference}]]
+                                                - [[${expiredDocument.customer.businessName}]]</a></td>
+                                        <td th:text="${expiredDocument.fileTitle}"></td>
+                                        <td th:text="${expiredDocument.fileName}"></td>
+                                        <td th:text="${expiredDocument.validFrom != null} ? ${#dates.format(expiredDocument.validFrom, 'dd/MM/yyyy')}"></td>
+                                        <td th:text="${expiredDocument.validTo != null} ? ${#dates.format(expiredDocument.validTo, 'dd/MM/yyyy')}"></td>
+                                        <td th:text="${#dates.format(expiredDocument.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
+                                        <td th:text="${expiredDocument.createdBy.firstName}+' '+${expiredDocument.createdBy.lastName}"></td>
+                                        <td><a class="btn btn-success btn-xs"
+                                               th:href="@{/admin/customer/customerdocuments/{id}/{documentFolder}/(id=${expiredDocument.customer.id}, documentFolder=${expiredDocument.documentFolder})}">Open
+                                        </a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane" id="search">
                         <div class="well">
@@ -1122,44 +471,127 @@
                 </div>
             </div>
             <div class="col-md-4">
-                    <h4>My tasks WorkFlow</h4>
-                    <ul class="nav nav-tabs tabcontent">
-                        <li class="active">
-                            <a href="#high" data-toggle="tab">High</a>
-                        </li>
-                        <li><a href="#2" data-toggle="tab">Medium</a>
-                        </li>
-                        <li><a href="#3" data-toggle="tab">Low</a>
-                        </li>
-                        <li><a href="#3" data-toggle="tab">Processing</a>
-                        </li>
-                        <li><a href="#3" data-toggle="tab">New Sales</a>
-                        </li>
-                        <li><a href="#3" data-toggle="tab">Terminations</a>
-                        </li>
-                        <li><a href="#3" data-toggle="tab">Broker Notes</a>
-                        </li>
-                        <li><a href="#search" data-toggle="tab">Objections</a>
-                        </li>
-                        <li><a href="#search" data-toggle="tab">Expiring Documents</a>
-                        </li>
+                <h4>My tasks WorkFlow</h4>
+                <div>
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#high2" aria-controls="home" role="tab"
+                                                                  data-toggle="tab">High</a></li>
+                        <li role="presentation"><a href="#low2" aria-controls="profile" role="tab"
+                                                   data-toggle="tab">Low</a></li>
+                        <li role="presentation" id="myTabs"><a href="#newSales2" aria-controls="messages" role="tab"
+                                                               data-toggle="tab">New Sales</a></li>
+                        <li role="presentation"><a href="#terminations2" aria-controls="settings" role="tab"
+                                                   data-toggle="tab">Terminations</a></li>
+                        <li role="presentation"><a href="#broker2" aria-controls="settings" role="tab"
+                                                   data-toggle="tab">Broker Notes</a></li>
+                        <li role="presentation"><a href="#objections2" aria-controls="settings" role="tab"
+                                                   data-toggle="tab">Objections</a></li>
+                        <li role="presentation"><a href="#expiring2" aria-controls="settings" role="tab"
+                                                   data-toggle="tab">Expiring Documents</a></li>
                     </ul>
-                <div class="tab-content">
-                    <div id="home" class="tab-pane fade in active">
-                        <h3>HOME</h3>
-                        <p>Some content.</p>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="high2">
+                            <div>
+                                <div class="panel panel-danger small">
+                                    <div class="panel-heading">High Importance</div>
+                                    <div class="panel-body fixed-panel-large">
+                                        <table class="table table-hover table-condensed">
+                                            <thead>
+                                            <tr>
+                                                <th>Note</th>
+                                                <th>Due Date</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:class="${customerNote.priorityClass}"
+                                                th:each="customerNote:${findAllIncompleteCustomerNotesByTaggedUser}"
+                                                th:if="${customerNote.priority == 'HIGH'} and ${customerNote.quickWin}">
+                                                <td>
+                                                    <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerNote.customer.id}, noteId = ${customerNote.id})}">
+                                                        <span th:text="${customerNote.subject}"></span>
+                                                    </a>
+                                                </td>
+                                                <td th:class="${customerNote.priorityClass}"
+                                                    th:text="${customerNote.dueByDate != null} ? ${#dates.format(customerNote.dueByDate, 'dd/MM/yyyy')}">
+                                                    Due By Date
+                                                </td>
+                                            </tr>
+                                            <tr th:class="${customerChildNote.priorityClass}"
+                                                th:each="customerChildNote:${findAllIncompleteCustomerChildNotesByTaggedUser}"
+                                                th:if="${customerChildNote.replyPriority == 'HIGH'} and ${customerChildNote.quickWin}">
+                                                <td>
+                                                    <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerChildNote.customer.id}, noteId = ${customerChildNote.customerNote.id}, childNoteId = ${customerChildNote.id})}">
+                                                        <span th:text="${customerChildNote.customerNote.subject}"></span>
+                                                    </a>
+                                                </td>
+                                                <td th:class="${customerChildNote.priorityClass}"
+                                                    th:text="${customerChildNote.replyDueByDate != null} ? ${#dates.format(customerChildNote.replyDueByDate, 'dd/MM/yyyy')}">
+                                                    Due By Date
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="low2">
+                            <div>
+                                <div class="panel panel-success small">
+                                    <div class="panel-heading">Low Importance</div>
+                                    <div class="panel-body fixed-panel-large">
+                                        <table class="table table-hover table-condensed">
+                                            <thead>
+                                            <tr>
+                                                <th>Note</th>
+                                                <th>Due Date</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:class="${customerNote.priorityClass}"
+                                                th:each="customerNote:${findAllIncompleteCustomerNotesByTaggedUser}"
+                                                th:if="${customerNote.priority == 'LOW'} and ${customerNote.quickWin == false}">
+                                                <td>
+                                                    <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerNote.customer.id}, noteId = ${customerNote.id})}">
+                                                        <span th:text="${customerNote.subject}"></span>
+                                                    </a>
+                                                </td>
+                                                <td th:class="${customerNote.priorityClass}"
+                                                    th:text="${customerNote.dueByDate != null} ? ${#dates.format(customerNote.dueByDate, 'dd/MM/yyyy')}">
+                                                    Due By Date
+                                                </td>
+                                            </tr>
+                                            <tr th:class="${customerChildNote.priorityClass}"
+                                                th:each="customerChildNote:${findAllIncompleteCustomerChildNotesByTaggedUser}"
+                                                th:if="${customerChildNote.replyPriority == 'LOW'} and ${customerChildNote.quickWin == false}">
+                                                <td>
+                                                    <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerChildNote.customer.id}, noteId = ${customerChildNote.customerNote.id}, childNoteId = ${customerChildNote.id})}">
+                                                        <span th:text="${customerChildNote.customerNote.subject}"></span>
+                                                    </a>
+                                                </td>
+                                                <td th:class="${customerChildNote.priorityClass}"
+                                                    th:text="${customerChildNote.replyDueByDate != null} ? ${#dates.format(customerChildNote.replyDueByDate, 'dd/MM/yyyy')}">
+                                                    Due By Date
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
-                    <div id="menu1" class="tab-pane fade">
-                        <h3>Menu 1</h3>
-                        <p>Some content in menu 1.</p>
-                    </div>
-                    <div id="menu2" class="tab-pane fade">
-                        <h3>Menu 2</h3>
-                        <p>Some content in menu 2.</p>
-                    </div>
+
                 </div>
-                    <h4>Available Command</h4>
-                    <button class="btn btn-warning" data-target="#createNewNote" data-toggle="modal">Create New Note</button>
+                <h4>Available Command</h4>
+                <button class="btn btn-warning" data-target="#createNewNote" data-toggle="modal">Create New Note
+                </button>
                 <br></br>
                 <!--                <ul class="nav nav-tabs">
                                     <li class="list-inline-item"><a href="#myTaskworkFlow" data-toggle="tab">My tasks WorkFlow</a>
@@ -1393,21 +825,24 @@
                 <div class="modal-body">
 
                     <form class="form-horizontal" method="post" role="form" th:action="@{/customerNote}">
-<!--                        <input id="customer" name="customer" th:value="${customer.id}" type="hidden"/>-->
+                        <!--                        <input id="customer" name="customer" th:value="${customer.id}" type="hidden"/>-->
                         <div class="form-group">
                             <div class="col-md-6">
-                                <input class="form-control input-sm" id="subject" name="subject" placeholder="Subject" required="required" type="text"/>
+                                <input class="form-control input-sm" id="subject" name="subject" placeholder="Subject"
+                                       required="required" type="text"/>
                             </div>
                             <div class="col-md-6">
                                 <select class="form-control input-sm" id="taggedUser" name="taggedUser">
                                     <option value="">Tagged User</option>
-                                    <option th:each="u:${users}" th:text="${u.firstName}+' '+${u.lastName}" th:value="${u.id}"></option>
+                                    <option th:each="u:${users}" th:text="${u.firstName}+' '+${u.lastName}"
+                                            th:value="${u.id}"></option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-12">
-                                        <textarea class="form-control input-sm" cols="100" id="note" name="note" placeholder="Enter note here" required="required"
+                                        <textarea class="form-control input-sm" cols="100" id="note" name="note"
+                                                  placeholder="Enter note here" required="required"
                                                   rows="5"></textarea>
                             </div>
                         </div>
@@ -1416,8 +851,10 @@
                                 <label class="small">Completed: <input id="completed" name="completed" type="checkbox"/></label>
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control input-sm" id="altDueByDate" name="altDueByDate" placeholder="Due by Date" readonly="readonly"
-                                       th:value="*{dueByDate != null} ? *{#dates.format(dueByDate, 'dd/MM/yyyy')}" type="text"/>
+                                <input class="form-control input-sm" id="altDueByDate" name="altDueByDate"
+                                       placeholder="Due by Date" readonly="readonly"
+                                       th:value="*{dueByDate != null} ? *{#dates.format(dueByDate, 'dd/MM/yyyy')}"
+                                       type="text"/>
                                 <input id="dueByDate" name="dueByDate" th:value="*{dueByDate}" type="hidden"/>
                             </div>
                             <div class="col-md-3">
@@ -1484,8 +921,14 @@
 
 $('#myTab').on('click', function (event) {
   document.getElementById('output').innerHTML = event.target.id;
-})
+});
 
+$('#myTabs a').click(function (e) {
+  e.preventDefault();
+  $('.tasksWorkflows').tab('show');
+  document.getElementById('output').innerHTML = $('.tasksWorkflows')[0].innerHTML;
+  console.log($('.tasksWorkflows')[0].innerHTML);
+});
 
 
 </script>

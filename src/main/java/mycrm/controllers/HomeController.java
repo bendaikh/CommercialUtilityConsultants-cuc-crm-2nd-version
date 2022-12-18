@@ -1,6 +1,7 @@
 package mycrm.controllers;
 
 import mycrm.functions.UserHelper;
+import mycrm.models.CustomerSearch;
 import mycrm.models.User;
 import mycrm.services.*;
 import org.apache.logging.log4j.LogManager;
@@ -59,6 +60,7 @@ public class HomeController {
 		model.addAttribute("myCallbacks", myService.getMyTodaysCallbacks());
 		User user = userHelper.getLoggedInUser();
 		List<User> adminStaff = userService.findAllAdmin();
+		CustomerSearch customerSearch = new CustomerSearch();
 
 		if (user.isAdmin()) {
 			model.addAttribute("findAllIncompleteCustomerNotesByTaggedUser", customerNoteService.findAllIncompleteByAdminOrderByDueDateAsc(adminStaff));
@@ -68,6 +70,7 @@ public class HomeController {
 			model.addAttribute("findAllIncompleteCustomerChildNotesByTaggedUser", customerChildNoteService.findAllIncompleteByTaggedUserOrderByDueDateAsc(user));
 		}
 
+		model.addAttribute("customerSearch", customerSearch);
 		model.addAttribute("users", userService.findAll());
 		model.addAttribute("findAllBrokerNotesByUser", brokerNoteService.findAllIncompleteBrokerNotesByTaggedUser(user));
 		model.addAttribute("findAllAdminContractNewSalesTasks", adminContractTaskService.findAllAdminContractNewSalesTasks());
