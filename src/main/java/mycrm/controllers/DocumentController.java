@@ -130,7 +130,6 @@ public class DocumentController {
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
     public String uploadFile(@RequestParam("uploadfile") MultipartFile uploadfile, Document document)
             throws IOException {
-
         documentService.storeFile(uploadfile, document);
 
         return "redirect:/admin/customer/customerdocuments/" + document.getCustomer().getId();

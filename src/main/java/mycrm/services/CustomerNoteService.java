@@ -45,6 +45,15 @@ public interface CustomerNoteService {
     List<CustomerNote> findByUtilityContractOrderByDateCreatedDesc(UtilityContract utilityContract);
 
     List<CustomerNote> findByMerchantServicesContractOrderByDateCreatedDesc(MerchantServicesContract merchantServicesContract);
+
+    List<CustomerNote> findBySolarContractOrderByDateCreatedDesc(SolarContract solarContract);
+
+    List<CustomerNote> findByWaterContractOrderByDateCreatedDesc(WaterContract waterContract);
+
+    List<CustomerNote> findByVoipContractOrderByDateCreatedDesc(VoipContract voipContract);
+    List<CustomerNote> findByBroadbandContractOrderByDateCreatedDesc(BroadbandContract broadbandContract);
+    List<CustomerNote> findByLandlineContractOrderByDateCreatedDesc(LandlineContract landlineContract);
+    List<CustomerNote> findByMobileContractOrderByDateCreatedDesc(MobileContract mobileContract);
     int countTaggedNotesByUser(User user);
 
     List<CustomerNote> findByTaggedUser(User user);
