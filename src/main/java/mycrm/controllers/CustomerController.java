@@ -24,15 +24,15 @@ import mycrm.services.SupplierService;
 import mycrm.services.TpsCheckService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -132,12 +132,25 @@ public class CustomerController {
         long timeTaken = (endTime - startTime);
 
         model.addAttribute("searchResults", customerSearchResult.getReturnedCustomers());
+        System.out.println(customerSearch);
+        System.out.println(customerSearchResult.getReturnedCustomers());
         model.addAttribute("totalResults", customerSearchResult.getReturnedCustomerCount());
         model.addAttribute("totalPages", customerSearchResult.getTotalPages());
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("totalCustomers", customerSearchResult.getTotalCustomerCount());
         model.addAttribute("timeTaken", timeTaken);
         return "admin/customer/customers";
+    }
+
+    @RequestMapping("/customerSearching")
+    @ResponseBody
+    public String customersSearching(CustomerSearch customerSearch, Model model) throws Exception{
+
+        CustomerSearchResult customerSearchResult = customerSearchService.searchCustomers(customerSearch, 1);
+        model.addAttribute("searchResults", customerSearchResult.getReturnedCustomers());
+        String jsonStr = JSONArray.toJSONString(customerSearchResult.getReturnedCustomers());
+        System.out.println(customerSearchResult.getReturnedCustomers());
+        return jsonStr;
     }
 
     // view customer
