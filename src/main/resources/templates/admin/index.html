@@ -35,6 +35,7 @@
         </div>
     </nav>
 </div>
+
 <div class="container-fluid">
     <div class="panel-group">
         <div class="panel panel-default">
@@ -113,7 +114,7 @@
             </div>
             <div class="col-md-4">
 
-                    <form id="customerSearchSubmitEle" method="get" th:object="${customerSearch}" class="form-horizontal" onsubmit="submitForm(event)">
+                    <form th:action="@{/customerSearching}" id="customerSearchSubmitEle" method="get" th:object="${customerSearch}" class="form-horizontal" onsubmit="submitForm(event)">
                         <div class="input-group">
                         <input type="search" class="form-control" th:field="*{q}"
                                placeholder="search by name, address, postcode"/>
@@ -124,14 +125,49 @@
                     </span>
                         </div>
                     </form>
-
             </div>
         </div>
         <div class="row">
             <div class="col-md-8">
-                <div class="tab-content ">
+                <div class="tab-content">
                     <div class="tab-pane active" id="site2">
-                        <h3>site 2</h3>
+                        <div class="row">
+
+                            <div class="col-md-6" style="margin-top:20px;">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        Customer Details
+                                    </div>
+                                    <div class="panel-footer">Panel footer</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="margin-top:20px;">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        Recent Bills
+                                    </div>
+                                    <div class="panel-footer">Panel footer</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        Associated Accounts
+                                    </div>
+                                    <div class="panel-footer">Panel footer</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        Current Contract
+                                    </div>
+                                    <div class="panel-footer">Panel footer</div>
+                                </div>
+                            </div>
+
+                        </div>
+
                     </div>
                     <div class="tab-pane" id="contracts2">
                         <h3>Standard tab panel created on bootstrap using nav-tabs</h3>
@@ -146,29 +182,87 @@
                         <h3>Standard tab panel created on bootstrap using nav-tabs</h3>
                     </div>
                     <div class="tab-pane" id="results2">
-                        <div id="myLink"></div>
-                        <table class="table table-striped table-hover table-condensed" id="myTable">
-                            <thead>
-                            <tr>
-                                <th>Customer Reference</th>
-                                <th>Business Name</th>
-                                <th>Business Address</th>
-                                <th>Business Address 1</th>
-                                <th>Business City</th>
-                                <th>Post Code</th>
-                                <th>Contact Number</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Email</th>
-                                <th>Date Created</th>
-                                <th>Do Not Contact</th>
-                                <th>&nbsp;</th>
-                            </tr>
-                            </thead>
-                            <tbody>
+                        <div class="row">
+                            <!--<div class="col-md-8">
+                                <table class="table table-striped table-hover table-condensed" id="myTable">
+                                    <thead>
+                                    <tr>
+                                        <th>Customer Reference</th>
+                                        <th>Business Name</th>
+                                        <th>Business Address</th>
+                                        <th>Business Address 1</th>
+                                        <th>Business City</th>
+                                        <th>Post Code</th>
+                                        <th>Contact Number</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email</th>
+                                        <th>Date Created</th>
+                                        <th>Do Not Contact</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="customer : ${searchResults}" th:classappend="${customer.doNotContact == true} ? text-muted : text-success">
+                                        <td><a th:href="@{/admin/customer/view/{id}/(id=${customer.id})}" th:text="${customer.customerReference}">Customer Reference</a></td>
+                                        <td><a th:href="@{/admin/customer/view/{id}/(id=${customer.id})}" th:text="${customer.businessName}">Business Name</a></td>
+                                        <td th:text="${customer.businessAddr}">Business Addr</td>
+                                        <td th:text="${customer.businessAddr1}">Business Addr1</td>
+                                        <td th:text="${customer.businessCity}">Business City</td>
+                                        <td class="text-nowrap" th:text="${customer.businessPostcodeOut} +' '+${customer.businessPostcodeIn}">Post Code</td>
+                                        <td class="text-nowrap" th:text="${customer.contactNumber}">Contact Number</td>
+                                        <td th:text="${customer.firstName}">First Name</td>
+                                        <td th:text="${customer.lastName}">Last Name</td>
+                                        <td th:text="${customer.emailAddress}">Email</td>
+                                        <td th:text="${#dates.format(customer.dateCreated, 'dd/MM/yyyy')}">Date Created</td>
+                                        <td th:text="${customer.doNotContact}">Do Not Contact</td>
+                                        <td class="text-nowrap"><a th:href="@{/admin/customer/view/{id}/(id=${customer.id})}">View Customer</a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-4"></div>-->
 
-                            </tbody>
-                        </table>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Customer Reference</th>
+                                        <th>Business Name</th>
+                                        <th>Business Address</th>
+                                        <th>Business Address 1</th>
+                                        <th>Business City</th>
+                                        <th>Post Code</th>
+                                        <th>Contact Number</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email</th>
+                                        <th>Date Created</th>
+                                        <th>Do Not Contact</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="customer : ${searchResults}" th:classappend="${customer.doNotContact == true} ? text-muted : text-success">
+                                        <td><a th:href="@{/admin/customer/view/{id}/(id=${customer.id})}" th:text="${customer.customerReference}">Customer Reference</a></td>
+                                        <td><a th:href="@{/admin/customer/view/{id}/(id=${customer.id})}" th:text="${customer.businessName}">Business Name</a></td>
+                                        <td th:text="${customer.businessAddr}">Business Addr</td>
+                                        <td th:text="${customer.businessAddr1}">Business Addr1</td>
+                                        <td th:text="${customer.businessCity}">Business City</td>
+                                        <td class="text-nowrap" th:text="${customer.businessPostcodeOut} +' '+${customer.businessPostcodeIn}">Post Code</td>
+                                        <td class="text-nowrap" th:text="${customer.contactNumber}">Contact Number</td>
+                                        <td th:text="${customer.firstName}">First Name</td>
+                                        <td th:text="${customer.lastName}">Last Name</td>
+                                        <td th:text="${customer.emailAddress}">Email</td>
+                                        <td th:text="${#dates.format(customer.dateCreated, 'dd/MM/yyyy')}">Date Created</td>
+                                        <td th:text="${customer.doNotContact}">Do Not Contact</td>
+                                        <td class="text-nowrap"><a th:href="@{/admin/customer/view/{id}/(id=${customer.id})}">View Customer</a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="tab-pane" id="accounts2">
                         <h3>Standard tab panel created on bootstrap using nav-tabs</h3>
@@ -962,12 +1056,12 @@ $('#myTabs a').click(function (e) {
   console.log($('.tasksWorkflows')[0].innerHTML);
 });
 
-function submitForm(event) {
+<!--function submitForm(event) {
     $.get('/customerSearching',$('#customerSearchSubmitEle').serialize(),function(data){
-    console.log(typeof data)
+    console.log(data);
     });
     event.preventDefault();
-    }
+    }-->
 
 </script>
 

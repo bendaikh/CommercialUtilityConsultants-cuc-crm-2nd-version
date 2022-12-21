@@ -1,15 +1,6 @@
 package mycrm.controllers;
 
-import mycrm.models.BillingDetail;
-import mycrm.models.Contact;
-import mycrm.models.ContractSearch;
-import mycrm.models.ContractSearchResult;
-import mycrm.models.Customer;
-import mycrm.models.CustomerSearch;
-import mycrm.models.CustomerSearchResult;
-import mycrm.models.DoNotContactNumber;
-import mycrm.models.EmailHistory;
-import mycrm.models.TpsContact;
+import mycrm.models.*;
 import mycrm.search.ContractSearchService;
 import mycrm.search.CustomerSearchService;
 import mycrm.services.BrokerService;
@@ -33,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -143,14 +135,10 @@ public class CustomerController {
     }
 
     @RequestMapping("/customerSearching")
-    @ResponseBody
     public String customersSearching(CustomerSearch customerSearch, Model model) throws Exception{
-
-        CustomerSearchResult customerSearchResult = customerSearchService.searchCustomers(customerSearch, 1);
-        model.addAttribute("searchResults", customerSearchResult.getReturnedCustomers());
-        String jsonStr = JSONArray.toJSONString(customerSearchResult.getReturnedCustomers());
-        System.out.println(customerSearchResult.getReturnedCustomers());
-        return jsonStr;
+        List<Customer> customerSearchResult = customerService.findByAllColumns(customerSearch.getQ());
+        model.addAttribute("searchResults", customerSearchResult);
+        return "admin/index";
     }
 
     // view customer
