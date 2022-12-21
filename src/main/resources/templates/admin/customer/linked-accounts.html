@@ -16,13 +16,28 @@
   <tbody>
   <tr th:each="linkedAccount: ${linkedAccounts}">
     <td>
-      <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.customer.id})}" th:if="${customer.id != linkedAccount.customer.id}"
+<!--      <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.customer.id})}" th:if="${customer.id != linkedAccount.customer.id}"
          th:text="${linkedAccount.customer.customerReference}+' - '">
+        Customer Reference
+      </a>-->
+<!--      <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.customer.id})}" th:if="${customerVar == linkedAccount.customer.id and customer.id != linkedAccount.customer.id}"
+         th:text="${linkedAccount.customer.customerReference}+' - '">
+        Customer Reference
+      </a>
+      <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.linkedCustomer.id})}" th:if="${customerVar == linkedAccount.linkedCustomer.id and customer.id != linkedAccount.customer.id}"
+         th:text="${linkedAccount.linkedCustomer.customerReference}+' - '">
         Customer Reference
       </a>
       <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.customer.id})}" th:if="${customer.id != linkedAccount.customer.id}"
          th:text="${linkedAccount.customer.businessName}">Business Name
-      </a>
+      </a>-->
+        <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.customer.id})}" th:if="${customer.id == linkedAccount.linkedCustomer.id}"
+           th:text="${linkedAccount.customer.customerReference} + ' -  '">
+            Customer Reference
+        </a>
+        <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.customer.id})}" th:if="${customer.id == linkedAccount.linkedCustomer.id}"
+           th:text="${linkedAccount.customer.businessName}">Business Name
+        </a>
       <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.linkedCustomer.id})}" th:if="${customer.id == linkedAccount.customer.id}"
          th:text="${linkedAccount.linkedCustomer.customerReference} + ' -  '">
         Customer Reference
@@ -30,6 +45,25 @@
       <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.linkedCustomer.id})}" th:if="${customer.id == linkedAccount.customer.id}"
          th:text="${linkedAccount.linkedCustomer.businessName}">Business Name
       </a>
+        <div th:if="${customer.id != linkedAccount.customer.id and customer.id != linkedAccount.linkedCustomer.id}">
+
+            <a      th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.linkedCustomer.id})}"
+                    th:if="${customerVar == linkedAccount.customer.id }" th:text="${linkedAccount.linkedCustomer.customerReference}">
+                Customer Reference
+            </a>
+            <a      th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.linkedCustomer.id})}"
+                    th:if="${customerVar == linkedAccount.customer.id }" th:text="${linkedAccount.linkedCustomer.businessName}">
+                Business Name
+            </a>
+            <a      th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.customer.id})}"
+                    th:if="${linkedAccount.linkedCustomer.id == customerVar}" th:text="${linkedAccount.customer.customerReference}">
+                Customer Reference
+            </a>
+            <a      th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.customer.id})}"
+                    th:if="${linkedAccount.linkedCustomer.id == customerVar}" th:text="${linkedAccount.customer.businessName}">
+                Business Name
+            </a>
+        </div>
     </td>
     <td>
       <span th:if="${customer.id != linkedAccount.customer.id}" th:text="${linkedAccount.customer.fullBusinessNameAndAddress}"/>

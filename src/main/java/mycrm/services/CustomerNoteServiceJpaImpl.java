@@ -133,6 +133,36 @@ public class CustomerNoteServiceJpaImpl implements CustomerNoteService {
     }
 
     @Override
+    public List<CustomerNote> findBySolarContractOrderByDateCreatedDesc(SolarContract solarContract) {
+        return this.customerNotesRepo.findBySolarContractOrderByDateCreatedDesc(solarContract);
+    }
+
+    @Override
+    public List<CustomerNote> findByVoipContractOrderByDateCreatedDesc(VoipContract voipContract) {
+        return this.customerNotesRepo.findByVoipContractOrderByDateCreatedDesc(voipContract);
+    }
+
+    @Override
+    public List<CustomerNote> findByBroadbandContractOrderByDateCreatedDesc(BroadbandContract broadbandContract) {
+        return this.customerNotesRepo.findByBroadbandContractOrderByDateCreatedDesc(broadbandContract);
+    }
+
+    @Override
+    public List<CustomerNote> findByLandlineContractOrderByDateCreatedDesc(LandlineContract landlineContract) {
+        return this.customerNotesRepo.findByLandlineContractOrderByDateCreatedDesc(landlineContract);
+    }
+
+    @Override
+    public List<CustomerNote> findByMobileContractOrderByDateCreatedDesc(MobileContract mobileContract) {
+        return this.customerNotesRepo.findByMobileContractOrderByDateCreatedDesc(mobileContract);
+    }
+
+    @Override
+    public List<CustomerNote> findByWaterContractOrderByDateCreatedDesc(WaterContract waterContract) {
+        return this.customerNotesRepo.findByWaterContractOrderByDateCreatedDesc(waterContract);
+    }
+
+    @Override
     public int countTaggedNotesByUser(User user) {
         return this.customerNotesRepo.countTaggedNotesByUser(user);
     }
