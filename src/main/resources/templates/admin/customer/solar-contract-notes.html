@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <div class="container">
-  <div class="media" th:each="note:${merchantServiceContractNotes}">
+  <div class="media" th:each="note:${solarContractNotes}">
     <a class="pull-left" href="#">
       <img class="media-object" src="/images/av.png" style="width:40px"/>
       <br/>
@@ -11,7 +11,7 @@
     <div class="media-body">
       <h4 class="media-heading">
         <span th:text="${note.subject}">Subject</span>
-        <small>/addSolarChildNote
+        <small>
           <i th:text="'Posted on '+ ${#dates.format(note.dateCreated, 'dd/MM/yyyy HH:mm:ss')} +' by'">Date Created</i>
           <strong><i th:text="${note.createdBy.firstName}+ ' ' +${note.createdBy.lastName}">Created By</i></strong>
           <i th:text="'|| Modified on '+ ${#dates.format(note.lastModifiedDate, 'dd/MM/yyyy HH:mm:ss')} +' by'">Last Modified Date</i>
@@ -92,7 +92,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <form class="form-horizontal" method="post" role="form" th:action="@{/addMerchantServiceChildNote}">
+                  <form class="form-horizontal" method="post" role="form" th:action="@{/addSolarChildNote}">
                     <input id="customer" name="customer" th:value="${note.customer.id}" type="hidden"/>
                     <input id="customerNote" name="customerNote" th:value="${note.id}" type="hidden"/>
                     <div class="form-group-sm">

@@ -6,7 +6,9 @@ import mycrm.models.Customer;
 import java.util.List;
 
 public interface CustomerService {
-    
+
+
+    List<Customer> findByAllColumns(String inputString);
     List<Customer> findAll();
 
     List<Customer> findLatest5();

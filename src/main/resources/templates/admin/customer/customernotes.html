@@ -182,6 +182,7 @@
           <p class="text-success" th:inline="text">
             <strong>[[${#strings.abbreviate(cn.note, 150)}]]</strong>
           <div class="pull-right">
+            <button class="btn btn-info btn-xs" th:if="${cn.completed} == false" th:onclick="'simulateClick(\'' + ${cn.id} + '\');'">Mark as complete</button>
             <a class="btn btn-info btn-xs" th:href="@{/admin/customer/editcustomernote/{id}(id=${cn.id})}">Edit</a>
             <button class="btn btn-danger btn-xs" data-toggle="modal" sec:authorize="hasAuthority('SUPERADMIN')"
                     th:attr="data-target='#delete_'+${cn.id}"
@@ -261,6 +262,7 @@
                             </p>
                             <p class="text-success" th:inline="text">[[${childNoteItem.message}]]</p>
                             <div class="pull-right">
+                              <button class="btn btn-info btn-xs" th:onclick="'simulateChildClick(\'' + ${childNoteItem.id} + '\');'" th:if="${childNoteItem.replyCompleted} == false">Mark as complete</button>
                               <a class="btn btn-info btn-xs" th:href="@{/admin/customer/editcustomerchildnote/{id}(id=${childNoteItem.id})}">Edit
                               </a> &nbsp;
                               <button class="btn btn-danger btn-xs pull-right"
@@ -446,6 +448,24 @@ $(document).ready(function() {
 
 });
 
+function simulateClick(id) {
+
+  console.log(id);
+
+      $.post('/editcustomernoteCompleted', {
+        id: id
+    }, function (data) {
+    location.reload();
+    });
+}
+
+function simulateChildClick(id) {
+      $.post('/editcustomerChildnoteCompleted', {
+        id: id
+    }, function (data) {
+    location.reload();
+    });
+}
 
 
 </script>

@@ -76,8 +76,74 @@ public class CustomerNote extends Auditable<User> {
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private MerchantServicesContract merchantServicesContract;
 
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    private SolarContract solarContract;
+
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    private WaterContract waterContract;
+
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    private VoipContract voipContract;
+
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    private LandlineContract landlineContract;
+
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    private BroadbandContract broadbandContract;
+
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    private MobileContract mobileContract;
+
+    public MobileContract getMobileContract() {
+        return mobileContract;
+    }
+
+    public void setMobileContract(MobileContract mobileContract) {
+        this.mobileContract = mobileContract;
+    }
+
+    public BroadbandContract getBroadbandContract() {
+        return broadbandContract;
+    }
+
+    public void setBroadbandContract(BroadbandContract broadbandContract) {
+        this.broadbandContract = broadbandContract;
+    }
+
+    public LandlineContract getLandlineContract() {
+        return landlineContract;
+    }
+
+    public void setLandlineContract(LandlineContract landlineContract) {
+        this.landlineContract = landlineContract;
+    }
+
+    public VoipContract getVoipContract() {
+        return voipContract;
+    }
+
+    public void setVoipContract(VoipContract voipContract) {
+        this.voipContract = voipContract;
+    }
+
+    public WaterContract getWaterContract() {
+        return waterContract;
+    }
+
+    public void setWaterContract(WaterContract waterContract) {
+        this.waterContract = waterContract;
+    }
+
     @OneToMany(mappedBy = "customerNote")
     List<CustomerChildNote> customerChildNoteList;
+
+    public SolarContract getSolarContract() {
+        return solarContract;
+    }
+
+    public void setSolarContract(SolarContract solarContract) {
+        this.solarContract = solarContract;
+    }
 
     public CustomerNote() {
     }
