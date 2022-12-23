@@ -5,16 +5,14 @@
 </head>
 
 <body>
-<!--<script th:inline="javascript">
-/*<![CDATA[*/
+<script th:inline="javascript">
 
-    var number2 = [[${hello}]];
-    var number = [[${searchResults}]];
-    console.log(number);
-    console.log(number2);
+    /*<![CDATA[*/
+    var message = /*[(${searchResults})]*/ 'default';
+    console.log(message);
+    /*]]>*/
 
-/*]]>*/
-</script>-->
+</script>
 <div th:replace="../static/fragments/layout :: header">
     <!-- ============================================================================ -->
     <!-- This content is only used for static prototyping purposes (natural templates)-->
@@ -104,7 +102,7 @@
                     </li>
                     <li><a href="#workflow2" data-toggle="tab" id="Workflow">WorkFlow</a>
                     </li>
-                    <li><a href="#results2" data-toggle="tab" id="Results">Results</a>
+                    <li><a href="#results2" data-toggle="tab" class="results2" id="Results">Results</a>
                     </li>
                     <li><a href="#accounts2" data-toggle="tab" id="Accounts">Accounts</a>
                     </li>
@@ -119,7 +117,7 @@
                         <input type="search" class="form-control" th:field="*{q}"
                                placeholder="search by name, address, postcode"/>
                         <span class="input-group-btn">
-                    <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"
+                    <button id="smit" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"
                                                                         aria-hidden="true">
                     </span> Search!</button>
                     </span>
@@ -1056,12 +1054,6 @@ $('#myTabs a').click(function (e) {
   console.log($('.tasksWorkflows')[0].innerHTML);
 });
 
-<!--function submitForm(event) {
-    $.get('/customerSearching',$('#customerSearchSubmitEle').serialize(),function(data){
-    console.log(data);
-    });
-    event.preventDefault();
-    }-->
 
 </script>
 
