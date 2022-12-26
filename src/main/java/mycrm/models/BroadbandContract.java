@@ -41,6 +41,9 @@ public class BroadbandContract extends Auditable<User>{
     @Column(nullable = false, length = 1)
     private boolean courtesyCall;
 
+    @Column(nullable = true)
+    private int contractMonthlyDuration;
+
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @IndexedEmbedded(depth = 2)
     private CustomerSite customerSite;
@@ -108,8 +111,18 @@ public class BroadbandContract extends Auditable<User>{
     @Column(nullable = false, length = 1)
     private boolean lostRenewal;
 
+
+
     public boolean isLostRenewal() {
         return lostRenewal;
+    }
+
+    public int getContractMonthlyDuration() {
+        return contractMonthlyDuration;
+    }
+
+    public void setContractMonthlyDuration(int contractMonthlyDuration) {
+        this.contractMonthlyDuration = contractMonthlyDuration;
     }
 
     public void setLostRenewal(boolean lostRenewal) {

@@ -1,286 +1,1389 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="../static/fragments/layout :: site-head">
-  <title>CEC Consultants - Broker Management System</title>
+    <title>CEC Consultants - Broker Management System</title>
 </head>
+
 <body>
 <div th:replace="../static/fragments/layout :: header">
-  <!-- ============================================================================ -->
-  <!-- This content is only used for static prototyping purposes (natural templates)-->
-  <!-- and is therefore entirely optional, as this markup fragment will be included -->
-  <!-- from "fragments/header.html" at runtime.                                     -->
-  <!-- ============================================================================ -->
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">CEC Consultants - Broker
-          Management System</a>
-      </div>
-      <ul class="nav navbar-nav">
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="/logout" th:href="@{/logout}">Logout</a></li>
-        </ul>
-      </ul>
-    </div>
-  </nav>
+    <!-- ============================================================================ -->
+    <!-- This content is only used for static prototyping purposes (natural templates)-->
+    <!-- and is therefore entirely optional, as this markup fragment will be included -->
+    <!-- from "fragments/header.html" at runtime.                                     -->
+    <!-- ============================================================================ -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">CEC Consultants - Broker
+                    Management System</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/logout" th:href="@{/logout}">Logout</a></li>
+                </ul>
+            </ul>
+        </div>
+    </nav>
 </div>
+
 <div class="container-fluid">
-  <div class="panel-group">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <a data-toggle="collapse" href="#collapse1"><span class="glyphicon glyphicon-star-empty"></span> What's new - June 2022<span
-              class="glyphicon glyphicon-star-empty"></span></a>
-        </h4>
-      </div>
-      <div class="panel-collapse collapse" id="collapse1">
-        <div class="panel-body">
-          <li><strong>Notes amended and Merchant Services Contract pages added</strong></li>
-          <li><strong>Add Merchant Contract for a customer site</strong></li>
-          <li><strong>Add a start and end date to a document</strong></li>
-          <li><strong>Search by MPR and MPAN Bottom Line added</strong></li>
-          <li><strong>Verbal log type and view added</strong></li>
-          <li><strong>Lost Renewal pages added</strong></li>
-          <li><strong>MPAN and MPR added to contracts pages</strong></li>
-          <li><strong>Lost Renewal option added</strong></li>
-          <li><strong>Is your tagged note a simple task? Check the 'Quick Win' box to let others know</strong></li>
-          <li><strong>New Do Not Renew options added</strong></li>
-          <li><strong>Document folder facility added</strong></li>
-          <li><strong>Added new log types and related to types</strong></li>
-          <li><strong>Transfer site from one customer to another in the Edit Site page</strong></li>
-          <li><strong>Callback Diary added to homepage and when selecting a callback time</strong></li>
-          <li><strong>Link Customer accounts from the Customer page</strong></li>
-          <li><strong>Customer Sites can be tagged as Domestic or Commercial.</strong></li>
-          <li><strong>Utility Contracts fed to New Sales for Welcome Packs, Processing workflow, terminations and objections</strong></li>
-          <li><strong>Add notes to Utility Contracts</strong></li>
-          <li><strong>View Utility contracts, renewals, callbacks and leads</strong></li>
-          <li><strong>When tagging yourself to a note, you won't receive an email :-) </strong></li>
-          <li><strong>You can now add more utility contracts - solar, broadband, water, mobile, telecoms and VOIP.</strong></li>
-          <li><strong>You can now add Direct Debit, Supplier Customer Reference Number, Meter Serial Number and SMART Meter data into a customer contract</strong></li>
-          <li><strong>Customers are sent a renewal email once despite having multiple contracts for renewal on the same day.</strong></li>
-          <li><strong>Can email different email addresses within the account.</strong></li>
-          <li><strong>The Welcome Letter has now moved to a pop up. You'll also find a new option here to send a renewal email to a customer's primary email
-            address</strong></li>
-          <li><strong>Customers are sent renewal emails 6 months before their contract ends. You can see which email's were sent to a customer under Email
-            History in the customer profile.</strong></li>
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#collapse1"><span class="glyphicon glyphicon-star-empty"></span>
+                        What's new - June 2022<span
+                                class="glyphicon glyphicon-star-empty"></span></a>
+                </h4>
+            </div>
+            <div class="panel-collapse collapse" id="collapse1">
+                <div class="panel-body">
+                    <li><strong>Notes amended and Merchant Services Contract pages added</strong></li>
+                    <li><strong>Add Merchant Contract for a customer site</strong></li>
+                    <li><strong>Add a start and end date to a document</strong></li>
+                    <li><strong>Search by MPR and MPAN Bottom Line added</strong></li>
+                    <li><strong>Verbal log type and view added</strong></li>
+                    <li><strong>Lost Renewal pages added</strong></li>
+                    <li><strong>MPAN and MPR added to contracts pages</strong></li>
+                    <li><strong>Lost Renewal option added</strong></li>
+                    <li><strong>Is your tagged note a simple task? Check the 'Quick Win' box to let others know</strong>
+                    </li>
+                    <li><strong>New Do Not Renew options added</strong></li>
+                    <li><strong>Document folder facility added</strong></li>
+                    <li><strong>Added new log types and related to types</strong></li>
+                    <li><strong>Transfer site from one customer to another in the Edit Site page</strong></li>
+                    <li><strong>Callback Diary added to homepage and when selecting a callback time</strong></li>
+                    <li><strong>Link Customer accounts from the Customer page</strong></li>
+                    <li><strong>Customer Sites can be tagged as Domestic or Commercial.</strong></li>
+                    <li><strong>Utility Contracts fed to New Sales for Welcome Packs, Processing workflow, terminations
+                        and objections</strong></li>
+                    <li><strong>Add notes to Utility Contracts</strong></li>
+                    <li><strong>View Utility contracts, renewals, callbacks and leads</strong></li>
+                    <li><strong>When tagging yourself to a note, you won't receive an email :-) </strong></li>
+                    <li><strong>You can now add more utility contracts - solar, broadband, water, mobile, telecoms and
+                        VOIP.</strong></li>
+                    <li><strong>You can now add Direct Debit, Supplier Customer Reference Number, Meter Serial Number
+                        and SMART Meter data into a customer contract</strong></li>
+                    <li><strong>Customers are sent a renewal email once despite having multiple contracts for renewal on
+                        the same day.</strong></li>
+                    <li><strong>Can email different email addresses within the account.</strong></li>
+                    <li><strong>The Welcome Letter has now moved to a pop up. You'll also find a new option here to send
+                        a renewal email to a customer's primary email
+                        address</strong></li>
+                    <li><strong>Customers are sent renewal emails 6 months before their contract ends. You can see which
+                        email's were sent to a customer under Email
+                        History in the customer profile.</strong></li>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+    <hr></hr>
+    <div class="container-fluid">
+        <h2 id="output"></h2>
+        <div class="row">
+            <div class="col-md-8">
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active">
+                        <a href="#site2" data-toggle="tab" id="Site">Site</a>
+                    </li>
+                    <li><a href="#contracts2" data-toggle="tab" id="Contracts">Contracts</a>
+                    </li>
+                    <li><a href="#meters2" data-toggle="tab" id="Meters">Meters</a>
+                    </li>
+                    <li><a href="#billing2" data-toggle="tab" id="Billing">Billing</a>
+                    </li>
+                    <li><a href="#workflow2" data-toggle="tab" id="Workflow">WorkFlow</a>
+                    </li>
+                    <li><a href="#results2" data-toggle="tab" class="results2" id="Results">Results</a>
+                    </li>
+                    <li><a href="#accounts2" data-toggle="tab" id="Accounts">Accounts</a>
+                    </li>
+                    <li><a data-toggle="tab" class="tasksWorkflows" id="Tasks WorkFlows">Tasks WorkFlow</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-4">
 
-  <div class="row">
-    <div class="col-md-8">
+                    <form th:action="@{/customerSearching}" id="customerSearchSubmitEle" method="get" th:object="${customerSearch}" class="form-horizontal" onsubmit="submitForm(event)">
+                        <div class="input-group">
+                        <input type="search" class="form-control" th:field="*{q}"
+                               placeholder="search by name, address,business name"/>
+                        <span class="input-group-btn">
+                    <button id="smit" class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"
+                                                                        aria-hidden="true">
+                    </span> Search!</button>
+                    </span>
+                        </div>
+                    </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="site2">
+                        <div class="row">
 
-      <div class="col-md-4">
-        <div class="panel panel-info">
-          <div class="panel-heading">Customers</div>
-          <div class="panel-body">
-            <ul>
-              <li sec:authorize="!hasAnyAuthority('EXTERNAL_BROKER')"><a href="/admin/customer/customers/1">Customers List</a></li>
-              <li><a href="/admin/customer/mycustomers">My Customers</a></li>
-              <li><a href="/admin/customer/newcustomer">Create New
-                Customers</a></li>
-            </ul>
-          </div>
+                            <div class="col-md-6" style="margin-top:20px;">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        Customer Details
+                                    </div>
+                                    <div class="panel-footer">
+                                        <table class="table table-condensed table-striped table-hover" th:if="${customer}">
+                                            <tbody>
+                                            <tr>
+                                                <td colspan="2"><span class="label label-success" th:if="${customer.soleTrader}">SOLE TRADER</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Customer Reference</td>
+                                                <td class="bold-text" th:text="${customer.customerReference}">Customer Reference</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Business Name</td>
+                                                <td class="bold-text" th:text="${customer.businessName}">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Address</td>
+                                                <td class="bold-text" th:text="${customer.businessAddr}">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>&nbsp;</td>
+                                                <td class="bold-text" th:text="${customer.businessAddr1}">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>City</td>
+                                                <td class="bold-text" th:text="${customer.businessCity}">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Postcode</td>
+                                                <td class="bold-text" th:text="${customer.businessPostcodeOut} + ' ' +${customer.businessPostcodeIn}">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>LTD Reg No</td>
+                                                <td class="bold-text" th:text="${customer.ltdRegNo}">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Web Address</td>
+                                                <td class="bold-text"><span th:text="${customer.webAddress}"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Name</td>
+                                                <td class="bold-text" th:text="${customer.firstName} + ' ' +${customer.lastName}">customer Name</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Address</td>
+                                                <td class="bold-text"><span th:text="${customer.stAddr}"></span> <br/> <span th:text="${customer.stAddr1}"></span> <br/> <span
+                                                        th:text="${customer.stCity}"></span> <br/> <span th:text="${customer.stPostcodeOut}"></span> <span
+                                                        th:text="${customer.stPostcodeIn}"></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Date Of Birth</td>
+                                                <td class="bold-text"><span th:text="${customer.dob != null} ? ${#dates.format(customer.dob, 'dd/MM/yyyy')}"></span></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="margin-top:20px;">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        Recent Bills
+                                    </div>
+                                    <div class="panel-footer">Panel footer</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        Associated Accounts
+                                    </div>
+                                    <div class="panel-footer">
+                                        <table class="table table-hover table-condensed small table-striped" th:if="${linkedAccounts}">
+                                            <thead>
+                                            <tr>
+                                                <th>Linked Customer</th>
+                                                <th>Address</th>
+                                                <th>Created By</th>
+                                                <th>Created Date</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="linkedAccount: ${linkedAccounts}">
+                                                <td>
+                                                    <!--      <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.customer.id})}" th:if="${customer.id != linkedAccount.customer.id}"
+                                                             th:text="${linkedAccount.customer.customerReference}+' - '">
+                                                            Customer Reference
+                                                          </a>-->
+                                                    <!--      <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.customer.id})}" th:if="${customerVar == linkedAccount.customer.id and customer.id != linkedAccount.customer.id}"
+                                                             th:text="${linkedAccount.customer.customerReference}+' - '">
+                                                            Customer Reference
+                                                          </a>
+                                                          <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.linkedCustomer.id})}" th:if="${customerVar == linkedAccount.linkedCustomer.id and customer.id != linkedAccount.customer.id}"
+                                                             th:text="${linkedAccount.linkedCustomer.customerReference}+' - '">
+                                                            Customer Reference
+                                                          </a>
+                                                          <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.customer.id})}" th:if="${customer.id != linkedAccount.customer.id}"
+                                                             th:text="${linkedAccount.customer.businessName}">Business Name
+                                                          </a>-->
+                                                    <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.customer.id})}" th:if="${customer.id == linkedAccount.linkedCustomer.id}"
+                                                       th:text="${linkedAccount.customer.customerReference} + ' -  '">
+                                                        Customer Reference
+                                                    </a>
+                                                    <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.customer.id})}" th:if="${customer.id == linkedAccount.linkedCustomer.id}"
+                                                       th:text="${linkedAccount.customer.businessName}">Business Name
+                                                    </a>
+                                                    <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.linkedCustomer.id})}" th:if="${customer.id == linkedAccount.customer.id}"
+                                                       th:text="${linkedAccount.linkedCustomer.customerReference} + ' -  '">
+                                                        Customer Reference
+                                                    </a>
+                                                    <a th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.linkedCustomer.id})}" th:if="${customer.id == linkedAccount.customer.id}"
+                                                       th:text="${linkedAccount.linkedCustomer.businessName}">Business Name
+                                                    </a>
+                                                    <div th:if="${customer.id != linkedAccount.customer.id and customer.id != linkedAccount.linkedCustomer.id}">
+
+                                                        <a      th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.linkedCustomer.id})}"
+                                                                th:if="${customerVar == linkedAccount.customer.id }" th:text="${linkedAccount.linkedCustomer.customerReference}">
+                                                            Customer Reference
+                                                        </a>
+                                                        <a      th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.linkedCustomer.id})}"
+                                                                th:if="${customerVar == linkedAccount.customer.id }" th:text="${linkedAccount.linkedCustomer.businessName}">
+                                                            Business Name
+                                                        </a>
+                                                        <a      th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.customer.id})}"
+                                                                th:if="${linkedAccount.linkedCustomer.id == customerVar}" th:text="${linkedAccount.customer.customerReference}">
+                                                            Customer Reference
+                                                        </a>
+                                                        <a      th:href="@{/admin/customer/view/{id}/(id=${linkedAccount.customer.id})}"
+                                                                th:if="${linkedAccount.linkedCustomer.id == customerVar}" th:text="${linkedAccount.customer.businessName}">
+                                                            Business Name
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span th:if="${customer.id != linkedAccount.customer.id}" th:text="${linkedAccount.customer.fullBusinessNameAndAddress}"/>
+                                                    <span th:if="${customer.id == linkedAccount.customer.id}" th:text="${linkedAccount.linkedCustomer.fullBusinessNameAndAddress}"/>
+                                                </td>
+                                                <td th:text="${linkedAccount.createdBy.firstName}+' '+${linkedAccount.createdBy.lastName}"></td>
+                                                <td th:text="${#dates.format(linkedAccount.dateCreated, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        Current Contract
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div th:if="${customerSitesWithContracts}" th:each="cs, row :${customerSitesWithContracts}">
+                                                <div class="btn-group-vertical">
+                                                    <div class="btn-group-horizontal">
+                                                        <button class="btn btn-info btn-xs"
+                                                                data-toggle="modal"
+                                                                th:attr="data-gas-contract=''+${cs.gasContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                                                                th:disabled="!${cs.gasContract}"
+                                                                title="GAS">
+                                                            <span class="glyphicon glyphicon-fire"></span>
+
+                                                            <!--                        <span th:if="${cs.gasContract}" -->
+                                                            <!--                              th:text="${cs.gasContract.supplyType}"></span>-->
+
+                                                            <!--                        <span class="glyphicon glyphicon-star"-->
+                                                            <!--                              th:if="${cs.gasContract?.current == true}"-->
+                                                            <!--                              title="Current Contract"></span>-->
+                                                        </button>
+                                                        <button class="btn btn-xs btn-default"
+                                                                data-toggle="modal"
+                                                                th:attr="data-gas-contract-comm=''+${cs.gasContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                                                                th:disabled="!${cs.gasContract}">
+                                                            <span class="glyphicon glyphicon-send" title="Gas Comms"></span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="btn-group-horizontal">
+                                                        <button class="btn btn-info btn-xs"
+                                                                data-toggle="modal"
+                                                                th:attr="data-electric-contract=''+${cs.electricContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                                                                th:disabled="!${cs.electricContract}"
+                                                                title="ELECTRIC">
+                                                            <span class="glyphicon glyphicon-flash"></span>
+
+                                                            <!--                        <span th:if="${cs.electricContract}"-->
+                                                            <!--                              th:text="${cs.electricContract.supplyType}"></span>-->
+
+                                                            <!--                        <span class="glyphicon glyphicon-star"-->
+                                                            <!--                              th:if="${cs.electricContract?.current == true}"-->
+                                                            <!--                              title="Current Contract"></span>-->
+
+                                                        </button>
+                                                        <button class="btn btn-xs btn-default"
+                                                                data-toggle="modal"
+                                                                th:attr="data-electric-contract-comm=''+${cs.electricContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                                                                th:disabled="!${cs.electricContract}">
+                                                            <span class="glyphicon glyphicon-send" title="Electric Comms"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="btn-group-vertical">
+                                                    <button class="btn btn-primary btn-xs"
+                                                            data-toggle="modal"
+                                                            th:attr="data-utility-contract=''+${cs.solarContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                                                            th:disabled="!${cs.solarContract}"
+                                                            title="SOLAR">
+                                                        <span class="glyphicon glyphicon-leaf"></span>
+
+                                                        <!--                        <span th:if="${cs.solarContract}"-->
+                                                        <!--                              th:text="${cs.solarContract.utilityType}"></span>-->
+
+                                                        <!--                        <span class="glyphicon glyphicon-star"-->
+                                                        <!--                              th:if="${cs.solarContract?.current == true}"-->
+                                                        <!--                              title="Current Contract"></span>-->
+                                                    </button>
+                                                    <button class="btn btn-primary btn-xs"
+                                                            data-toggle="modal"
+                                                            th:attr="data-utility-contract=''+${cs.waterContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                                                            th:disabled="!${cs.waterContract}"
+                                                            title="WATER">
+                                                        <span class="glyphicon glyphicon-cloud"></span>
+
+                                                        <!--                        <span th:if="${cs.waterContract}"-->
+                                                        <!--                              th:text="${cs.waterContract.utilityType}"></span>-->
+
+                                                        <!--                        <span class="glyphicon glyphicon-star"-->
+                                                        <!--                              th:if="${cs.waterContract?.current == true}"-->
+                                                        <!--                              title="Current Contract"></span>-->
+                                                    </button>
+                                                </div>
+                                                <div class="btn-group-vertical">
+                                                    <button class="btn btn-success btn-xs"
+                                                            data-toggle="modal"
+                                                            th:attr="data-utility-contract=''+${cs.voipContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                                                            th:disabled="!${cs.voipContract}"
+                                                            title="VOIP">
+                                                        <span class="glyphicon glyphicon-headphones"></span>
+
+                                                        <!--                        <span th:if="${cs.voipContract}"-->
+                                                        <!--                              th:text="${cs.voipContract.utilityType}"></span>-->
+
+                                                        <!--                        <span class="glyphicon glyphicon-star"-->
+                                                        <!--                              th:if="${cs.voipContract?.current == true}"-->
+                                                        <!--                              title="Current Contract"></span>-->
+                                                    </button>
+                                                    <button class="btn btn-success btn-xs"
+                                                            data-toggle="modal"
+                                                            th:attr="data-utility-contract=''+${cs.landlineContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                                                            th:disabled="!${cs.landlineContract}"
+                                                            title="LANDLINE">
+                                                        <span class="glyphicon glyphicon-earphone"></span>
+
+                                                        <!--                        <span th:if="${cs.landlineContract}"-->
+                                                        <!--                              th:text="${cs.landlineContract.utilityType}"></span>-->
+
+                                                        <!--                        <span class="glyphicon glyphicon-star"-->
+                                                        <!--                              th:if="${cs.landlineContract?.current == true}"-->
+                                                        <!--                              title="Current Contract"></span>-->
+                                                    </button>
+                                                </div>
+                                                <div class="btn-group-vertical">
+                                                    <button class="btn btn-warning btn-xs"
+                                                            data-toggle="modal"
+                                                            th:attr="data-utility-contract=''+${cs.mobileContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                                                            th:disabled="!${cs.mobileContract}"
+                                                            title="MOBILE">
+                                                        <span class="glyphicon glyphicon-phone"></span>
+
+                                                        <!--                        <span th:if="${cs.mobileContract}"-->
+                                                        <!--                              th:text="${cs.mobileContract.utilityType}"></span>-->
+
+                                                        <!--                        <span class="glyphicon glyphicon-star"-->
+                                                        <!--                              th:if="${cs.mobileContract?.current == true}"-->
+                                                        <!--                              title="Current Contract"></span>-->
+                                                    </button>
+                                                    <button class="btn btn-warning btn-xs"
+                                                            data-toggle="modal"
+                                                            th:attr="data-utility-contract=''+${cs.broadbandContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                                                            th:disabled="!${cs.broadbandContract}"
+                                                            title="BROADBAND">
+                                                        <span class="glyphicon glyphicon-globe"></span>
+
+                                                        <!--                        <span th:if="${cs.broadbandContract}"-->
+                                                        <!--                              th:text="${cs.broadbandContract.utilityType}"></span>-->
+
+                                                        <!--                        <span class="glyphicon glyphicon-star"-->
+                                                        <!--                              th:if="${cs.broadbandContract?.current == true}"-->
+                                                        <!--                              title="Current Contract"></span>-->
+                                                    </button>
+                                                </div>
+                                                <div class="btn-group-vertical">
+                                                    <button class="btn btn-warning btn-xs"
+                                                            data-toggle="modal"
+                                                            th:attr="data-merchant-services-contract=''+${cs.merchantServicesContract?.id}+'', data-site-name=''+${cs.site.fullSiteNameAndAddress}+'', data-target='#utility-modal'"
+                                                            th:disabled="!${cs.merchantServicesContract}"
+                                                            title="MERCHANT SERVICES">
+                                                        <span class="glyphicon glyphicon-shopping-cart"></span>
+                                                    </button>
+
+                                                </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="contracts2">
+                        <h3>Standard tab panel created on bootstrap using nav-tabs</h3>
+                    </div>
+                    <div class="tab-pane" id="meters2">
+                        <h3>Standard tab panel created on bootstrap using nav-tabs</h3>
+                    </div>
+                    <div class="tab-pane" id="billing2">
+                        <h3>Standard tab panel created on bootstrap using nav-tabs</h3>
+                    </div>
+                    <div class="tab-pane" id="workflow2">
+                        <h3>Standard tab panel created on bootstrap using nav-tabs</h3>
+                    </div>
+                    <div class="tab-pane" id="results2">
+                        <div class="row">
+                            <!--<div class="col-md-8">
+                                <table class="table table-striped table-hover table-condensed" id="myTable">
+                                    <thead>
+                                    <tr>
+                                        <th>Customer Reference</th>
+                                        <th>Business Name</th>
+                                        <th>Business Address</th>
+                                        <th>Business Address 1</th>
+                                        <th>Business City</th>
+                                        <th>Post Code</th>
+                                        <th>Contact Number</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email</th>
+                                        <th>Date Created</th>
+                                        <th>Do Not Contact</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="customer : ${searchResults}" th:classappend="${customer.doNotContact == true} ? text-muted : text-success">
+                                        <td><a th:href="@{/admin/customer/view/{id}/(id=${customer.id})}" th:text="${customer.customerReference}">Customer Reference</a></td>
+                                        <td><a th:href="@{/admin/customer/view/{id}/(id=${customer.id})}" th:text="${customer.businessName}">Business Name</a></td>
+                                        <td th:text="${customer.businessAddr}">Business Addr</td>
+                                        <td th:text="${customer.businessAddr1}">Business Addr1</td>
+                                        <td th:text="${customer.businessCity}">Business City</td>
+                                        <td class="text-nowrap" th:text="${customer.businessPostcodeOut} +' '+${customer.businessPostcodeIn}">Post Code</td>
+                                        <td class="text-nowrap" th:text="${customer.contactNumber}">Contact Number</td>
+                                        <td th:text="${customer.firstName}">First Name</td>
+                                        <td th:text="${customer.lastName}">Last Name</td>
+                                        <td th:text="${customer.emailAddress}">Email</td>
+                                        <td th:text="${#dates.format(customer.dateCreated, 'dd/MM/yyyy')}">Date Created</td>
+                                        <td th:text="${customer.doNotContact}">Do Not Contact</td>
+                                        <td class="text-nowrap"><a th:href="@{/admin/customer/view/{id}/(id=${customer.id})}">View Customer</a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-4"></div>-->
+
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Customer Reference</th>
+                                        <th>Business Name</th>
+                                        <th>Business Address</th>
+                                        <th>Business Address 1</th>
+                                        <th>Business City</th>
+                                        <th>Post Code</th>
+                                        <th>Contact Number</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email</th>
+                                        <th>Date Created</th>
+                                        <th>Do Not Contact</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="customer : ${searchResults}" th:classappend="${customer.doNotContact == true} ? text-muted : text-success">
+                                        <td><a th:href="@{/admin/customer/info/{id}/(id=${customer.id})}" th:text="${customer.customerReference}">Customer Reference</a></td>
+                                        <td><a th:href="@{/admin/customer/view/{id}/(id=${customer.id})}" th:text="${customer.businessName}">Business Name</a></td>
+                                        <td th:text="${customer.businessAddr}">Business Addr</td>
+                                        <td th:text="${customer.businessAddr1}">Business Addr1</td>
+                                        <td th:text="${customer.businessCity}">Business City</td>
+                                        <td class="text-nowrap" th:text="${customer.businessPostcodeOut} +' '+${customer.businessPostcodeIn}">Post Code</td>
+                                        <td class="text-nowrap" th:text="${customer.contactNumber}">Contact Number</td>
+                                        <td th:text="${customer.firstName}">First Name</td>
+                                        <td th:text="${customer.lastName}">Last Name</td>
+                                        <td th:text="${customer.emailAddress}">Email</td>
+                                        <td th:text="${#dates.format(customer.dateCreated, 'dd/MM/yyyy')}">Date Created</td>
+                                        <td th:text="${customer.doNotContact}">Do Not Contact</td>
+                                        <td class="text-nowrap"><a th:href="@{/admin/customer/view/{id}/(id=${customer.id})}">View Customer</a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="accounts2">
+                        <h3>Standard tab panel created on bootstrap using nav-tabs</h3>
+                    </div>
+                    <div role="tabpanel" class="tab-pane myTabsTask" id="newSales2">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <b>New Sales</b>
+                            </div>
+                            <div class="panel-body fixed-panel" id="welcomePack" th:fragment="welcomePack">
+                                <table class="table table-striped table-hover table-condensed">
+                                    <thead>
+                                    <tr class="info">
+                                        <th>Customer</th>
+                                        <th>Site</th>
+                                        <th>Start Date</th>
+                                        <th>Supply Type</th>
+                                        <th>Welcome pack sent</th>
+                                        <th>Old Supply Terminated</th>
+                                        <th>Update</th>
+                                        <th>Print Welcome letter</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="newSalesTask:${findAllAdminContractNewSalesTasks}">
+                                        <td>
+                                            <a th:href="@{/admin/customer/view/{id}/(id=${newSalesTask.customer.id})}"
+                                               th:inline="text">[[${newSalesTask.customerSite.siteName}]]</a>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/admin/customer/viewsite/{id}/(id=${newSalesTask.customerSite.id})}"
+                                               th:inline="text">[[${newSalesTask.customerSite.siteAddr}]]</a>
+                                        </td>
+                                        <td nowrap="nowrap"
+                                            th:text="${newSalesTask.startDate} ? ${#dates.format(newSalesTask.startDate, 'dd/MM/yyyy')}">
+                                            Start date
+                                        </td>
+                                        <td th:text="${newSalesTask.supplyType}">Supply Type</td>
+                                        <td>
+                                                <span class="glyphicon glyphicon-ok"
+                                                      th:if="${newSalesTask.welcomePackSentToCustomer == true}"></span>
+                                            <span class="glyphicon glyphicon-remove"
+                                                  th:if="${newSalesTask.welcomePackSentToCustomer == false}"></span>
+                                        </td>
+                                        <td>
+                                                <span class="glyphicon glyphicon-ok"
+                                                      th:if="${newSalesTask.previousSupplyTerminated == true}"></span>
+                                            <span class="glyphicon glyphicon-remove"
+                                                  th:if="${newSalesTask.previousSupplyTerminated == false}"></span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-warning btn-xs"
+                                                    th:onclick="'showWelcomeOptions(\''+${newSalesTask.id}+'\', \''+${newSalesTask.supplyType}+'\');'">
+                                                Update
+                                            </button>
+                                        </td>
+                                        <td th:if="${newSalesTask.supplyType == 'GAS'}">
+                                            <a class="btn btn-primary btn-xs"
+                                               th:href="@{/gasWelcomeLetter/{id}/(id=${newSalesTask.id})}">Print
+                                                Welcome Letter</a>
+                                        </td>
+                                        <td th:if="${newSalesTask.supplyType == 'ELEC'}">
+                                            <a class="btn btn-primary btn-xs"
+                                               th:href="@{/electricWelcomeLetter/{id}/(id=${newSalesTask.id})}">Print
+                                                Welcome Letter</a>
+                                        </td>
+                                        <td th:if="${newSalesTask.supplyType != 'ELEC' AND newSalesTask.supplyType != 'GAS'}">
+                                            Unavailable
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane myTabsTask" id="terminations2">
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">
+                                <b>Terminations</b>
+                            </div>
+                            <div class="panel-body fixed-panel" id="terminationTask"
+                                 th:fragment="terminationTask">
+                                <table class="table table-striped table-hover table-condensed">
+                                    <thead>
+                                    <tr class="info">
+                                        <th>Customer</th>
+                                        <th>Supply Type</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Current Supply Terminated</th>
+                                        <th>Update</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="endedContract:${findAllContractsToTerminate}">
+                                        <td>
+                                            <a th:href="@{/admin/customer/view/{id}/(id=${endedContract.customer.id})}"
+                                               th:inline="text">[[${endedContract.customer.businessName}]]
+                                            </a>
+                                        </td>
+                                        <td nowrap="nowrap" th:text="${endedContract.supplyType}"></td>
+                                        <td nowrap="nowrap"
+                                            th:text="${endedContract.startDate} ? ${#dates.format(endedContract.startDate, 'dd/MM/yyyy')}"></td>
+                                        <td nowrap="nowrap"
+                                            th:text="${endedContract.endDate} ? ${#dates.format(endedContract.endDate, 'dd/MM/yyyy')}"></td>
+                                        <td><span class="glyphicon glyphicon-ok"
+                                                  th:if="${endedContract.currentSupplyTerminated == true}"></span><span
+                                                class="glyphicon glyphicon-remove"
+                                                th:if="${endedContract.currentSupplyTerminated == false}"></span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-warning btn-xs"
+                                                    th:onclick="'showTerminationOptions(\'' + ${ endedContract.id } + '\', \''+${endedContract.supplyType}+'\');'">
+                                                Update
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="broker2">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <b>Broker Notes</b> - Mark as completed once done
+                            </div>
+                            <div class="panel-body fixed-panel" id="brokernote">
+                                <table class="table table-striped table-hover table-condensed">
+                                    <thead>
+                                    <tr class="info">
+                                        <th>Broker</th>
+                                        <th>Subject</th>
+                                        <th>Note</th>
+                                        <th>Tagged User</th>
+                                        <th>Date Created</th>
+                                        <th>Created By</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="brokerNote:${findAllBrokerNotesByUser}">
+                                        <td>
+                                            <a th:href="@{/admin/broker/view/{id}/(id=${brokerNote.broker.id})}"
+                                               th:inline="text">[[${brokerNote.broker.businessName}]]</a>
+                                        </td>
+                                        <td th:text="${brokerNote.subject}">Subject</td>
+                                        <td><a data-placement="auto bottom" data-toggle="tooltip" href="#"
+                                               th:title="${brokerNote.note}"><span
+                                                th:text="${#strings.abbreviate(brokerNote.note, 50)}"></span></a>
+                                        </td>
+                                        <td th:text="${brokerNote.taggedUser.firstName}+' '+${brokerNote.taggedUser.lastName}">
+                                            First Name and Surname
+                                        </td>
+                                        <td th:text="${#dates.format(brokerNote.dateCreated, 'dd/MM/yyyy HH:mm:ss')}">
+                                            Date Created
+                                        </td>
+                                        <td th:text="${brokerNote.createdBy.firstName}+' '+${brokerNote.createdBy.lastName}">
+                                            First Name and Surname
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-success btn-xs"
+                                                    th:onclick="'showBrokerNote(\''+${brokerNote.id}+'\');'">
+                                                Mark as
+                                                complete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="objections2">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <b>Objections</b>
+                            </div>
+                            <div class="panel-body fixed-panel">
+                                <table class="table table-striped table-hover table-condensed">
+                                    <thead>
+                                    <tr class="info">
+                                        <th>Supply Type</th>
+                                        <th>Customer Reference</th>
+                                        <th>Site Name</th>
+                                        <th>Meter Serial</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Supplier</th>
+                                        <th>Broker</th>
+                                        <th>Date Created</th>
+                                        <th>Created By</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="objectedContract:${findAllObjectedContracts}">
+                                        <td th:text="${objectedContract.supplyType}">Supply Type</td>
+                                        <td th:text="${objectedContract.customer.customerReference}">
+                                            Customer
+                                            Reference
+                                        </td>
+                                        <td th:text="${objectedContract.customerSite.siteName}">Site Name
+                                        </td>
+                                        <td th:if="${objectedContract.supplyType == 'GAS'}"
+                                            th:text="'MPR: '+ ${objectedContract.accountNumber}">
+                                            MPR
+                                        </td>
+                                        <td th:if="${objectedContract.supplyType == 'ELEC'}"
+                                            th:text="'MPAN Bottom Line: '+${objectedContract.accountNumber}">
+                                            MPAN
+                                        </td>
+                                        <td th:if="${objectedContract.supplyType != 'ELEC' and objectedContract.supplyType != 'GAS'}">
+                                            N/A
+                                        </td>
+                                        <td th:text="${objectedContract.startDate} ? ${#dates.format(objectedContract.startDate, 'dd/MM/yyyy')}">
+                                            Start Date
+                                        </td>
+                                        <td th:text="${objectedContract.endDate} ? ${#dates.format(objectedContract.endDate, 'dd/MM/yyyy')}">
+                                            End Date
+                                        </td>
+                                        <td th:text="${objectedContract.supplier.businessName}">Supplier
+                                        </td>
+                                        <td th:text="${objectedContract.broker.firstName}+' '+${objectedContract.broker.lastName}">
+                                            Broker First Name and Surname
+                                        </td>
+                                        <td th:text="${#dates.format(objectedContract.dateCreated, 'dd/MM/yyyy HH:mm:ss')}">
+                                            Date Created
+                                        </td>
+                                        <td th:text="${objectedContract.createdBy.firstName}+' '+${objectedContract.createdBy.lastName}">
+                                            First Name and Surname
+                                        </td>
+                                        <td th:if="${objectedContract.supplyType == 'GAS'}">
+                                            <a class="btn btn-warning btn-xs"
+                                               th:href="@{/admin/customer/editgascontract/{id}/(id=${objectedContract.id})}">Open</a>
+                                        </td>
+                                        <td th:if="${objectedContract.supplyType == 'ELEC'}">
+                                            <a class="btn btn-warning btn-xs"
+                                               th:href="@{/admin/customer/editeleccontract/{id}/(id=${objectedContract.id})}">Open</a>
+                                        </td>
+                                        <td th:if="${objectedContract.supplyType != 'ELEC' and objectedContract.supplyType != 'GAS'}">
+                                            <a class="btn btn-warning btn-xs"
+                                               th:href="@{/admin/customer/edit-utility-contract/{id}/(id=${objectedContract.id})}">Open</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="expiring2">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <b>Expiring Documents</b>
+                            </div>
+                            <div class="panel-body fixed-panel">
+                                <table class="table table-striped table-hover table-condensed">
+                                    <thead>
+                                    <tr class="info">
+                                        <th>Customer Reference</th>
+                                        <th>File Title</th>
+                                        <th>File Name</th>
+                                        <th>Valid From</th>
+                                        <th>Valid To</th>
+                                        <th>Date Created</th>
+                                        <th>Created By</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="expiredDocument:${expiringDocuments}">
+                                        <td>
+                                            <a th:href="@{/admin/customer/view/{id}/(id=${expiredDocument.customer.id})}"
+                                               th:inline="text">[[${expiredDocument.customer.customerReference}]]
+                                                - [[${expiredDocument.customer.businessName}]]</a></td>
+                                        <td th:text="${expiredDocument.fileTitle}"></td>
+                                        <td th:text="${expiredDocument.fileName}"></td>
+                                        <td th:text="${expiredDocument.validFrom != null} ? ${#dates.format(expiredDocument.validFrom, 'dd/MM/yyyy')}"></td>
+                                        <td th:text="${expiredDocument.validTo != null} ? ${#dates.format(expiredDocument.validTo, 'dd/MM/yyyy')}"></td>
+                                        <td th:text="${#dates.format(expiredDocument.dateCreated, 'dd/MM/yyyy hh:mm:ss a')}"></td>
+                                        <td th:text="${expiredDocument.createdBy.firstName}+' '+${expiredDocument.createdBy.lastName}"></td>
+                                        <td><a class="btn btn-success btn-xs"
+                                               th:href="@{/admin/customer/customerdocuments/{id}/{documentFolder}/(id=${expiredDocument.customer.id}, documentFolder=${expiredDocument.documentFolder})}">Open
+                                        </a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="search">
+                        <div class="well">
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <label for="q">Search
+                                        <a data-placement="right"
+                                           data-toggle="tooltip"
+                                           href="#"
+                                           title="Search by Customer Reference, Business Name, Site Name, Site Address,
+                       Site City, Customer First Name &amp; Last Name, Site Registration No,
+                       Site Postcode, MPAN Bottom Line, MPR, Current Supplier">
+                                            <span class="glyphicon glyphicon-info-sign"></span>
+                                        </a>
+                                    </label>
+                                    <input class="form-control input-sm"
+                                           type="text"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="logType">Log Type</label>
+                                    <select class="form-control input-sm">
+                                        <option value="">All</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Start Date</label> <input class="form-control" type="text"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>End Date</label> <input class="form-control" type="text"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="broker">Broker</label> <select class="form-control input-sm">
+                                    <option value="">All</option>
+                                </select>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-sm btn-info" type="submit">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h4>My tasks WorkFlow</h4>
+                <div>
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#high2" aria-controls="home" role="tab"
+                                                                  data-toggle="tab">High</a></li>
+                        <li role="presentation"><a href="#low2" aria-controls="profile" role="tab"
+                                                   data-toggle="tab">Low</a></li>
+                        <li role="presentation" id="myTabs"><a href="#newSales2" aria-controls="messages" role="tab"
+                                                               data-toggle="tab">New Sales</a></li>
+                        <li role="presentation"><a href="#terminations2" aria-controls="settings" role="tab"
+                                                   data-toggle="tab">Terminations</a></li>
+                        <li role="presentation"><a href="#broker2" aria-controls="settings" role="tab"
+                                                   data-toggle="tab">Broker Notes</a></li>
+                        <li role="presentation"><a href="#objections2" aria-controls="settings" role="tab"
+                                                   data-toggle="tab">Objections</a></li>
+                        <li role="presentation"><a href="#expiring2" aria-controls="settings" role="tab"
+                                                   data-toggle="tab">Expiring Documents</a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="high2">
+                            <div>
+                                <div class="panel panel-danger small">
+                                    <div class="panel-heading">High Importance</div>
+                                    <div class="panel-body fixed-panel-large">
+                                        <table class="table table-hover table-condensed">
+                                            <thead>
+                                            <tr>
+                                                <th>Note</th>
+                                                <th>Due Date</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:class="${customerNote.priorityClass}"
+                                                th:each="customerNote:${findAllIncompleteCustomerNotesByTaggedUser}"
+                                                th:if="${customerNote.priority == 'HIGH'} and ${customerNote.quickWin}">
+                                                <td>
+                                                    <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerNote.customer.id}, noteId = ${customerNote.id})}">
+                                                        <span th:text="${customerNote.subject}"></span>
+                                                    </a>
+                                                </td>
+                                                <td th:class="${customerNote.priorityClass}"
+                                                    th:text="${customerNote.dueByDate != null} ? ${#dates.format(customerNote.dueByDate, 'dd/MM/yyyy')}">
+                                                    Due By Date
+                                                </td>
+                                            </tr>
+                                            <tr th:class="${customerChildNote.priorityClass}"
+                                                th:each="customerChildNote:${findAllIncompleteCustomerChildNotesByTaggedUser}"
+                                                th:if="${customerChildNote.replyPriority == 'HIGH'} and ${customerChildNote.quickWin}">
+                                                <td>
+                                                    <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerChildNote.customer.id}, noteId = ${customerChildNote.customerNote.id}, childNoteId = ${customerChildNote.id})}">
+                                                        <span th:text="${customerChildNote.customerNote.subject}"></span>
+                                                    </a>
+                                                </td>
+                                                <td th:class="${customerChildNote.priorityClass}"
+                                                    th:text="${customerChildNote.replyDueByDate != null} ? ${#dates.format(customerChildNote.replyDueByDate, 'dd/MM/yyyy')}">
+                                                    Due By Date
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="low2">
+                            <div>
+                                <div class="panel panel-success small">
+                                    <div class="panel-heading">Low Importance</div>
+                                    <div class="panel-body fixed-panel-large">
+                                        <table class="table table-hover table-condensed">
+                                            <thead>
+                                            <tr>
+                                                <th>Note</th>
+                                                <th>Due Date</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:class="${customerNote.priorityClass}"
+                                                th:each="customerNote:${findAllIncompleteCustomerNotesByTaggedUser}"
+                                                th:if="${customerNote.priority == 'LOW'} and ${customerNote.quickWin == false}">
+                                                <td>
+                                                    <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerNote.customer.id}, noteId = ${customerNote.id})}">
+                                                        <span th:text="${customerNote.subject}"></span>
+                                                    </a>
+                                                </td>
+                                                <td th:class="${customerNote.priorityClass}"
+                                                    th:text="${customerNote.dueByDate != null} ? ${#dates.format(customerNote.dueByDate, 'dd/MM/yyyy')}">
+                                                    Due By Date
+                                                </td>
+                                            </tr>
+                                            <tr th:class="${customerChildNote.priorityClass}"
+                                                th:each="customerChildNote:${findAllIncompleteCustomerChildNotesByTaggedUser}"
+                                                th:if="${customerChildNote.replyPriority == 'LOW'} and ${customerChildNote.quickWin == false}">
+                                                <td>
+                                                    <a th:href="@{/admin/customer/customernotes/{id}/(id=${customerChildNote.customer.id}, noteId = ${customerChildNote.customerNote.id}, childNoteId = ${customerChildNote.id})}">
+                                                        <span th:text="${customerChildNote.customerNote.subject}"></span>
+                                                    </a>
+                                                </td>
+                                                <td th:class="${customerChildNote.priorityClass}"
+                                                    th:text="${customerChildNote.replyDueByDate != null} ? ${#dates.format(customerChildNote.replyDueByDate, 'dd/MM/yyyy')}">
+                                                    Due By Date
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <h4>Available Command</h4>
+                <button class="btn btn-warning" data-target="#createNewNote" data-toggle="modal">Create New Note
+                </button>
+                <br></br>
+                <!--                <ul class="nav nav-tabs">
+                                    <li class="list-inline-item"><a href="#myTaskworkFlow" data-toggle="tab">My tasks WorkFlow</a>
+                                    </li>
+                                    <li class="list-inline-item"><a href="#3" data-toggle="tab">Available Command</a></li>
+                                </ul>-->
+            </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="panel panel-info">
-          <div class="panel-heading">Gas/Electric</div>
-          <div class="panel-body">
-            <ul>
-              <li><a href="/admin/customer/customercontracts/1">Customer Contracts</a></li>
-              <li><a href="/admin/leads/index/1">Leads</a></li>
-              <li><a href="/admin/callbacks/index/1">Callbacks</a></li>
-              <li><a href="/admin/renewals/index/1">Renewals</a></li>
-              <li><a href="/admin/lost-renewals/index/1">Lost Renewals</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <!--<div class="col-md-4">
-        <div class="panel panel-info">
-          <div class="panel-heading">Utilities</div>
-          <div class="panel-body">
-            <ul>
-              <li><a href="/admin/utility/index/1">Utility Contracts</a></li>
-              <li><a href="/admin/utility/leads/1">Leads</a></li>
-              <li><a href="/admin/utility/callbacks/1">Callbacks</a></li>
-              <li><a href="/admin/utility/renewals/1">Renewals</a></li>
-              <li><a href="/admin/utility/lost-renewals/1">Lost Renewals</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>-->
-      <div class="col-md-4">
-        <div class="panel panel-info">
-          <div class="panel-heading">Options</div>
-          <div class="panel-body">
-            <ul>
-              <li><a href="/admin/tasks/index">Tagged Notes (Workflow)</a></li>
-              <li><a href="/admin/tasks/courtesy/1">Courtesy Calls</a></li>
-              <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/system/index">System Information</a></li>
-              <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/data/upload">Data Upload</a></li>
-              <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/data/export">Dialler Export</a></li>
-              <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/system-setting/index">System Settings</a></li>
-              <li sec:authorize="hasAnyAuthority('SUPERADMIN','ADMIN')"><a href="/admin/system-setting/document-settings/index">Document Folders</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="panel panel-info">
-          <div class="panel-heading">Merchant Services</div>
-          <div class="panel-body">
-            <ul>
-              <li><a href="/admin/merchant-services/index/1">Contracts</a></li>
-              <li><a href="/admin/merchant-services/renewals/1">Renewals</a></li>
-              <li><a href="/admin/merchant-services/leads/1">Leads</a></li>
-              <li><a href="/admin/merchant-services/callbacks/1">Callbacks</a></li>
-              <li><a href="/admin/merchant-services/lost-renewals/1">Lost Renewals</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="panel panel-info">
-          <div class="panel-heading">Landline</div>
-          <div class="panel-body">
-            <ul>
-              <li><a href="/admin/landline/index/1">Contracts</a></li>
-              <li><a href="/admin/landline/renewals/1">Renewals</a></li>
-              <li><a href="/admin/landline/leads/1">Leads</a></li>
-              <li><a href="/admin/landline/callbacks/1">Callbacks</a></li>
-              <li><a href="/admin/landline/lost-renewals/1">Lost Renewals</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="panel panel-info">
-          <div class="panel-heading">Broadband</div>
-          <div class="panel-body">
-            <ul>
-              <li><a href="/admin/broadband/index/1">Contracts</a></li>
-              <li><a href="/admin/broadband/renewals/1">Renewals</a></li>
-              <li><a href="/admin/broadband/leads/1">Leads</a></li>
-              <li><a href="/admin/broadband/callbacks/1">Callbacks</a></li>
-              <li><a href="/admin/broadband/lost-renewals/1">Lost Renewals</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="panel panel-info">
-          <div class="panel-heading">Voip</div>
-          <div class="panel-body">
-            <ul>
-              <li><a href="/admin/voip/index/1">Contracts</a></li>
-              <li><a href="/admin/voip/renewals/1">Renewals</a></li>
-              <li><a href="/admin/voip/leads/1">Leads</a></li>
-              <li><a href="/admin/voip/callbacks/1">Callbacks</a></li>
-              <li><a href="/admin/voip/lost-renewals/1">Lost Renewals</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="panel panel-info">
-          <div class="panel-heading">Water</div>
-          <div class="panel-body">
-            <ul>
-              <li><a href="/admin/water/index/1">Contracts</a></li>
-              <li><a href="/admin/water/renewals/1">Renewals</a></li>
-              <li><a href="/admin/water/leads/1">Leads</a></li>
-              <li><a href="/admin/water/callbacks/1">Callbacks</a></li>
-              <li><a href="/admin/water/lost-renewals/1">Lost Renewals</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="panel panel-info">
-          <div class="panel-heading">Solar</div>
-          <div class="panel-body">
-            <ul>
-              <li><a href="/admin/solar/index/1">Contracts</a></li>
-              <li><a href="/admin/solar/renewals/1">Renewals</a></li>
-              <li><a href="/admin/solar/leads/1">Leads</a></li>
-              <li><a href="/admin/solar/callbacks/1">Callbacks</a></li>
-              <li><a href="/admin/solar/lost-renewals/1">Lost Renewals</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="panel panel-info">
-          <div class="panel-heading">Mobile</div>
-          <div class="panel-body">
-            <ul>
-              <li><a href="/admin/mobile/index/1">Contracts</a></li>
-              <li><a href="/admin/mobile/renewals/1">Renewals</a></li>
-              <li><a href="/admin/mobile/leads/1">Leads</a></li>
-              <li><a href="/admin/mobile/callbacks/1">Callbacks</a></li>
-              <li><a href="/admin/mobile/lost-renewals/1">Lost Renewals</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4" sec:authorize="hasAnyAuthority('SUPERADMIN')">
-        <div class="panel panel-info">
-          <div class="panel-heading">Users</div>
-          <div class="panel-body">
-            <ul>
-              <li><a href="/admin/users/users">Users List</a></li>
-              <li><a href="/admin/users/newuser">Create New User</a></li>
-              <li><a href="/admin/broker/brokers">Broker List</a></li>
-              <li><a href="/admin/broker/newbroker">Create New Broker</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4" sec:authorize="hasAnyAuthority('SUPERADMIN')">
-        <div class="panel panel-info">
-          <div class="panel-heading">Suppliers</div>
-          <div class="panel-body">
-            <ul>
-              <li><a href="/admin/supplier/suppliers">Suppliers List</a></li>
-              <li><a href="/admin/supplier/newsupplier">Create New
-                Supplier</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
-    <div class="col-md-4">
-      <div class="panel panel-primary">
-        <div class="panel-heading">Today's Callback</div>
-        <div class="panel-body">
-          <table class="table table-condensed small" th:if="${not #lists.isEmpty(myCallbacks)}">
-            <thead>
-            <tr>
-              <th>Time</th>
-              <th>Customer</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="myCallback : ${ myCallbacks }">
-              <td th:text="${#dates.format(myCallback.callbackTime, 'hh:mm a')}">9:30 am</td>
-              <td>
-                <a th:href="@{/admin/customer/viewsite/{id}/(id=${myCallback.customerSite.id})}" th:text="${myCallback.businessName}"></a>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-          <span th:if="${#lists.isEmpty(myCallbacks)}">No Callbacks for today.</span>
-        </div>
-      </div>
-    </div>
-  </div>
 
+    <div class="row" style="margin-top:3px;">
+        <div class="col-md-8">
+
+            <div class="col-md-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Customers</div>
+                    <div class="panel-body">
+                        <ul>
+                            <li sec:authorize="!hasAnyAuthority('EXTERNAL_BROKER')"><a
+                                    href="/admin/customer/customers/1">Customers List</a></li>
+                            <li><a href="/admin/customer/mycustomers">My Customers</a></li>
+                            <li><a href="/admin/customer/newcustomer">Create New
+                                Customers</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Gas/Electric</div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><a href="/admin/customer/customercontracts/1">Customer Contracts</a></li>
+                            <li><a href="/admin/leads/index/1">Leads</a></li>
+                            <li><a href="/admin/callbacks/index/1">Callbacks</a></li>
+                            <li><a href="/admin/renewals/index/1">Renewals</a></li>
+                            <li><a href="/admin/lost-renewals/index/1">Lost Renewals</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="col-md-4">
+              <div class="panel panel-info">
+                <div class="panel-heading">Utilities</div>
+                <div class="panel-body">
+                  <ul>
+                    <li><a href="/admin/utility/index/1">Utility Contracts</a></li>
+                    <li><a href="/admin/utility/leads/1">Leads</a></li>
+                    <li><a href="/admin/utility/callbacks/1">Callbacks</a></li>
+                    <li><a href="/admin/utility/renewals/1">Renewals</a></li>
+                    <li><a href="/admin/utility/lost-renewals/1">Lost Renewals</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>-->
+            <div class="col-md-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Options</div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><a href="/admin/tasks/index">Tagged Notes (Workflow)</a></li>
+                            <li><a href="/admin/tasks/courtesy/1">Courtesy Calls</a></li>
+                            <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/system/index">System
+                                Information</a></li>
+                            <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/data/upload">Data
+                                Upload</a></li>
+                            <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/data/export">Dialler
+                                Export</a></li>
+                            <li sec:authorize="hasAnyAuthority('SUPERADMIN')"><a href="/admin/system-setting/index">System
+                                Settings</a></li>
+                            <li sec:authorize="hasAnyAuthority('SUPERADMIN','ADMIN')"><a
+                                    href="/admin/system-setting/document-settings/index">Document Folders</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Merchant Services</div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><a href="/admin/merchant-services/index/1">Contracts</a></li>
+                            <li><a href="/admin/merchant-services/renewals/1">Renewals</a></li>
+                            <li><a href="/admin/merchant-services/leads/1">Leads</a></li>
+                            <li><a href="/admin/merchant-services/callbacks/1">Callbacks</a></li>
+                            <li><a href="/admin/merchant-services/lost-renewals/1">Lost Renewals</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Landline</div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><a href="/admin/landline/index/1">Contracts</a></li>
+                            <li><a href="/admin/landline/renewals/1">Renewals</a></li>
+                            <li><a href="/admin/landline/leads/1">Leads</a></li>
+                            <li><a href="/admin/landline/callbacks/1">Callbacks</a></li>
+                            <li><a href="/admin/landline/lost-renewals/1">Lost Renewals</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Broadband</div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><a href="/admin/broadband/index/1">Contracts</a></li>
+                            <li><a href="/admin/broadband/renewals/1">Renewals</a></li>
+                            <li><a href="/admin/broadband/leads/1">Leads</a></li>
+                            <li><a href="/admin/broadband/callbacks/1">Callbacks</a></li>
+                            <li><a href="/admin/broadband/lost-renewals/1">Lost Renewals</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Voip</div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><a href="/admin/voip/index/1">Contracts</a></li>
+                            <li><a href="/admin/voip/renewals/1">Renewals</a></li>
+                            <li><a href="/admin/voip/leads/1">Leads</a></li>
+                            <li><a href="/admin/voip/callbacks/1">Callbacks</a></li>
+                            <li><a href="/admin/voip/lost-renewals/1">Lost Renewals</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Water</div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><a href="/admin/water/index/1">Contracts</a></li>
+                            <li><a href="/admin/water/renewals/1">Renewals</a></li>
+                            <li><a href="/admin/water/leads/1">Leads</a></li>
+                            <li><a href="/admin/water/callbacks/1">Callbacks</a></li>
+                            <li><a href="/admin/water/lost-renewals/1">Lost Renewals</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Solar</div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><a href="/admin/solar/index/1">Contracts</a></li>
+                            <li><a href="/admin/solar/renewals/1">Renewals</a></li>
+                            <li><a href="/admin/solar/leads/1">Leads</a></li>
+                            <li><a href="/admin/solar/callbacks/1">Callbacks</a></li>
+                            <li><a href="/admin/solar/lost-renewals/1">Lost Renewals</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Mobile</div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><a href="/admin/mobile/index/1">Contracts</a></li>
+                            <li><a href="/admin/mobile/renewals/1">Renewals</a></li>
+                            <li><a href="/admin/mobile/leads/1">Leads</a></li>
+                            <li><a href="/admin/mobile/callbacks/1">Callbacks</a></li>
+                            <li><a href="/admin/mobile/lost-renewals/1">Lost Renewals</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" sec:authorize="hasAnyAuthority('SUPERADMIN')">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Users</div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><a href="/admin/users/users">Users List</a></li>
+                            <li><a href="/admin/users/newuser">Create New User</a></li>
+                            <li><a href="/admin/broker/brokers">Broker List</a></li>
+                            <li><a href="/admin/broker/newbroker">Create New Broker</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" sec:authorize="hasAnyAuthority('SUPERADMIN')">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Suppliers</div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><a href="/admin/supplier/suppliers">Suppliers List</a></li>
+                            <li><a href="/admin/supplier/newsupplier">Create New
+                                Supplier</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Today's Callback</div>
+                <div class="panel-body">
+                    <table class="table table-condensed small" th:if="${not #lists.isEmpty(myCallbacks)}">
+                        <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Customer</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="myCallback : ${ myCallbacks }">
+                            <td th:text="${#dates.format(myCallback.callbackTime, 'hh:mm a')}">9:30 am</td>
+                            <td>
+                                <a th:href="@{/admin/customer/viewsite/{id}/(id=${myCallback.customerSite.id})}"
+                                   th:text="${myCallback.businessName}"></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <span th:if="${#lists.isEmpty(myCallbacks)}">No Callbacks for today.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="createNewNote" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">Create Notes</div>
+                <div class="modal-body">
+
+                    <form class="form-horizontal" method="post" role="form" th:action="@{/customerNote}">
+                        <!--                        <input id="customer" name="customer" th:value="${customer.id}" type="hidden"/>-->
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <input class="form-control input-sm" id="subject" name="subject" placeholder="Subject"
+                                       required="required" type="text"/>
+                            </div>
+                            <div class="col-md-6">
+                                <select class="form-control input-sm" id="taggedUser" name="taggedUser">
+                                    <option value="">Tagged User</option>
+                                    <option th:each="u:${users}" th:text="${u.firstName}+' '+${u.lastName}"
+                                            th:value="${u.id}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                        <textarea class="form-control input-sm" cols="100" id="note" name="note"
+                                                  placeholder="Enter note here" required="required"
+                                                  rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <select class="form-control input-sm" id="customer" name="customer">
+                                    <option value="">choose customer</option>
+                                    <option th:each="u:${customersAffect}" th:text="${u.customerReference}+' '+${u.firstName}"
+                                            th:value="${u.id}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="small">Completed: <input id="completed" name="completed" type="checkbox"/></label>
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control input-sm" id="altDueByDate" name="altDueByDate"
+                                       placeholder="Due by Date" readonly="readonly"
+                                       th:value="*{dueByDate != null} ? *{#dates.format(dueByDate, 'dd/MM/yyyy')}"
+                                       type="text"/>
+                                <input id="dueByDate" name="dueByDate" th:value="*{dueByDate}" type="hidden"/>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control input-sm" id="priority" name="priority">
+                                    <option value="LOW">LOW</option>
+                                    <option value="MEDIUM">MEDIUM</option>
+                                    <option value="HIGH">HIGH</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--<div class="form-group">
+                            <div class="col-md-4">
+                                <select class="form-control input-sm" id="gasCustomerContract" name="gasCustomerContract">
+                                    <option value="">Gas Contracts</option>
+                                    <option th:each="g:${gasCustomerContracts}"
+                                            th:text="${g.supplyType}+' '+${g.logType}+' '+${g.startDate != null ? g.startDate: ''}+' '+${g.endDate != null ? g.endDate: ''}+' '+${g.customerSite.siteName}+', '+${g.customerSite.siteAddr}+', '+${g.customerSite.siteCity}+', '+${g.customerSite.sitePostcodeOut}+' '+${g.customerSite.sitePostcodeIn}"
+                                            th:value="${g.id}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-control input-sm" id="elecCustomerContract" name="elecCustomerContract">
+                                    <option value="">Electric Contracts</option>
+                                    <option th:each="e:${elecCustomerContracts}"
+                                            th:text="${e.supplyType}+' '+${e.logType}+' '+${e.startDate != null ? e.startDate: ''}+' '+${e.endDate != null ? e.endDate: ''}+' '+${e.customerSite.siteName}+', '+${e.customerSite.siteAddr}+', '+${e.customerSite.siteCity}+', '+${e.customerSite.sitePostcodeOut}+' '+${e.customerSite.sitePostcodeIn}"
+                                            th:value="${e.id}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-control input-sm" id="utilityContract" name="utilityContract">
+                                    <option value="">Utility Contracts</option>
+                                    <option th:each="e:${utilityContracts}"
+                                            th:text="${e.utilityType}+' '+${e.logType}+' '+${e.startDate != null ? e.startDate: ''}+' '+${e.endDate != null ? e.endDate: ''}+' '+${e.customerSite.siteName}+', '+${e.customerSite.siteAddr}+', '+${e.customerSite.siteCity}+', '+${e.customerSite.sitePostcodeOut}+' '+${e.customerSite.sitePostcodeIn}"
+                                            th:value="${e.id}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-4" style="margin-top:8px">
+                                <select class="form-control input-sm" id="merchantServicesContract" name="merchantServicesContract">
+                                    <option value="">merchant service Contracts</option>
+                                    <option th:each="e:${merchantServiceContract}"
+                                            th:text="${e.logType}+' '+${e.startDate != null ? e.startDate: ''}+' '+${e.endDate != null ? e.endDate: ''}+' '+${e.customerSite.siteName}+', '+${e.customerSite.siteAddr}+', '+${e.customerSite.siteCity}+', '+${e.customerSite.sitePostcodeOut}+' '+${e.customerSite.sitePostcodeIn}"
+                                            th:value="${e.id}"></option>
+                                </select>
+                            </div>
+                        </div>-->
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <button class="btn btn-success btn-sm">
+                                    <span class="glyphicon glyphicon-save"></span> Add Note
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="utility-modal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal" type="button">&times;</button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div th:replace="../static/fragments/layout :: footer">&copy;
-  Broker Management System
+    Broker Management System
 </div>
+
+<script>
+
+$('#myTab').on('click', function (event) {
+  document.getElementById('output').innerHTML = event.target.id;
+});
+
+$('#myTabs a').click(function (e) {
+  e.preventDefault();
+  $('.tasksWorkflows').tab('show');
+  document.getElementById('output').innerHTML = $('.tasksWorkflows')[0].innerHTML;
+  console.log($('.tasksWorkflows')[0].innerHTML);
+});
+
+function onclick_event(data) {
+        $.get('/admin/customer/view/' + data + '/',function(){});
+    }
+
+</script>
+<script>
+$('#utility-modal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var siteName = button.data('site-name')
+  var gasContractId = button.data('gas-contract')
+  var electricContractId = button.data('electric-contract')
+  var utilityContractId = button.data('utility-contract')
+  var gasContractCommId = button.data('gas-contract-comm')
+  var electricContractCommId = button.data('electric-contract-comm')
+  var utilityContractCommId = button.data('utility-contract-comm')
+  var merchantServicesContractId = button.data('merchant-services-contract')
+
+  var modal = $(this)
+  modal.find('.modal-header').text(siteName)
+  if(gasContractId) {
+    modal.find('.modal-body').load('/admin/customer/gas-contract-popup/'+gasContractId)
+  }
+  if(electricContractId) {
+    modal.find('.modal-body').load('/admin/customer/electric-contract-popup/'+electricContractId)
+  }
+  if(utilityContractId) {
+    modal.find('.modal-body').load('/admin/customer/utility-contract-popup/'+utilityContractId)
+  }
+  if(gasContractCommId) {
+    modal.find('.modal-body').load('/admin/customer/gas-communication-popup/'+gasContractCommId)
+  }
+  if(electricContractCommId) {
+    modal.find('.modal-body').load('/admin/customer/electric-communication-popup/'+electricContractCommId)
+  }
+  if(utilityContractCommId) {
+    modal.find('.modal-body').load('/admin/customer/utility-communication-popup/'+utilityContractCommId)
+  }
+  if(merchantServicesContractId) {
+    modal.find('.modal-body').load('/admin/customer/merchant-services-contract-popup/'+merchantServicesContractId)
+  }
+})
+</script>
 </body>
 </html>

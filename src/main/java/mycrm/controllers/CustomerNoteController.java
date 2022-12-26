@@ -7,10 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -171,13 +168,48 @@ public class CustomerNoteController {
         return "redirect:/admin/customer/editMerchantServicecontract/" + customerChildNote.getCustomerNote().getMerchantServicesContract().getId();
     }
 
+    @RequestMapping(value = "/addSolarChildNote", method = RequestMethod.POST)
+    public String saveSolarChildNote(CustomerChildNote customerChildNote) {
+        customerChildNoteService.save(customerChildNote);
+        return "redirect:/admin/customer/edit-solar-contract/" + customerChildNote.getCustomerNote().getSolarContract().getId();
+    }
+
+    @RequestMapping(value = "/addWaterChildNote", method = RequestMethod.POST)
+    public String saveWaterChildNote(CustomerChildNote customerChildNote) {
+        customerChildNoteService.save(customerChildNote);
+        return "redirect:/admin/customer/edit-water-contract/" + customerChildNote.getCustomerNote().getWaterContract().getId();
+    }
+
+    @RequestMapping(value = "/addVoipChildNote", method = RequestMethod.POST)
+    public String saveVoipChildNote(CustomerChildNote customerChildNote) {
+        customerChildNoteService.save(customerChildNote);
+        return "redirect:/admin/customer/edit-voip-contract/" + customerChildNote.getCustomerNote().getVoipContract().getId();
+    }
+
+    @RequestMapping(value = "/addLandlineChildNote", method = RequestMethod.POST)
+    public String saveLandlineChildNote(CustomerChildNote customerChildNote) {
+        customerChildNoteService.save(customerChildNote);
+        return "redirect:/admin/customer/edit-landline-contract/" + customerChildNote.getCustomerNote().getLandlineContract().getId();
+    }
+
+    @RequestMapping(value = "/addBroadbandChildNote", method = RequestMethod.POST)
+    public String saveBroadbandChildNote(CustomerChildNote customerChildNote) {
+        customerChildNoteService.save(customerChildNote);
+        return "redirect:/admin/customer/edit-broadband-contract/" + customerChildNote.getCustomerNote().getBroadbandContract().getId();
+    }
+
+    @RequestMapping(value = "/addMobileChildNote", method = RequestMethod.POST)
+    public String saveMobileChildNote(CustomerChildNote customerChildNote) {
+        customerChildNoteService.save(customerChildNote);
+        return "redirect:/admin/customer/edit-mobile-contract/" + customerChildNote.getCustomerNote().getMobileContract().getId();
+    }
+
     /*CHILD GAS NOTES*/
     @RequestMapping(value = "/addGasChildNote", method = RequestMethod.POST)
     public String saveGasChildNote(CustomerChildNote customerChildNote) {
         customerChildNoteService.save(customerChildNote);
         return "redirect:/admin/customer/editgascontract/" + customerChildNote.getCustomerNote().getGasCustomerContract().getId();
     }
-
 
     //edit customer note
     @RequestMapping(value = "/admin/customer/editcustomernote/{id}")
@@ -191,6 +223,23 @@ public class CustomerNoteController {
         model.addAttribute("elecCustomerContracts", elecContractService.findByCustomerOrderByEndDateDesc(customerNote.getCustomer()));
         model.addAttribute("utilityContracts", utilityContractService.findByCustomerOrderByEndDateDesc(customerNote.getCustomer()));
         return "admin/customer/editCustomerNote";
+    }
+
+    @PostMapping(value = "/editcustomernoteCompleted")
+    public String editCustomerNoteMethod(Long id) {
+        System.out.println("#############################");
+        CustomerNote customerNote = customerNoteService.findById(id);
+        customerNote.setCompleted(true);
+        this.customerNoteService.save(customerNote);
+        return "redirect:/";
+    }
+
+    @PostMapping(value = "/editcustomerChildnoteCompleted")
+    public String editCustomeChildrNoteMethod(Long id) {
+        CustomerChildNote customerChildNote = customerChildNoteService.findById(id);
+        customerChildNote.setReplyCompleted(true);
+        this.customerChildNoteService.save(customerChildNote);
+        return "redirect:/";
     }
 
     //edit customer note
