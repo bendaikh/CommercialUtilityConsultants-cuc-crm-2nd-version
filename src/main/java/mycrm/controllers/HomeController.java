@@ -6,6 +6,7 @@ import mycrm.models.User;
 import mycrm.services.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,8 @@ public class HomeController {
 	private static final Logger logger = LogManager.getLogger();
 
 	private final CustomerNoteService customerNoteService;
+
+	private final CustomerService customerService;
 	private final UserService userService;
 	private final BrokerNoteService brokerNoteService;
 	private final AdminContractTaskService adminContractTaskService;
@@ -34,9 +37,10 @@ public class HomeController {
 
 
 	@Autowired
-	public HomeController(MyService myService, CustomerNoteService customerNoteService, UserService userService, BrokerNoteService brokerNoteService, AdminContractTaskService adminContractTaskService, AdminContractTerminationTaskService adminContractTerminationTaskService, GasContractService gasContractService, ElecContractService elecContractService, CustomerChildNoteService customerChildNoteService, WorkflowTaskService workflowTaskService, UtilityContractService utilityContractService, UserHelper userHelper, DocumentService documentService) {
+	public HomeController(MyService myService, CustomerNoteService customerNoteService, CustomerService customerService, UserService userService, BrokerNoteService brokerNoteService, AdminContractTaskService adminContractTaskService, AdminContractTerminationTaskService adminContractTerminationTaskService, GasContractService gasContractService, ElecContractService elecContractService, CustomerChildNoteService customerChildNoteService, WorkflowTaskService workflowTaskService, UtilityContractService utilityContractService, UserHelper userHelper, DocumentService documentService) {
 		this.myService = myService;
 		this.customerNoteService = customerNoteService;
+		this.customerService = customerService;
 		this.userService = userService;
 		this.brokerNoteService = brokerNoteService;
 		this.adminContractTaskService = adminContractTaskService;
@@ -61,7 +65,6 @@ public class HomeController {
 		User user = userHelper.getLoggedInUser();
 		List<User> adminStaff = userService.findAllAdmin();
 		CustomerSearch customerSearch = new CustomerSearch();
-
 		if (user.isAdmin()) {
 			model.addAttribute("findAllIncompleteCustomerNotesByTaggedUser", customerNoteService.findAllIncompleteByAdminOrderByDueDateAsc(adminStaff));
 			model.addAttribute("findAllIncompleteCustomerChildNotesByTaggedUser", customerChildNoteService.findAllIncompleteByAdminOrderByDueDateAsc(adminStaff));
@@ -70,6 +73,8 @@ public class HomeController {
 			model.addAttribute("findAllIncompleteCustomerChildNotesByTaggedUser", customerChildNoteService.findAllIncompleteByTaggedUserOrderByDueDateAsc(user));
 		}
 
+
+		model.addAttribute("customersAffect",customerService.findAll());
 		model.addAttribute("customerSearch", customerSearch);
 		model.addAttribute("users", userService.findAll());
 		model.addAttribute("findAllBrokerNotesByUser", brokerNoteService.findAllIncompleteBrokerNotesByTaggedUser(user));
