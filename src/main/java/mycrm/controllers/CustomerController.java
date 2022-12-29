@@ -168,7 +168,8 @@ public class CustomerController {
             model.addAttribute("findAllIncompleteCustomerNotesByTaggedUser", customerNoteService.findAllIncompleteByTaggedUserOrderByDueDateAsc(user));
             model.addAttribute("findAllIncompleteCustomerChildNotesByTaggedUser", customerChildNoteService.findAllIncompleteByTaggedUserOrderByDueDateAsc(user));
         }
-
+        model.addAttribute("results",true);
+        model.addAttribute("customersAffect",customerService.findAll());
         model.addAttribute("customerSearch", customerSearch);
         model.addAttribute("users", userService.findAll());
         model.addAttribute("findAllBrokerNotesByUser", brokerNoteService.findAllIncompleteBrokerNotesByTaggedUser(user));
@@ -213,12 +214,15 @@ public class CustomerController {
     @RequestMapping("/admin/customer/info/{id}")
     public String viewCustomerData(@PathVariable("id") Long id, Model model) {
         Customer customer = customerService.findById(id);
-        model.addAttribute("myCallbacks", myService.getMyTodaysCallbacks());
+        List<Contact> contactList = contactService.findByCustomer(customer);
+        List<TpsContact> tpsContacts = tpsCheckService.buildContactList(contactList);
+
         User user = userHelper.getLoggedInUser();
         List<User> adminStaff = userService.findAllAdmin();
         CustomerSearch customerSearch = new CustomerSearch();
         List<LinkedAccount> linkedAccounts = linkedAccountService.findByCustomer(customer);
         List<CustomerSiteWithContracts> customerSitesWithContracts = customerSiteService.customerSitesWithContracts(customer);
+        List<EmailHistory> emailHistory = emailHistoryService.findByCustomer(customer);
         if (user.isAdmin()) {
             model.addAttribute("findAllIncompleteCustomerNotesByTaggedUser", customerNoteService.findAllIncompleteByAdminOrderByDueDateAsc(adminStaff));
             model.addAttribute("findAllIncompleteCustomerChildNotesByTaggedUser", customerChildNoteService.findAllIncompleteByAdminOrderByDueDateAsc(adminStaff));
@@ -226,9 +230,14 @@ public class CustomerController {
             model.addAttribute("findAllIncompleteCustomerNotesByTaggedUser", customerNoteService.findAllIncompleteByTaggedUserOrderByDueDateAsc(user));
             model.addAttribute("findAllIncompleteCustomerChildNotesByTaggedUser", customerChildNoteService.findAllIncompleteByTaggedUserOrderByDueDateAsc(user));
         }
+        model.addAttribute("tpsHistory", tpsCheckService.findByCustomer(customer));
+        model.addAttribute("contact", new Contact());
+        model.addAttribute("emailHistory", emailHistory);
+        model.addAttribute("myCallbacks", myService.getMyTodaysCallbacks());
         model.addAttribute("customerSitesWithContracts", customerSitesWithContracts);
         model.addAttribute("linkedAccounts", linkedAccounts);
         model.addAttribute("customer", customer);
+        model.addAttribute("tpsContacts", tpsContacts);
         model.addAttribute("customerSearch", customerSearch);
         model.addAttribute("users", userService.findAll());
         model.addAttribute("findAllBrokerNotesByUser", brokerNoteService.findAllIncompleteBrokerNotesByTaggedUser(user));
