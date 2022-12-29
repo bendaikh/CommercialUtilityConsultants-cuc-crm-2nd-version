@@ -28,6 +28,12 @@ public class MobileContract extends Auditable<User> {
     private boolean welcomePackSentToCustomer;
 
     @Column(nullable = false, length = 1)
+    private boolean keepExisting;
+
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String keepExistingNumber;
+
+    @Column(nullable = false, length = 1)
     private boolean previousSupplyTerminated;
 
     @Column(nullable = false, length = 1)

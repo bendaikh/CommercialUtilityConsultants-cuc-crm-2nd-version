@@ -90,6 +90,12 @@ public class SolarContract extends Auditable<User>{
     @Column(nullable = false, length = 1)
     private boolean directDebit;
 
+    @Column(nullable = false, length = 1)
+    private boolean keepExisting;
+
+    @Column(columnDefinition = "varchar(255) default ''")
+    private String keepExistingNumber;
+
     @Column(columnDefinition = "varchar(255) default ''")
     private String accountName;
 
