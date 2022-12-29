@@ -75,6 +75,11 @@ public class CustomerNoteController {
         return "admin/customer/customernotes";
     }
 
+    @RequestMapping(value = "/callLogCreate",method = RequestMethod.POST)
+    public String saveCallLog(CallLogs callLogs){
+        return "admin/index";
+    }
+
     // create customer notes
     @RequestMapping(value = "/customerNote", method = RequestMethod.POST)
     public String saveNote(CustomerNote customerNote) {

@@ -1503,13 +1503,43 @@
         </div>
     </div>-->
     <div class="modal fade" id="createCallLog" role="dialog">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h>header content</h>
-                </div>
+                <div class="modal-header">New Call Log</div>
                 <div class="modal-body">
-                    <h3>body content</h3>
+                    <form class="form-horizontal" method="post" role="form" th:action="@{/callLogCreate}">
+                        <div class="form-group">
+                            <label class="col-md-2 col-form-label">Call Type:</label>
+                            <div class="col-md-10">
+                                <select class="form-control input-sm" id="callType" name="callType">
+                                    <option value="Incoming">Incoming</option>
+                                    <option value="Outgoing">Outgoing</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-form-label">From:</label>
+                            <div class="col-md-10">
+                                <select class="form-control input-sm">
+                                    <option>data</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-form-label">Notes:</label>
+                            <div class="col-md-10">
+                                <textarea class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                                <div class="col-md-4">
+                                    <button class="btn btn-success btn-sm">
+                                        <span class="glyphicon glyphicon-save"></span> Add Call Log
+                                    </button>
+                                </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
