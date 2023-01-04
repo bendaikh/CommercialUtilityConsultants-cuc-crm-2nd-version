@@ -30,6 +30,11 @@ public class CustomerServiceJpaImpl implements CustomerService {
     }
 
     @Override
+    public List<Customer> findByAllColumns(String inputString) {
+        return this.customerRepo.findAllByInputString(inputString);
+    }
+
+    @Override
     public List<Customer> findAll() {
         return this.customerRepo.findAll();
     }

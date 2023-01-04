@@ -16,6 +16,7 @@ public interface LinkedAccountRepository extends JpaRepository<LinkedAccount, Lo
     @Query("SELECT l FROM LinkedAccount l where customer=(:customer) OR linkedCustomer=(:customer)")
     List<LinkedAccount> findAllLinkedAccountsByCustomerReference(@Param("customer") Customer customer);
 
+
     @Transactional
     @Modifying
     @Query("DELETE FROM LinkedAccount cn WHERE customer=(:customer)")

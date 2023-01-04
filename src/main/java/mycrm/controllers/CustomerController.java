@@ -1,44 +1,42 @@
 package mycrm.controllers;
 
-import mycrm.models.BillingDetail;
-import mycrm.models.Contact;
-import mycrm.models.ContractSearch;
-import mycrm.models.ContractSearchResult;
-import mycrm.models.Customer;
-import mycrm.models.CustomerSearch;
-import mycrm.models.CustomerSearchResult;
-import mycrm.models.DoNotContactNumber;
-import mycrm.models.EmailHistory;
-import mycrm.models.TpsContact;
+import mycrm.functions.UserHelper;
+import mycrm.models.*;
 import mycrm.search.ContractSearchService;
 import mycrm.search.CustomerSearchService;
-import mycrm.services.BrokerService;
-import mycrm.services.ContactPreferencesService;
-import mycrm.services.ContactService;
-import mycrm.services.ContractService;
-import mycrm.services.CustomerService;
-import mycrm.services.EmailHistoryService;
-import mycrm.services.LinkedAccountService;
-import mycrm.services.NewCustomerService;
-import mycrm.services.SupplierService;
-import mycrm.services.TpsCheckService;
+import mycrm.services.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @Controller
 public class CustomerController {
 
+    private final BrokerNoteService brokerNoteService;
+    private final AdminContractTaskService adminContractTaskService;
+    private final AdminContractTerminationTaskService adminContractTerminationTaskService;
+    private final GasContractService gasContractService;
+    private final ElecContractService elecContractService;
+    private final CustomerChildNoteService customerChildNoteService;
+    private final WorkflowTaskService workflowTaskService;
+    private final UtilityContractService utilityContractService;
+    private final UserHelper userHelper;
+    private final DocumentService documentService;
+
+    private final MyService myService;
+
+    private final CustomerNoteService customerNoteService;
+
+    private final CustomerSiteService customerSiteService;
+    private final UserService userService;
     private static final Logger logger = LogManager.getLogger();
 
     private final CustomerService customerService;
@@ -50,12 +48,14 @@ public class CustomerController {
     private final ContactService contactService;
     private final ContractService contractService;
     private final TpsCheckService tpsCheckService;
+
+    private final CallLogsService callLogsService;
     private final ContactPreferencesService contactPreferencesService;
     private final EmailHistoryService emailHistoryService;
     private final LinkedAccountService linkedAccountService;
 
     @Autowired
-    public CustomerController(CustomerService customerService,
+    public CustomerController(BrokerNoteService brokerNoteService, AdminContractTaskService adminContractTaskService, AdminContractTerminationTaskService adminContractTerminationTaskService, GasContractService gasContractService, ElecContractService elecContractService, CustomerChildNoteService customerChildNoteService, WorkflowTaskService workflowTaskService, UtilityContractService utilityContractService, UserHelper userHelper, DocumentService documentService, MyService myService, CustomerNoteService customerNoteService, CustomerSiteService customerSiteService, UserService userService, CustomerService customerService,
                               SupplierService supplierService,
                               BrokerService brokerService,
                               ContractSearchService contractSearchService,
@@ -64,9 +64,23 @@ public class CustomerController {
                               ContactService contactService,
                               ContractService contractService,
                               TpsCheckService tpsCheckService,
-                              ContactPreferencesService contactPreferencesService,
+                              CallLogsService callLogsService, ContactPreferencesService contactPreferencesService,
                               EmailHistoryService emailHistoryService,
                               LinkedAccountService linkedAccountService) {
+        this.brokerNoteService = brokerNoteService;
+        this.adminContractTaskService = adminContractTaskService;
+        this.adminContractTerminationTaskService = adminContractTerminationTaskService;
+        this.gasContractService = gasContractService;
+        this.elecContractService = elecContractService;
+        this.customerChildNoteService = customerChildNoteService;
+        this.workflowTaskService = workflowTaskService;
+        this.utilityContractService = utilityContractService;
+        this.userHelper = userHelper;
+        this.documentService = documentService;
+        this.myService = myService;
+        this.customerNoteService = customerNoteService;
+        this.customerSiteService = customerSiteService;
+        this.userService = userService;
         this.customerService = customerService;
         this.supplierService = supplierService;
         this.brokerService = brokerService;
@@ -76,6 +90,7 @@ public class CustomerController {
         this.contactService = contactService;
         this.contractService = contractService;
         this.tpsCheckService = tpsCheckService;
+        this.callLogsService = callLogsService;
         this.contactPreferencesService = contactPreferencesService;
         this.emailHistoryService = emailHistoryService;
         this.linkedAccountService = linkedAccountService;
@@ -132,12 +147,46 @@ public class CustomerController {
         long timeTaken = (endTime - startTime);
 
         model.addAttribute("searchResults", customerSearchResult.getReturnedCustomers());
+        System.out.println(customerSearch);
+        System.out.println(customerSearchResult.getReturnedCustomers());
         model.addAttribute("totalResults", customerSearchResult.getReturnedCustomerCount());
         model.addAttribute("totalPages", customerSearchResult.getTotalPages());
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("totalCustomers", customerSearchResult.getTotalCustomerCount());
         model.addAttribute("timeTaken", timeTaken);
         return "admin/customer/customers";
+    }
+
+    private List<Customer> customerSearchCopy = new ArrayList<>();
+
+    @RequestMapping("/customerSearching")
+    public String customersSearching(CustomerSearch customerSearch, Model model) throws Exception {
+        List<Customer> customerSearchResult = customerService.findByAllColumns(customerSearch.getQ());
+        this.setCustomerSearchCopy(customerSearchResult);
+        model.addAttribute("searchResults", customerSearchResult);
+        model.addAttribute("myCallbacks", myService.getMyTodaysCallbacks());
+        User user = userHelper.getLoggedInUser();
+        List<User> adminStaff = userService.findAllAdmin();
+
+        if (user.isAdmin()) {
+            model.addAttribute("findAllIncompleteCustomerNotesByTaggedUser", customerNoteService.findAllIncompleteByAdminOrderByDueDateAsc(adminStaff));
+            model.addAttribute("findAllIncompleteCustomerChildNotesByTaggedUser", customerChildNoteService.findAllIncompleteByAdminOrderByDueDateAsc(adminStaff));
+        } else {
+            model.addAttribute("findAllIncompleteCustomerNotesByTaggedUser", customerNoteService.findAllIncompleteByTaggedUserOrderByDueDateAsc(user));
+            model.addAttribute("findAllIncompleteCustomerChildNotesByTaggedUser", customerChildNoteService.findAllIncompleteByTaggedUserOrderByDueDateAsc(user));
+        }
+        model.addAttribute("results",true);
+        model.addAttribute("customersAffect",customerService.findAll());
+        model.addAttribute("customerSearch", customerSearch);
+        model.addAttribute("users", userService.findAll());
+        model.addAttribute("findAllBrokerNotesByUser", brokerNoteService.findAllIncompleteBrokerNotesByTaggedUser(user));
+        model.addAttribute("findAllAdminContractNewSalesTasks", adminContractTaskService.findAllAdminContractNewSalesTasks());
+        model.addAttribute("findAllContractsToTerminate", adminContractTerminationTaskService.findAllContractsToTerminate());
+        model.addAttribute("findAllObjectedContracts", workflowTaskService.findAllObjectedContracts());
+        model.addAttribute("findAllContractsToProcess", adminContractTaskService.findAllContractsToProcess());
+        model.addAttribute("findAllVerbalContracts", workflowTaskService.findAllVerbalContracts());
+        model.addAttribute("expiringDocuments", documentService.findDocumentsExpiringWithinAMonth());
+        return "admin/index";
     }
 
     // view customer
@@ -167,6 +216,49 @@ public class CustomerController {
         }
 
         return "redirect:/admin/index";
+    }
+
+    @RequestMapping("/admin/customer/info/{id}")
+    public String viewCustomerData(@PathVariable("id") Long id, Model model) {
+        Customer customer = customerService.findById(id);
+        List<Contact> contactList = contactService.findByCustomer(customer);
+        List<TpsContact> tpsContacts = tpsCheckService.buildContactList(contactList);
+
+        User user = userHelper.getLoggedInUser();
+        List<User> adminStaff = userService.findAllAdmin();
+        CustomerSearch customerSearch = new CustomerSearch();
+        List<LinkedAccount> linkedAccounts = linkedAccountService.findByCustomer(customer);
+        List<CustomerSiteWithContracts> customerSitesWithContracts = customerSiteService.customerSitesWithContracts(customer);
+        List<EmailHistory> emailHistory = emailHistoryService.findByCustomer(customer);
+        if (user.isAdmin()) {
+            model.addAttribute("findAllIncompleteCustomerNotesByTaggedUser", customerNoteService.findAllIncompleteByAdminOrderByDueDateAsc(adminStaff));
+            model.addAttribute("findAllIncompleteCustomerChildNotesByTaggedUser", customerChildNoteService.findAllIncompleteByAdminOrderByDueDateAsc(adminStaff));
+        } else {
+            model.addAttribute("findAllIncompleteCustomerNotesByTaggedUser", customerNoteService.findAllIncompleteByTaggedUserOrderByDueDateAsc(user));
+            model.addAttribute("findAllIncompleteCustomerChildNotesByTaggedUser", customerChildNoteService.findAllIncompleteByTaggedUserOrderByDueDateAsc(user));
+        }
+        model.addAttribute("searchResults", this.getCustomerSearchCopy());
+        model.addAttribute("callLogObject",new CallLogs());
+        model.addAttribute("callLogsList",callLogsService.findCallLogsByCustomer(customer));
+        System.out.println(callLogsService.findCallLogsByCustomer(customer));
+        model.addAttribute("tpsHistory", tpsCheckService.findByCustomer(customer));
+        model.addAttribute("contact", new Contact());
+        model.addAttribute("emailHistory", emailHistory);
+        model.addAttribute("myCallbacks", myService.getMyTodaysCallbacks());
+        model.addAttribute("customerSitesWithContracts", customerSitesWithContracts);
+        model.addAttribute("linkedAccounts", linkedAccounts);
+        model.addAttribute("customer", customer);
+        model.addAttribute("tpsContacts", tpsContacts);
+        model.addAttribute("customerSearch", customerSearch);
+        model.addAttribute("users", userService.findAll());
+        model.addAttribute("findAllBrokerNotesByUser", brokerNoteService.findAllIncompleteBrokerNotesByTaggedUser(user));
+        model.addAttribute("findAllAdminContractNewSalesTasks", adminContractTaskService.findAllAdminContractNewSalesTasks());
+        model.addAttribute("findAllContractsToTerminate", adminContractTerminationTaskService.findAllContractsToTerminate());
+        model.addAttribute("findAllObjectedContracts", workflowTaskService.findAllObjectedContracts());
+        model.addAttribute("findAllContractsToProcess", adminContractTaskService.findAllContractsToProcess());
+        model.addAttribute("findAllVerbalContracts", workflowTaskService.findAllVerbalContracts());
+        model.addAttribute("expiringDocuments", documentService.findDocumentsExpiringWithinAMonth());
+        return "admin/index";
     }
 
     @RequestMapping("/admin/customer/contactslist/{id}")
@@ -301,4 +393,11 @@ public class CustomerController {
         }
     }
 
+    public List<Customer> getCustomerSearchCopy() {
+        return customerSearchCopy;
+    }
+
+    public void setCustomerSearchCopy(List<Customer> customerSearchCopy) {
+        this.customerSearchCopy = customerSearchCopy;
+    }
 }
