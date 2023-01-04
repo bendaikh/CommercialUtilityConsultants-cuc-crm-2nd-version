@@ -27,7 +27,13 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Query("SELECT c FROM Customer c WHERE customerReference=(:customerReference)")
     Customer findByCustomerReference(@Param("customerReference") String customerReference);
 
-    @Query(value = "SELECT c FROM Customer c WHERE customerReference=(:inputString) OR businessName=(:inputString) OR businessAddr=(:inputString) OR businessCity=(:inputString) OR firstName=(:inputString) OR lastName=(:inputString)"
-    )
+    @Query("select c from Customer c where customerReference like concat('%', :inputString, '%') " +
+            "or businessName like concat('%', :inputString, '%')" +
+            "or businessAddr like concat('%', :inputString, '%')" +
+            "or businessCity like concat('%', :inputString, '%')" +
+            "or firstName like concat('%', :inputString, '%')" +
+            "or lastName like concat('%', :inputString, '%')")
+    /*@Query(value = "SELECT c FROM Customer c WHERE customerReference=(:inputString) OR businessName=(:inputString) OR businessAddr=(:inputString) OR businessCity=(:inputString) OR firstName=(:inputString) OR lastName=(:inputString)"
+    )*/
     List<Customer> findAllByInputString(@Param("inputString") String inputString);
 }

@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -47,6 +48,8 @@ public class CustomerController {
     private final ContactService contactService;
     private final ContractService contractService;
     private final TpsCheckService tpsCheckService;
+
+    private final CallLogsService callLogsService;
     private final ContactPreferencesService contactPreferencesService;
     private final EmailHistoryService emailHistoryService;
     private final LinkedAccountService linkedAccountService;
@@ -61,7 +64,7 @@ public class CustomerController {
                               ContactService contactService,
                               ContractService contractService,
                               TpsCheckService tpsCheckService,
-                              ContactPreferencesService contactPreferencesService,
+                              CallLogsService callLogsService, ContactPreferencesService contactPreferencesService,
                               EmailHistoryService emailHistoryService,
                               LinkedAccountService linkedAccountService) {
         this.brokerNoteService = brokerNoteService;
@@ -87,6 +90,7 @@ public class CustomerController {
         this.contactService = contactService;
         this.contractService = contractService;
         this.tpsCheckService = tpsCheckService;
+        this.callLogsService = callLogsService;
         this.contactPreferencesService = contactPreferencesService;
         this.emailHistoryService = emailHistoryService;
         this.linkedAccountService = linkedAccountService;
@@ -153,9 +157,12 @@ public class CustomerController {
         return "admin/customer/customers";
     }
 
+    private List<Customer> customerSearchCopy = new ArrayList<>();
+
     @RequestMapping("/customerSearching")
     public String customersSearching(CustomerSearch customerSearch, Model model) throws Exception {
         List<Customer> customerSearchResult = customerService.findByAllColumns(customerSearch.getQ());
+        this.setCustomerSearchCopy(customerSearchResult);
         model.addAttribute("searchResults", customerSearchResult);
         model.addAttribute("myCallbacks", myService.getMyTodaysCallbacks());
         User user = userHelper.getLoggedInUser();
@@ -230,6 +237,10 @@ public class CustomerController {
             model.addAttribute("findAllIncompleteCustomerNotesByTaggedUser", customerNoteService.findAllIncompleteByTaggedUserOrderByDueDateAsc(user));
             model.addAttribute("findAllIncompleteCustomerChildNotesByTaggedUser", customerChildNoteService.findAllIncompleteByTaggedUserOrderByDueDateAsc(user));
         }
+        model.addAttribute("searchResults", this.getCustomerSearchCopy());
+        model.addAttribute("callLogObject",new CallLogs());
+        model.addAttribute("callLogsList",callLogsService.findCallLogsByCustomer(customer));
+        System.out.println(callLogsService.findCallLogsByCustomer(customer));
         model.addAttribute("tpsHistory", tpsCheckService.findByCustomer(customer));
         model.addAttribute("contact", new Contact());
         model.addAttribute("emailHistory", emailHistory);
@@ -382,4 +393,11 @@ public class CustomerController {
         }
     }
 
+    public List<Customer> getCustomerSearchCopy() {
+        return customerSearchCopy;
+    }
+
+    public void setCustomerSearchCopy(List<Customer> customerSearchCopy) {
+        this.customerSearchCopy = customerSearchCopy;
+    }
 }

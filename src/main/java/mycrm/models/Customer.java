@@ -136,6 +136,10 @@ public class Customer extends Auditable<User> {
     @OneToMany(mappedBy = "customer")
     private Set<CustomerNote> customerNote = new HashSet<>();
 
+
+    @OneToMany(mappedBy = "customer")
+    private Set<CallLogs> callLogs = new HashSet<>();
+
     @OneToOne(mappedBy = "customer")
     private BillingDetail billingDetail;
 

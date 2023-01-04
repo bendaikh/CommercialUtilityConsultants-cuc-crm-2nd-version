@@ -16,6 +16,8 @@ public class CustomerNoteController {
 
     private static final Logger logger = LogManager.getLogger();
 
+    private final CallLogsService callLogsService;
+
     private final CustomerService customerService;
     private final CustomerNoteService customerNoteService;
     private final UserService userService;
@@ -30,13 +32,14 @@ public class CustomerNoteController {
     private final LinkedAccountService linkedAccountService;
 
     @Autowired
-    public CustomerNoteController(CustomerService customerService,
+    public CustomerNoteController(CallLogsService callLogsService, CustomerService customerService,
                                   CustomerNoteService customerNoteService,
                                   UserService userService,
                                   GasContractService gasContractService,
                                   ElecContractService elecContractService,
                                   ContactService contactService, CustomerChildNoteService customerChildNoteService, EmailTemplateService emailTemplateService,
                                   UtilityContractService utilityContractService, LinkedAccountService linkedAccountService, MerchantServicesService merchantServicesService) {
+        this.callLogsService = callLogsService;
         this.customerService = customerService;
         this.customerNoteService = customerNoteService;
         this.userService = userService;
@@ -75,10 +78,7 @@ public class CustomerNoteController {
         return "admin/customer/customernotes";
     }
 
-    @RequestMapping(value = "/callLogCreate",method = RequestMethod.POST)
-    public String saveCallLog(CallLogs callLogs){
-        return "admin/index";
-    }
+
 
     // create customer notes
     @RequestMapping(value = "/customerNote", method = RequestMethod.POST)

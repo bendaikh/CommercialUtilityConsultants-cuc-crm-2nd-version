@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="../static/fragments/layout :: site-head">
     <title>CEC Consultants - Broker Management System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
@@ -820,7 +821,26 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">Notes:Call Logs</div>
                                     <div class="panel-body">
-                                        <button type="button" class="btn btn-info" data-target="#createCallLog" data-toggle="modal">New Call Log</button>
+                                        <table class="table table-hover table-condensed small table-striped"
+                                               th:if="${callLogsList}">
+                                            <thead>
+                                            <tr>
+                                                <th>Call Type</th>
+                                                <th>Name</th>
+                                                <th>Contact Number</th>
+                                                <th>Note</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="callLog: ${callLogsList}">
+                                                <td th:text="${callLog.callType}"></td>
+                                                <td th:text="${callLog.name}"></td>
+                                                <td th:text="${callLog.number}"></td>
+                                                <td th:text="${callLog.note}"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <button type="button" class="btn btn-info" data-target="#createCallLogSubmit" data-toggle="modal">New Call Log</button>
                                     </div>
                                 </div>
                             </div>
@@ -1502,12 +1522,14 @@
             </div>
         </div>
     </div>-->
-    <div class="modal fade" id="createCallLog" role="dialog">
+    <div id="createCallLogSubmit" class="hide-answer modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">New Call Log</div>
                 <div class="modal-body">
-                    <form class="form-horizontal" method="post" role="form" th:action="@{/callLogCreate}">
+                    <form method="post" role="form" th:action="@{/callLogCreate}" class="form-horizontal" id="call_log_create" th:object="${callLogObject}">
+                        <input th:if="${customer}" id="customer" name="customer" th:value="${customer.id}" type="hidden"/>
                         <div class="form-group">
                             <label class="col-md-2 col-form-label">Call Type:</label>
                             <div class="col-md-10">
@@ -1519,24 +1541,38 @@
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 col-form-label">From:</label>
+                            <input type="hidden" id="name" value="" name="name"/>
+                            <input type="hidden" id="number" value="" name="number"/>
                             <div class="col-md-10">
-                                <select class="form-control input-sm">
-                                    <option>data</option>
+                                <select class="form-control input-sm" id="select">
+                                    <option value="">select a contact</option>
+                                    <option th:each="tc: ${tpsContacts}" th:text="${tc.contact.contactName} + ' ' + ${tc.contact.contactNumber}" th:attr="data-valuea=${tc.contact.contactName},data-valueb=${tc.contact.contactNumber}"></option>
+                                    <option th:if="${customer}" th:text="${customer.firstName} + ' ' +${customer.lastName}" th:attr="data-valuea=${customer.firstName},data-valueb=${customer.contactNumber}"></option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-form-label">name:</label>
+                            <div class="col-md-10">
+                                <input class="form-control input-sm" id="nameData" readonly="readonly" value=""></input>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 col-form-label">number:</label>
+                            <div class="col-md-10">
+                                <input class="form-control input-sm" id="numberData" readonly="readonly" value=""></input>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-2 col-form-label">Notes:</label>
                             <div class="col-md-10">
-                                <textarea class="form-control" rows="3"></textarea>
+                                <textarea id="note" name="note" class="form-control" rows="3"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group">
-                                <div class="col-md-4">
-                                    <button class="btn btn-success btn-sm">
-                                        <span class="glyphicon glyphicon-save"></span> Add Call Log
-                                    </button>
+                                <div class="col-sm-8">
+                                    <button class="btn btn-success" type="submit">save</button>
                                 </div>
                         </div>
                     </form>
@@ -1579,26 +1615,6 @@
                                     <option th:each="u:${customersAffect}" th:text="${u.customerReference}+' '+${u.firstName}"
                                             th:value="${u.id}"></option>
                                 </datalist>
-<!--                                <select class="form-control input-sm" id="customer" name="customer">
-                                    <option value="">choose customer</option>
-                                    <option th:each="u:${customersAffect}" th:text="${u.customerReference}+' '+${u.firstName}"
-                                            th:value="${u.id}"></option>
-                                </select>-->
-<!--                                <select id="country" name="country">
-                                    <option value="">Select your country</option>
-                                    <option value="US">United States of America</option>
-                                    <option value="KE">Kenya</option>
-                                    <option value="UK">United Kingdom</option>
-                                    <option value="IN">India</option>
-                                    <option value="CN">China</option>
-                                    <option value="CA">Canada</option>
-                                    <option value="ZA">South Africa</option>
-                                </select>-->
-                                <!--<input list="customer"/>
-                                <datalist id="customer" name="customer">
-                                    <option th:each="u:${customersAffect}" th:text="${u.customerReference}+' '+${u.firstName}"
-                                            th:value="${u.id}"></option>
-                                </datalist>-->
 
                             </div>
 
@@ -1689,6 +1705,18 @@
 </div>
 
 <script>
+
+
+$('#select').change(function () {
+var contactName=$(this).find('option:selected').attr('data-valuea');
+var contactNumber=$(this).find('option:selected').attr('data-valueb');
+console.log(contactName);
+console.log(contactNumber);
+document.getElementById('nameData').value=contactName;
+document.getElementById('numberData').value=contactNumber;
+$('input[name="name"]').val(contactName);
+$('input[name="number"]').val(contactNumber);
+});
 
 $('#myTab').on('click', function (event) {
   document.getElementById('output').innerHTML = event.target.id;
